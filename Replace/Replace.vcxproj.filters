@@ -58,8 +58,5 @@
     <Text Include="test-data\abcdef.txt">
       <Filter>test-data</Filter>
     </Text>
-    <Text Include="test-data\abcdef-replace-empty-with-abc.txt">
-      <Filter>test-data</Filter>
-    </Text>
   </ItemGroup>
 </Project>

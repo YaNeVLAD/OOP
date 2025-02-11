@@ -25,7 +25,6 @@
     <None Include="test.bat" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="test-data\abcdef-replace-empty-with-abc.txt" />
     <Text Include="test-data\abcdef.txt" />
     <Text Include="test-data\empty-search-out.txt" />
     <Text Include="test-data\empty-search.txt" />

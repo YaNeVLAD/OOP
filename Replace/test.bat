@@ -14,13 +14,11 @@ call :test_replace numbers.txt numbers-replace-1231234-with-rep.txt 1231234 rep
 
 call :test_replace empty-search.txt empty-search-out.txt "" replace
 
-call :test_replace abcdef.txt abcdef-replace-empty-with-abc.txt "" abc
+call :test_replace abcdef.txt abcdef-replace-abc-with-empty.txt abc ""
 
-call :test_replace_fail fox.txt fox-replace-bird-with-cat.txt hello ""
+call :test_replace empty.txt out.txt search ""
 
 call :test_replace_fail unexisting_file.txt out.txt ma mama
-
-call :test_replace_fail fox.txt fox-replace-dog-with-cat.txt "" ""
 
 echo ALL PASSED
 exit 0

@@ -5,11 +5,7 @@
 
 int ExitWithUsageHint()
 {
-	std::cout << "Usage: replace.exe <inputFile> <outputFile> <search> <replace>\n"
-			  << "Usage: replace.exe\n"
-			  << "Enter search\n"
-			  << "Enter replace\n"
-			  << "Enter replacementText\n";
+	std::cout << "Usage: replace.exe <inputFile> <outputFile> <search> <replace>\n";
 
 	return EXIT_SUCCESS;
 }
@@ -61,7 +57,7 @@ std::string ReplaceString(
 	return result;
 }
 
-void CopyStreamWithReplacement(
+int CopyStreamWithReplacement(
 	std::istream& input,
 	std::ostream& output,
 	const std::string& searchString,
@@ -71,8 +67,19 @@ void CopyStreamWithReplacement(
 
 	while (std::getline(input, line))
 	{
+		if (replacementString.empty() && line.empty() || line.empty())
+		{
+			output.flush();
+
+			return ExitWithError();
+		}
+
 		output << ReplaceString(line, searchString, replacementString) << std::endl;
 	}
+
+	output.flush();
+
+	return EXIT_SUCCESS;
 }
 
 int CopyTextWithReplacement()
@@ -80,16 +87,17 @@ int CopyTextWithReplacement()
 	std::string search, replace;
 	std::getline(std::cin, search);
 	std::getline(std::cin, replace);
-	if (replace.empty())
-	{
-		return ExitWithError(EXIT_SUCCESS);
-	}
 
 	std::vector<std::string> text;
 	std::string line;
 	while (std::getline(std::cin, line))
 	{
 		text.push_back(line);
+	}
+
+	if (replace.empty() && text.empty() || text.empty())
+	{
+		return ExitWithError(EXIT_SUCCESS);
 	}
 
 	for (auto& line : text)
@@ -106,11 +114,6 @@ int CopyFileWithReplacement(
 	const std::string& search,
 	const std::string& replace)
 {
-	if (replace.empty())
-	{
-		return ExitWithError();
-	}
-
 	std::ifstream inputFile;
 	inputFile.open(inputName);
 
@@ -127,11 +130,7 @@ int CopyFileWithReplacement(
 		return ExitWithError();
 	}
 
-	CopyStreamWithReplacement(inputFile, outputFile, search, replace);
-
-	outputFile.flush();
-
-	return EXIT_SUCCESS;
+	return CopyStreamWithReplacement(inputFile, outputFile, search, replace);
 }
 
 int main(int argc, char* argv[])
