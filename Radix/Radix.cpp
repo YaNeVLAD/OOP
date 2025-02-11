@@ -22,17 +22,17 @@ bool WasError(bool wasOverflowError, bool wasInvalidArgumentError)
 	return wasOverflowError || wasInvalidArgumentError;
 }
 
-bool IsOverflow(int value, int radix, int digit)
+bool IsRadixOutOfRange(int radix, bool& wasInvalidArgumentError)
 {
-	return value > (INT_MAX - digit) / radix;
+	if (radix < MIN_RADIX && radix > MAX_RADIX)
+	{
+		wasInvalidArgumentError = true;
+		return true;
+	}
+	return false;
 }
 
-bool IsRadixOutOfRange(int radix)
-{
-	return radix < MIN_RADIX && radix > MAX_RADIX;
-}
-
-int CharToDigit(char ch)
+int CharToDigit(char ch, bool& wasInvalidArgumentError)
 {
 	int digit = 0;
 	char lower = std::tolower(ch);
@@ -46,7 +46,8 @@ int CharToDigit(char ch)
 	}
 	else
 	{
-		throw std::out_of_range("Unknown digit: \'" + std::string(1, ch) + "\'. Digits must be in range from 0 to Z");
+		wasInvalidArgumentError = true;
+		return EXIT_FAILURE;
 	}
 
 	return digit;
@@ -54,11 +55,9 @@ int CharToDigit(char ch)
 
 int StringToInt(const std::string& str, int radix, bool& wasOverflowError, bool& wasInvalidArgumentError)
 {
-	if (IsRadixOutOfRange(radix))
+	if (IsRadixOutOfRange(radix, wasInvalidArgumentError))
 	{
-		wasInvalidArgumentError = true;
 		return EXIT_FAILURE;
-		throw std::invalid_argument("Radix must be in range from 2 to 36");
 	}
 
 	int sign = 1;
@@ -73,20 +72,23 @@ int StringToInt(const std::string& str, int radix, bool& wasOverflowError, bool&
 	int result = 0;
 	for (size_t i = start; i < str.length(); ++i)
 	{
-		int digit = CharToDigit(str[i]);
+		int digit = CharToDigit(str[i], wasInvalidArgumentError);
+
+		if (wasInvalidArgumentError)
+		{
+			return EXIT_FAILURE;
+		}
 
 		if (digit >= radix)
 		{
 			wasInvalidArgumentError = true;
 			return EXIT_FAILURE;
-			throw std::out_of_range("This digit is not allowed for this radix: " + std::string(1, str[i]));
 		}
 
-		if (IsOverflow(result, radix, digit))
+		if (result > (INT_MAX - digit) / radix)
 		{
 			wasOverflowError = true;
 			return EXIT_FAILURE;
-			throw std::overflow_error("Evaluated value is out of range");
 		}
 
 		result = result * radix + digit;
@@ -97,22 +99,18 @@ int StringToInt(const std::string& str, int radix, bool& wasOverflowError, bool&
 
 std::string IntToString(int n, int radix, bool& wasInvalidArgumentError)
 {
-	if (IsRadixOutOfRange(radix))
+	if (IsRadixOutOfRange(radix, wasInvalidArgumentError))
 	{
-		wasInvalidArgumentError = true;
 		return "";
-		throw std::invalid_argument("Radix must be in range from 2 to 36");
 	}
-
-	std::string result;
 
 	if (n == 0)
 	{
 		return "0";
 	}
 
+	std::string result;
 	int number = (n > 0) ? n : -n;
-
 	while (number > 0)
 	{
 		int remain = number % radix;
@@ -148,31 +146,21 @@ int main(int argc, char* argv[])
 		return EXIT_FAILURE;
 	}
 
-	try
+	bool wasInvalidArgumentError = false;
+	bool wasOverflowError = false;
+
+	int source = StringToInt(argv[1], DECIMAL_RADIX, wasOverflowError, wasInvalidArgumentError);
+	int destination = StringToInt(argv[2], DECIMAL_RADIX, wasOverflowError, wasInvalidArgumentError);
+
+	int value = StringToInt(argv[3], source, wasOverflowError, wasInvalidArgumentError);
+	std::string result = IntToString(value, destination, wasInvalidArgumentError);
+
+	if (WasError(wasOverflowError, wasInvalidArgumentError))
 	{
-		bool wasInvalidArgumentError = false;
-		bool wasOverflowError = false;
-
-		int source = StringToInt(argv[1], DECIMAL_RADIX, wasOverflowError, wasInvalidArgumentError);
-		int destination = StringToInt(argv[2], DECIMAL_RADIX, wasOverflowError, wasInvalidArgumentError);
-
-		int value = StringToInt(argv[3], source, wasOverflowError, wasInvalidArgumentError);
-		std::string result = IntToString(value, destination, wasInvalidArgumentError);
-
-		if (WasError(wasOverflowError, wasInvalidArgumentError))
-		{
-			return EXIT_FAILURE;
-		}
-
-		std::cout << result << std::endl;
-	}
-	catch (const std::exception& e)
-	{
-		std::cout << "ERROR\n";
-		std::cout << e.what() << std::endl;
-
 		return EXIT_FAILURE;
 	}
+
+	std::cout << result << std::endl;
 
 	return EXIT_SUCCESS;
 }

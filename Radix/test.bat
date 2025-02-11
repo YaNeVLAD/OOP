@@ -4,13 +4,19 @@ set COUNT=1
 
 ::put tests here
 
+call :test_success 16-10-FF.txt 16 10 FF
+call :test_success 10-10-2147483647.txt 10 10 2147483647
+call :test_success 10-10--2147483647.txt 10 10 -2147483647
+call :test_success 10-10-2147483646.txt 10 10 2147483646
+call :test_success 10-10--2147483646.txt 10 10 -2147483646
+
 call :test_fail 10 1 42
 call :test_fail 37 10 42
 call :test_fail 10 10 400000000
 call :test_fail 10 2 A
 call :test_fail 16 10 !D
-call :test_fail 10 10 2147483647
-::call :test_success 16-10-FF.txt 16 10 FF
+call :test_fail 10 10 2147483648
+call :test_fail 10 10 -2147483648
 
 echo ALL PASSED
 exit 0
