@@ -24,7 +24,7 @@ bool WasError(bool wasOverflowError, bool wasInvalidArgumentError)
 
 bool IsRadixOutOfRange(int radix, bool& wasInvalidArgumentError)
 {
-	if (radix < MIN_RADIX && radix > MAX_RADIX)
+	if (radix < MIN_RADIX || radix > MAX_RADIX)
 	{
 		wasInvalidArgumentError = true;
 		return true;
@@ -151,8 +151,8 @@ int main(int argc, char* argv[])
 
 	int source = StringToInt(argv[1], DECIMAL_RADIX, wasOverflowError, wasInvalidArgumentError);
 	int destination = StringToInt(argv[2], DECIMAL_RADIX, wasOverflowError, wasInvalidArgumentError);
-
 	int value = StringToInt(argv[3], source, wasOverflowError, wasInvalidArgumentError);
+
 	std::string result = IntToString(value, destination, wasInvalidArgumentError);
 
 	if (WasError(wasOverflowError, wasInvalidArgumentError))
