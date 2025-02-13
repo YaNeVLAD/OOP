@@ -16,7 +16,7 @@ call :test_replace empty-search.txt empty-search-out.txt "" replace
 
 call :test_replace abcdef.txt abcdef-replace-abc-with-empty.txt abc ""
 
-call :test_replace empty.txt out.txt search ""
+call :test_replace empty.txt empty-out.txt search ""
 
 call :test_replace_fail unexisting_file.txt out.txt ma mama
 
@@ -42,8 +42,8 @@ goto :eof
 if ERRORLEVEL 1 goto :err
 goto :eof
 
-:test_replace_fail value desired_value search replace
-%PROGRAM% "%DATA%\%1" "%TEMP\%1" %3 %4 > nul
+:test_replace_fail value search replace
+%PROGRAM% "%DATA%\%1" "%TEMP\%1" %2 %3 > nul
 if NOT ERRORLEVEL 1 goto :err
 call :print_success_message
 goto :eof
