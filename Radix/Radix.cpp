@@ -8,31 +8,15 @@ const int DECIMAL_RADIX = 10;
 const int MIN_RADIX = 2;
 const int MAX_RADIX = 36;
 
-bool WasError(bool wasOverflowError, bool wasInvalidArgumentError)
-{
-	if (wasOverflowError)
-	{
-		std::cout << "VALUE OVERFLOW\n";
-	}
-	if (wasInvalidArgumentError)
-	{
-		std::cout << "INVALID ARGUMEMENT\n";
-	}
-
-	return wasOverflowError || wasInvalidArgumentError;
-}
-
-bool IsRadixOutOfRange(int radix, bool& wasInvalidArgumentError)
+void AssertIfRadixOutOfRange(int radix)
 {
 	if (radix < MIN_RADIX || radix > MAX_RADIX)
 	{
-		wasInvalidArgumentError = true;
-		return true;
+		throw std::invalid_argument("Radix must be in range from " + std::to_string(MIN_RADIX) + " to " + std::to_string(MAX_RADIX));
 	}
-	return false;
 }
 
-int CharToDigit(char ch, bool& wasInvalidArgumentError)
+int CharToDigit(char ch)
 {
 	int digit = 0;
 	char lower = std::tolower(ch);
@@ -46,23 +30,25 @@ int CharToDigit(char ch, bool& wasInvalidArgumentError)
 	}
 	else
 	{
-		wasInvalidArgumentError = true;
-		return EXIT_FAILURE;
+		throw std::out_of_range("Unknown digit: \'" + std::string{ ch } + "\'. Digits must be in range from 0 to Z");
 	}
 
 	return digit;
 }
 
-int StringToInt(const std::string& str, int radix, bool& wasOverflowError, bool& wasInvalidArgumentError)
+char DigitToChar(int digit)
 {
-	if (IsRadixOutOfRange(radix, wasInvalidArgumentError))
-	{
-		return EXIT_FAILURE;
-	}
+	return (digit < DECIMAL_DIGITS_AMOUNT)
+		? char(digit + '0')
+		: char(digit - DECIMAL_DIGITS_AMOUNT + 'A');
+}
+
+int StringToInt(const std::string& str, int radix)
+{
+	AssertIfRadixOutOfRange(radix);
 
 	int sign = 1;
 	size_t start = 0;
-
 	if (str[0] == '-')
 	{
 		sign = -1;
@@ -72,23 +58,16 @@ int StringToInt(const std::string& str, int radix, bool& wasOverflowError, bool&
 	int result = 0;
 	for (size_t i = start; i < str.length(); ++i)
 	{
-		int digit = CharToDigit(str[i], wasInvalidArgumentError);
-
-		if (wasInvalidArgumentError)
-		{
-			return EXIT_FAILURE;
-		}
+		int digit = CharToDigit(str[i]);
 
 		if (digit >= radix)
 		{
-			wasInvalidArgumentError = true;
-			return EXIT_FAILURE;
+			throw std::out_of_range("This digit is not allowed for this radix: " + std::string{ str[i] });
 		}
 
 		if (result > (INT_MAX - digit) / radix)
 		{
-			wasOverflowError = true;
-			return EXIT_FAILURE;
+			throw std::overflow_error("Evaluated value is out of range");
 		}
 
 		result = result * radix + digit;
@@ -97,12 +76,9 @@ int StringToInt(const std::string& str, int radix, bool& wasOverflowError, bool&
 	return result * sign;
 }
 
-std::string IntToString(int n, int radix, bool& wasInvalidArgumentError)
+std::string IntToString(int n, int radix)
 {
-	if (IsRadixOutOfRange(radix, wasInvalidArgumentError))
-	{
-		return "";
-	}
+	AssertIfRadixOutOfRange(radix);
 
 	if (n == 0)
 	{
@@ -115,14 +91,7 @@ std::string IntToString(int n, int radix, bool& wasInvalidArgumentError)
 	{
 		int remain = number % radix;
 
-		if (remain < DECIMAL_DIGITS_AMOUNT)
-		{
-			result += std::to_string(remain);
-		}
-		else
-		{
-			result += char(remain - DECIMAL_DIGITS_AMOUNT + 'A');
-		}
+		result += DigitToChar(remain);
 
 		number /= radix;
 	}
@@ -146,21 +115,23 @@ int main(int argc, char* argv[])
 		return EXIT_FAILURE;
 	}
 
-	bool wasInvalidArgumentError = false;
-	bool wasOverflowError = false;
-
-	int source = StringToInt(argv[1], DECIMAL_RADIX, wasOverflowError, wasInvalidArgumentError);
-	int destination = StringToInt(argv[2], DECIMAL_RADIX, wasOverflowError, wasInvalidArgumentError);
-	int value = StringToInt(argv[3], source, wasOverflowError, wasInvalidArgumentError);
-
-	std::string result = IntToString(value, destination, wasInvalidArgumentError);
-
-	if (WasError(wasOverflowError, wasInvalidArgumentError))
+	try
 	{
+		int source = StringToInt(argv[1], DECIMAL_RADIX);
+		int destination = StringToInt(argv[2], DECIMAL_RADIX);
+		int value = StringToInt(argv[3], source);
+
+		std::string result = IntToString(value, destination);
+
+		std::cout << result << std::endl;
+
+		return EXIT_SUCCESS;
+	}
+	catch (const std::exception& ex)
+	{
+		std::cout << "ERROR\n";
+		std::cout << ex.what() << std::endl;
+
 		return EXIT_FAILURE;
 	}
-
-	std::cout << result << std::endl;
-
-	return EXIT_SUCCESS;
 }

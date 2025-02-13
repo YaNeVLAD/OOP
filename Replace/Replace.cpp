@@ -64,16 +64,8 @@ int CopyStreamWithReplacement(
 	const std::string& replacementString)
 {
 	std::string line;
-
 	while (std::getline(input, line))
 	{
-		if (replacementString.empty() && line.empty() || line.empty())
-		{
-			output.flush();
-
-			return ExitWithError();
-		}
-
 		output << ReplaceString(line, searchString, replacementString) << std::endl;
 	}
 
@@ -85,8 +77,10 @@ int CopyStreamWithReplacement(
 int CopyTextWithReplacement()
 {
 	std::string search, replace;
-	std::getline(std::cin, search);
-	std::getline(std::cin, replace);
+	if (!std::getline(std::cin, search) || !std::getline(std::cin, replace))
+	{
+		return ExitWithError(EXIT_SUCCESS);
+	}
 
 	std::vector<std::string> text;
 	std::string line;
@@ -95,7 +89,7 @@ int CopyTextWithReplacement()
 		text.push_back(line);
 	}
 
-	if (replace.empty() && text.empty() || text.empty())
+	if (text.empty())
 	{
 		return ExitWithError(EXIT_SUCCESS);
 	}

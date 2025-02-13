@@ -25,9 +25,12 @@
     <None Include="test.bat" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="test-data\abcdef-replace-abc-with-empty.txt" />
     <Text Include="test-data\abcdef.txt" />
+    <Text Include="test-data\empty-out.txt" />
     <Text Include="test-data\empty-search-out.txt" />
     <Text Include="test-data\empty-search.txt" />
+    <Text Include="test-data\empty.txt" />
     <Text Include="test-data\fox-replace-bird-with-cat.txt" />
     <Text Include="test-data\fox-replace-dog-with-cat.txt" />
     <Text Include="test-data\fox.txt" />
