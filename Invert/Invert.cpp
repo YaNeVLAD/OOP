@@ -25,31 +25,16 @@ double Determinant2x2(const Matrix3x3d& matrix)
 
 double AlgebraicComplement(const Matrix3x3d& matrix, size_t excludedRow, size_t excludedCol)
 {
-	Matrix3x3d submatrix{};
+	// Will work only for 3x3 matrix
+	size_t n = matrix.size();
 
-	size_t subRow = 0;
-	for (size_t i = 0; i < matrix.size(); ++i)
-	{
-		if (i == excludedRow)
-		{
-			continue;
-		}
+	size_t row1 = (excludedRow + 1) % n;
+	size_t row2 = (excludedRow + 2) % n;
 
-		size_t subCol = 0;
-		for (size_t j = 0; j < matrix.size(); ++j)
-		{
-			if (j == excludedCol)
-			{
-				continue;
-			}
+	size_t col1 = (excludedCol + 1) % n;
+	size_t col2 = (excludedCol + 2) % n;
 
-			submatrix[subRow][subCol] = matrix[i][j];
-			subCol++;
-		}
-		subRow++;
-	}
-
-	double minor = Determinant2x2(submatrix);
+	double minor = matrix[row1][col1] * matrix[row2][col2] - matrix[row1][col2] * matrix[row2][col1];
 
 	return std::pow(-1, excludedRow + excludedCol) * minor;
 }
