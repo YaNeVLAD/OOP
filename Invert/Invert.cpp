@@ -2,8 +2,10 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <sstream>
 #include <string>
 
+const std::string INVALID_MATRIX_ERROR = "Invalid matrix";
 const std::string USAGE_HINT = "Usage: invert.exe <input_file>";
 
 using Matrix3x3d = std::array<std::array<double, 3>, 3>;
@@ -18,21 +20,16 @@ double Determinant3x3(const Matrix3x3d& matrix)
 		- (matrix[1][2] * matrix[2][1] * matrix[0][0]);
 }
 
-double Determinant2x2(const Matrix3x3d& matrix)
-{
-	return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
-}
-
-double Minor3x3(const Matrix3x3d& matrix, size_t excludedRow, size_t excludedCol)
+double MinorDeterminant2x2(const Matrix3x3d& matrix, size_t excludedRow, size_t excludedCol)
 {
 	// Will work only for 3x3 matrix
 	size_t n = matrix.size();
 
-	const size_t row1 = (excludedRow + 1) % n;
-	const size_t row2 = (excludedRow + 2) % n;
+	size_t row1 = (excludedRow + 1) % n;
+	size_t row2 = (excludedRow + 2) % n;
 
-	const size_t col1 = (excludedCol + 1) % n;
-	const size_t col2 = (excludedCol + 2) % n;
+	size_t col1 = (excludedCol + 1) % n;
+	size_t col2 = (excludedCol + 2) % n;
 
 	return (matrix[row1][col1] * matrix[row2][col2])
 		- (matrix[row1][col2] * matrix[row2][col1]);
@@ -40,7 +37,7 @@ double Minor3x3(const Matrix3x3d& matrix, size_t excludedRow, size_t excludedCol
 
 double AlgebraicComplement(const Matrix3x3d& matrix, size_t excludedRow, size_t excludedCol)
 {
-	double minor = Minor3x3(matrix, excludedRow, excludedCol);
+	double minor = MinorDeterminant2x2(matrix, excludedRow, excludedCol);
 
 	return std::pow(-1, excludedRow + excludedCol) * minor;
 }
@@ -61,12 +58,58 @@ Matrix3x3d MultiplyMatrixByNumber(const Matrix3x3d& matrix, double number)
 	return multiplied;
 }
 
+Matrix3x3d CreateAdjugatedMatrix(const Matrix3x3d& matrix)
+{
+	Matrix3x3d adjugate{};
+
+	size_t n = matrix.size();
+	for (size_t i = 0; i < n; ++i)
+	{
+		for (size_t j = 0; j < n; ++j)
+		{
+			adjugate[i][j] = AlgebraicComplement(matrix, i, j);
+		}
+	}
+
+	return adjugate;
+}
+
+Matrix3x3d CreateTransposedMatrix(const Matrix3x3d& matrix)
+{
+	Matrix3x3d transpose{};
+
+	size_t n = matrix.size();
+	for (size_t i = 0; i < n; ++i)
+	{
+		for (size_t j = 0; j < n; ++j)
+		{
+			transpose[i][j] = matrix[j][i];
+		}
+	}
+
+	return transpose;
+}
+
+Matrix3x3d CreateInvertedMatrix(const Matrix3x3d& matrix)
+{
+	auto determinant = Determinant3x3(matrix);
+	if (determinant == 0)
+	{
+		throw std::runtime_error("Non-invertable");
+	}
+
+	auto transposed = CreateTransposedMatrix(matrix);
+	auto adjugated = CreateAdjugatedMatrix(transposed);
+
+	return MultiplyMatrixByNumber(adjugated, 1 / determinant);
+}
+
 double ReadNumber(std::istream& input)
 {
 	double number;
 	if (!(input >> number))
 	{
-		throw std::invalid_argument("Invalid matrix");
+		throw std::invalid_argument(INVALID_MATRIX_ERROR);
 	}
 
 	return number;
@@ -75,11 +118,24 @@ double ReadNumber(std::istream& input)
 Matrix3x3d ReadMatrix(std::istream& input)
 {
 	Matrix3x3d matrix{};
+
 	for (auto& row : matrix)
 	{
-		for (auto& value : row)
+		std::string line;
+		if (!std::getline(input, line))
 		{
-			value = ReadNumber(input);
+			throw std::runtime_error(INVALID_MATRIX_ERROR);
+		}
+
+		std::istringstream iss(line);
+		for (double& value : row)
+		{
+			value = ReadNumber(iss);
+		}
+
+		if (iss.peek() != EOF)
+		{
+			throw std::runtime_error(INVALID_MATRIX_ERROR);
 		}
 	}
 
@@ -98,59 +154,13 @@ void PrintMatrix(const Matrix3x3d& matrix)
 	}
 }
 
-Matrix3x3d CreateAdjugateMatrix(const Matrix3x3d& matrix)
-{
-	Matrix3x3d adjugate{};
-
-	size_t n = matrix.size();
-	for (size_t i = 0; i < n; ++i)
-	{
-		for (size_t j = 0; j < n; ++j)
-		{
-			adjugate[i][j] = AlgebraicComplement(matrix, i, j);
-		}
-	}
-
-	return adjugate;
-}
-
-Matrix3x3d CreateTransposeMatrix(const Matrix3x3d& matrix)
-{
-	Matrix3x3d transpose{};
-
-	size_t n = matrix.size();
-	for (size_t i = 0; i < n; ++i)
-	{
-		for (size_t j = 0; j < n; ++j)
-		{
-			transpose[i][j] = matrix[j][i];
-		}
-	}
-
-	return transpose;
-}
-
-Matrix3x3d CreateInvertMatrix(const Matrix3x3d& matrix)
-{
-	auto determinant = Determinant3x3(matrix);
-	if (determinant == 0)
-	{
-		throw std::runtime_error("Non-invertable");
-	}
-
-	auto transposed = CreateTransposeMatrix(matrix);
-	auto adjugated = CreateAdjugateMatrix(transposed);
-
-	return MultiplyMatrixByNumber(adjugated, 1 / determinant);
-}
-
 int HandleConsoleInput()
 {
 	auto matrix = ReadMatrix(std::cin);
 
-	auto inverted = CreateInvertMatrix(matrix);
+	auto inverted = CreateInvertedMatrix(matrix);
 
-	PrintMatrix(matrix);
+	PrintMatrix(inverted);
 
 	return EXIT_SUCCESS;
 }
@@ -165,7 +175,7 @@ int HandleFileInput(const std::string& name)
 
 	auto matrix = ReadMatrix(input);
 
-	auto inverted = CreateInvertMatrix(matrix);
+	auto inverted = CreateInvertedMatrix(matrix);
 
 	PrintMatrix(inverted);
 
