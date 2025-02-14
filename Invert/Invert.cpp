@@ -23,29 +23,36 @@ double Determinant2x2(const Matrix3x3d& matrix)
 	return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
 }
 
-double AlgebraicComplement(const Matrix3x3d& matrix, size_t excludedRow, size_t excludedCol)
+double Minor3x3(const Matrix3x3d& matrix, size_t excludedRow, size_t excludedCol)
 {
 	// Will work only for 3x3 matrix
 	size_t n = matrix.size();
 
-	size_t row1 = (excludedRow + 1) % n;
-	size_t row2 = (excludedRow + 2) % n;
+	const size_t row1 = (excludedRow + 1) % n;
+	const size_t row2 = (excludedRow + 2) % n;
 
-	size_t col1 = (excludedCol + 1) % n;
-	size_t col2 = (excludedCol + 2) % n;
+	const size_t col1 = (excludedCol + 1) % n;
+	const size_t col2 = (excludedCol + 2) % n;
 
-	double minor = matrix[row1][col1] * matrix[row2][col2] - matrix[row1][col2] * matrix[row2][col1];
+	return (matrix[row1][col1] * matrix[row2][col2])
+		- (matrix[row1][col2] * matrix[row2][col1]);
+}
+
+double AlgebraicComplement(const Matrix3x3d& matrix, size_t excludedRow, size_t excludedCol)
+{
+	double minor = Minor3x3(matrix, excludedRow, excludedCol);
 
 	return std::pow(-1, excludedRow + excludedCol) * minor;
 }
 
 Matrix3x3d MultiplyMatrixByNumber(const Matrix3x3d& matrix, double number)
 {
-
 	Matrix3x3d multiplied{};
-	for (size_t i = 0; i < matrix.size(); ++i)
+
+	size_t n = matrix.size();
+	for (size_t i = 0; i < n; ++i)
 	{
-		for (size_t j = 0; j < matrix.size(); ++j)
+		for (size_t j = 0; j < n; ++j)
 		{
 			multiplied[i][j] = (matrix[i][j] * number);
 		}
@@ -91,35 +98,39 @@ void PrintMatrix(const Matrix3x3d& matrix)
 	}
 }
 
-Matrix3x3d CreateAdjugateMatrix(const Matrix3x3d& transposed)
+Matrix3x3d CreateAdjugateMatrix(const Matrix3x3d& matrix)
 {
-	Matrix3x3d matrix{};
-	for (size_t i = 0; i < transposed.size(); ++i)
+	Matrix3x3d adjugate{};
+
+	size_t n = matrix.size();
+	for (size_t i = 0; i < n; ++i)
 	{
-		for (size_t j = 0; j < transposed.size(); ++j)
+		for (size_t j = 0; j < n; ++j)
 		{
-			matrix[i][j] = AlgebraicComplement(transposed, i, j);
+			adjugate[i][j] = AlgebraicComplement(matrix, i, j);
 		}
 	}
 
-	return matrix;
+	return adjugate;
 }
 
-Matrix3x3d TransposeMatrix(const Matrix3x3d& matrix)
+Matrix3x3d CreateTransposeMatrix(const Matrix3x3d& matrix)
 {
-	Matrix3x3d transposed{};
-	for (size_t i = 0; i < matrix.size(); ++i)
+	Matrix3x3d transpose{};
+
+	size_t n = matrix.size();
+	for (size_t i = 0; i < n; ++i)
 	{
-		for (size_t j = 0; j < matrix[0].size(); ++j)
+		for (size_t j = 0; j < n; ++j)
 		{
-			transposed[i][j] = matrix[j][i];
+			transpose[i][j] = matrix[j][i];
 		}
 	}
 
-	return transposed;
+	return transpose;
 }
 
-Matrix3x3d InvertMatrix(const Matrix3x3d& matrix)
+Matrix3x3d CreateInvertMatrix(const Matrix3x3d& matrix)
 {
 	auto determinant = Determinant3x3(matrix);
 	if (determinant == 0)
@@ -127,12 +138,19 @@ Matrix3x3d InvertMatrix(const Matrix3x3d& matrix)
 		throw std::runtime_error("Non-invertable");
 	}
 
-	return MultiplyMatrixByNumber(CreateAdjugateMatrix(TransposeMatrix(matrix)), 1 / determinant);
+	auto transposed = CreateTransposeMatrix(matrix);
+	auto adjugated = CreateAdjugateMatrix(transposed);
+
+	return MultiplyMatrixByNumber(adjugated, 1 / determinant);
 }
 
 int HandleConsoleInput()
 {
-	PrintMatrix(InvertMatrix(ReadMatrix(std::cin)));
+	auto matrix = ReadMatrix(std::cin);
+
+	auto inverted = CreateInvertMatrix(matrix);
+
+	PrintMatrix(matrix);
 
 	return EXIT_SUCCESS;
 }
@@ -145,7 +163,11 @@ int HandleFileInput(const std::string& name)
 		throw std::runtime_error("Failed to open file" + name);
 	}
 
-	PrintMatrix(InvertMatrix(ReadMatrix(input)));
+	auto matrix = ReadMatrix(input);
+
+	auto inverted = CreateInvertMatrix(matrix);
+
+	PrintMatrix(inverted);
 
 	return EXIT_SUCCESS;
 }
