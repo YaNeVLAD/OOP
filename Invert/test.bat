@@ -17,6 +17,7 @@ call :test_fail invalid-wrong-rows.txt
 call :test_fail invalid-non-invertable.txt
 call :test_fail invalid-unexisting-file.txt
 call :test_fail invertable.txt wrong-arg
+call :test_fail invalid-overflow.txt
 
 echo ALL PASSED
 exit 0

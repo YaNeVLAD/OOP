@@ -34,6 +34,14 @@ void AssertIsMatrixInvertable(double determinant)
 	}
 }
 
+void AssertIsNumberInRange(double number)
+{
+	if (::isnan(number))
+	{
+		throw std::overflow_error("Evaluated number is out of range.");
+	}
+}
+
 Matrix3x3d CreateSubmatrix(const Matrix3x3d& matrix, size_t excludedRow, size_t excludedCol)
 {
 	Matrix3x3d submatrix{};
@@ -82,7 +90,11 @@ Matrix3x3d MultiplyMatrixByNumber(const Matrix3x3d& matrix, double number)
 	{
 		for (size_t j = 0; j < n; ++j)
 		{
-			multiplied[i][j] = (matrix[i][j] * number);
+			double value = matrix[i][j] * number;
+
+			AssertIsNumberInRange(value);
+
+			multiplied[i][j] = value;
 		}
 	}
 
