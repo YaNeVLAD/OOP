@@ -42,9 +42,28 @@ void AssertIsNumberInRange(double number)
 	}
 }
 
-Matrix3x3d CreateSubmatrix(const Matrix3x3d& matrix, size_t excludedRow, size_t excludedCol)
+void AssertIsRowEmpty(std::istream& stream)
 {
-	Matrix3x3d submatrix{};
+	if (stream.peek() != EOF)
+	{
+		throw std::runtime_error(INVALID_MATRIX_ERROR);
+	}
+}
+
+std::ifstream TryOpenInputFile(const std::string& name)
+{
+	std::ifstream input(name);
+	if (!input.is_open())
+	{
+		throw std::runtime_error("Failed to open file " + name);
+	}
+
+	return input;
+}
+
+Matrix3x3d CreateMinor(const Matrix3x3d& matrix, size_t excludedRow, size_t excludedCol)
+{
+	Matrix3x3d minor{};
 
 	size_t subRow = 0;
 	size_t n = matrix.size();
@@ -63,22 +82,22 @@ Matrix3x3d CreateSubmatrix(const Matrix3x3d& matrix, size_t excludedRow, size_t 
 				continue;
 			}
 
-			submatrix[subRow][subCol] = matrix[i][j];
+			minor[subRow][subCol] = matrix[i][j];
 			subCol++;
 		}
 		subRow++;
 	}
 
-	return submatrix;
+	return minor;
 }
 
 double AlgebraicComplement(const Matrix3x3d& matrix, size_t excludedRow, size_t excludedCol)
 {
-	auto submatrix = CreateSubmatrix(matrix, excludedRow, excludedCol);
+	auto submatrix = CreateMinor(matrix, excludedRow, excludedCol);
 
-	double minor = Determinant2x2(submatrix);
+	auto minorDeterminant = Determinant2x2(submatrix);
 
-	return std::pow(-1, excludedRow + excludedCol) * minor;
+	return std::pow(-1, excludedRow + excludedCol) * minorDeterminant;
 }
 
 Matrix3x3d MultiplyMatrixByNumber(const Matrix3x3d& matrix, double number)
@@ -145,7 +164,7 @@ Matrix3x3d CreateInvertedMatrix(const Matrix3x3d& matrix)
 	return MultiplyMatrixByNumber(adjugated, 1 / determinant);
 }
 
-double ReadNumber(std::istream& input)
+double TryReadNumber(std::istream& input)
 {
 	double number;
 	if (!(input >> number))
@@ -156,28 +175,32 @@ double ReadNumber(std::istream& input)
 	return number;
 }
 
+std::string TryReadLine(std::istream& input)
+{
+	std::string line;
+	if (!std::getline(input, line))
+	{
+		throw std::runtime_error(INVALID_MATRIX_ERROR);
+	}
+
+	return line;
+}
+
 Matrix3x3d ReadMatrix(std::istream& input)
 {
 	Matrix3x3d matrix{};
 
 	for (auto& row : matrix)
 	{
-		std::string line;
-		if (!std::getline(input, line))
-		{
-			throw std::runtime_error(INVALID_MATRIX_ERROR);
-		}
+		auto line = TryReadLine(input);
 
 		std::istringstream iss(line);
 		for (double& value : row)
 		{
-			value = ReadNumber(iss);
+			value = TryReadNumber(iss);
 		}
 
-		if (iss.peek() != EOF)
-		{
-			throw std::runtime_error(INVALID_MATRIX_ERROR);
-		}
+		AssertIsRowEmpty(iss);
 	}
 
 	return matrix;
@@ -208,11 +231,7 @@ int HandleConsoleInput()
 
 int HandleFileInput(const std::string& name)
 {
-	std::ifstream input(name);
-	if (!input.is_open())
-	{
-		throw std::runtime_error("Failed to open file " + name);
-	}
+	auto input = TryOpenInputFile(name);
 
 	auto matrix = ReadMatrix(input);
 
