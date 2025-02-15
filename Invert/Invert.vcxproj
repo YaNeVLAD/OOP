@@ -149,6 +149,18 @@
   <ItemGroup>
     <None Include="test.bat" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="test-data\invalid-NaN.txt" />
+    <Text Include="test-data\invalid-non-invertable.txt" />
+    <Text Include="test-data\invalid-overflow.txt" />
+    <Text Include="test-data\invalid-wrong-cols.txt" />
+    <Text Include="test-data\invalid-wrong-rows.txt" />
+    <Text Include="test-data\invertable-out.txt" />
+    <Text Include="test-data\invertable-real-out.txt" />
+    <Text Include="test-data\invertable-real.txt" />
+    <Text Include="test-data\invertable.txt" />
+    <Text Include="test-data\usage-hint.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
