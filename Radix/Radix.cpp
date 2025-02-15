@@ -8,7 +8,7 @@ const int DECIMAL_RADIX = 10;
 const int MIN_RADIX = 2;
 const int MAX_RADIX = 36;
 
-void AssertIfRadixOutOfRange(int radix)
+void AssertIsRadixInRange(int radix)
 {
 	if (radix < MIN_RADIX || radix > MAX_RADIX)
 	{
@@ -45,7 +45,7 @@ char DigitToChar(int digit)
 
 int StringToInt(const std::string& str, int radix)
 {
-	AssertIfRadixOutOfRange(radix);
+	AssertIsRadixInRange(radix);
 
 	int sign = 1;
 	size_t start = 0;
@@ -78,7 +78,7 @@ int StringToInt(const std::string& str, int radix)
 
 std::string IntToString(int n, int radix)
 {
-	AssertIfRadixOutOfRange(radix);
+	AssertIsRadixInRange(radix);
 
 	if (n == 0)
 	{
