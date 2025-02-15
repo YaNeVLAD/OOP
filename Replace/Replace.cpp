@@ -94,9 +94,9 @@ int CopyTextWithReplacement()
 		return ExitWithError(EXIT_SUCCESS);
 	}
 
-	for (auto& line : text)
+	for (auto& textLine : text)
 	{
-		std::cout << ReplaceString(line, search, replace) << std::endl;
+		std::cout << ReplaceString(textLine, search, replace) << std::endl;
 	}
 
 	return EXIT_SUCCESS;
@@ -145,6 +145,4 @@ int main(int argc, char* argv[])
 	{
 		return CopyFileWithReplacement(argv[1], argv[2], argv[3], argv[4]);
 	}
-
-	return EXIT_SUCCESS;
 }

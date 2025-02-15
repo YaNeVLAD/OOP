@@ -19,7 +19,7 @@ void AssertIfRadixOutOfRange(int radix)
 int CharToDigit(char ch)
 {
 	int digit = 0;
-	char lower = std::tolower(ch);
+	int lower = std::tolower(ch);
 	if (lower >= '0' && lower <= '9')
 	{
 		digit = lower - '0';
