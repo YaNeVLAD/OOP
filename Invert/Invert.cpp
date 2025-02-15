@@ -10,7 +10,7 @@ const std::string USAGE_HINT = "Usage: invert.exe <input_file>";
 
 using Matrix3x3d = std::array<std::array<double, 3>, 3>;
 
-double Determinant3x3(const Matrix3x3d& matrix)
+double GetDeterminant3x3(const Matrix3x3d& matrix)
 {
 	return (matrix[0][0] * matrix[1][1] * matrix[2][2])
 		+ (matrix[1][0] * matrix[2][1] * matrix[0][2])
@@ -20,7 +20,7 @@ double Determinant3x3(const Matrix3x3d& matrix)
 		- (matrix[1][2] * matrix[2][1] * matrix[0][0]);
 }
 
-double Determinant2x2(const Matrix3x3d& matrix)
+double GetDeterminant2x2(const Matrix3x3d& matrix)
 {
 	return (matrix[0][0] * matrix[1][1])
 		- (matrix[0][1] * matrix[1][0]);
@@ -91,11 +91,11 @@ Matrix3x3d CreateMinor(const Matrix3x3d& matrix, size_t excludedRow, size_t excl
 	return minor;
 }
 
-double AlgebraicComplement(const Matrix3x3d& matrix, size_t excludedRow, size_t excludedCol)
+double GetAlgebraicComplement(const Matrix3x3d& matrix, size_t excludedRow, size_t excludedCol)
 {
 	auto minor = CreateMinor(matrix, excludedRow, excludedCol);
 
-	auto determinant = Determinant2x2(minor);
+	auto determinant = GetDeterminant2x2(minor);
 
 	return std::pow(-1, excludedRow + excludedCol) * determinant;
 }
@@ -129,7 +129,7 @@ Matrix3x3d CreateAdjugatedMatrix(const Matrix3x3d& matrix)
 	{
 		for (size_t j = 0; j < n; ++j)
 		{
-			adjugate[i][j] = AlgebraicComplement(matrix, i, j);
+			adjugate[i][j] = GetAlgebraicComplement(matrix, i, j);
 		}
 	}
 
@@ -154,7 +154,7 @@ Matrix3x3d CreateTransposedMatrix(const Matrix3x3d& matrix)
 
 Matrix3x3d CreateInvertedMatrix(const Matrix3x3d& matrix)
 {
-	auto determinant = Determinant3x3(matrix);
+	auto determinant = GetDeterminant3x3(matrix);
 
 	AssertIsMatrixInvertable(determinant);
 
