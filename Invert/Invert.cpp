@@ -243,7 +243,7 @@ int main(int argc, char* argv[])
 		{
 			return HandleConsoleInput();
 		}
-		else if (argc == 2 && argv[1])
+		else if (argc == 2)
 		{
 			return HandleArgument(argv[1]);
 		}
