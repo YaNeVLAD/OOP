@@ -27,7 +27,4 @@
       <Filter>test-data</Filter>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="in.txt" />
-  </ItemGroup>
 </Project>

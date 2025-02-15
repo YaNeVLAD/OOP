@@ -20,24 +20,55 @@ double Determinant3x3(const Matrix3x3d& matrix)
 		- (matrix[1][2] * matrix[2][1] * matrix[0][0]);
 }
 
-double MinorDeterminant2x2(const Matrix3x3d& matrix, size_t excludedRow, size_t excludedCol)
+double Determinant2x2(const Matrix3x3d& matrix)
 {
-	// Will work only for 3x3 matrix
+	return (matrix[0][0] * matrix[1][1])
+		- (matrix[0][1] * matrix[1][0]);
+}
+
+void AssertIsMatrixInvertable(double determinant)
+{
+	if (determinant == 0)
+	{
+		throw std::runtime_error("Non-invertable");
+	}
+}
+
+Matrix3x3d CreateSubmatrix(const Matrix3x3d& matrix, size_t excludedRow, size_t excludedCol)
+{
+	Matrix3x3d submatrix{};
+
+	size_t subRow = 0;
 	size_t n = matrix.size();
+	for (size_t i = 0; i < n; ++i)
+	{
+		if (i == excludedRow)
+		{
+			continue;
+		}
 
-	size_t row1 = (excludedRow + 1) % n;
-	size_t row2 = (excludedRow + 2) % n;
+		size_t subCol = 0;
+		for (size_t j = 0; j < n; ++j)
+		{
+			if (j == excludedCol)
+			{
+				continue;
+			}
 
-	size_t col1 = (excludedCol + 1) % n;
-	size_t col2 = (excludedCol + 2) % n;
+			submatrix[subRow][subCol] = matrix[i][j];
+			subCol++;
+		}
+		subRow++;
+	}
 
-	return (matrix[row1][col1] * matrix[row2][col2])
-		- (matrix[row1][col2] * matrix[row2][col1]);
+	return submatrix;
 }
 
 double AlgebraicComplement(const Matrix3x3d& matrix, size_t excludedRow, size_t excludedCol)
 {
-	double minor = MinorDeterminant2x2(matrix, excludedRow, excludedCol);
+	auto submatrix = CreateSubmatrix(matrix, excludedRow, excludedCol);
+
+	double minor = Determinant2x2(submatrix);
 
 	return std::pow(-1, excludedRow + excludedCol) * minor;
 }
@@ -93,10 +124,8 @@ Matrix3x3d CreateTransposedMatrix(const Matrix3x3d& matrix)
 Matrix3x3d CreateInvertedMatrix(const Matrix3x3d& matrix)
 {
 	auto determinant = Determinant3x3(matrix);
-	if (determinant == 0)
-	{
-		throw std::runtime_error("Non-invertable");
-	}
+
+	AssertIsMatrixInvertable(determinant);
 
 	auto transposed = CreateTransposedMatrix(matrix);
 	auto adjugated = CreateAdjugatedMatrix(transposed);
@@ -148,7 +177,7 @@ void PrintMatrix(const Matrix3x3d& matrix)
 	{
 		for (auto& value : row)
 		{
-			std::cout << std::fixed << std::setprecision(3) << value << " ";
+			std::cout << std::fixed << std::setprecision(3) << value << "\t";
 		}
 		std::cout << std::endl;
 	}
@@ -170,7 +199,7 @@ int HandleFileInput(const std::string& name)
 	std::ifstream input(name);
 	if (!input.is_open())
 	{
-		throw std::runtime_error("Failed to open file" + name);
+		throw std::runtime_error("Failed to open file " + name);
 	}
 
 	auto matrix = ReadMatrix(input);
