@@ -93,11 +93,11 @@ Matrix3x3d CreateMinor(const Matrix3x3d& matrix, size_t excludedRow, size_t excl
 
 double AlgebraicComplement(const Matrix3x3d& matrix, size_t excludedRow, size_t excludedCol)
 {
-	auto submatrix = CreateMinor(matrix, excludedRow, excludedCol);
+	auto minor = CreateMinor(matrix, excludedRow, excludedCol);
 
-	auto minorDeterminant = Determinant2x2(submatrix);
+	auto determinant = Determinant2x2(minor);
 
-	return std::pow(-1, excludedRow + excludedCol) * minorDeterminant;
+	return std::pow(-1, excludedRow + excludedCol) * determinant;
 }
 
 Matrix3x3d MultiplyMatrixByNumber(const Matrix3x3d& matrix, double number)
