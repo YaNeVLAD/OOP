@@ -23,6 +23,44 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <Text Include="test-data\empty.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="test-data\empty-out.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="test-data\invalid-char.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="test-data\one-start.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="test-data\one-start-out.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="test-data\start-only.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="test-data\start-only-out.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="test-data\two-fill-areas.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="test-data\two-fill-areas-out.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="test-data\two-starts.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="test-data\two-starts-out.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="test-data\usage-hint.txt">
+      <Filter>test-data</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="test.bat">
       <Filter>Исходные файлы</Filter>
     </None>

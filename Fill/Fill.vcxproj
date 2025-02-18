@@ -84,7 +84,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>test.bat $(TargetPath)</Command>
+      <Command>test.bat "$(TargetPath)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -104,7 +104,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>test.bat $(TargetPath)</Command>
+      <Command>test.bat "$(TargetPath)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -120,7 +120,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>test.bat $(TargetPath)</Command>
+      <Command>test.bat "$(TargetPath)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -140,7 +140,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>test.bat $(TargetPath)</Command>
+      <Command>test.bat "$(TargetPath)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -148,6 +148,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="test.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="test-data\empty-out.txt" />
+    <Text Include="test-data\empty.txt" />
+    <Text Include="test-data\invalid-char.txt" />
+    <Text Include="test-data\one-start-out.txt" />
+    <Text Include="test-data\one-start.txt" />
+    <Text Include="test-data\start-only-out.txt" />
+    <Text Include="test-data\start-only.txt" />
+    <Text Include="test-data\two-fill-areas-out.txt" />
+    <Text Include="test-data\two-fill-areas.txt" />
+    <Text Include="test-data\two-starts-out.txt" />
+    <Text Include="test-data\two-starts.txt" />
+    <Text Include="test-data\usage-hint.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

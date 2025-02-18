@@ -23,11 +23,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="test.bat">
-      <Filter>test-data</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="test-data\empty-search.txt">
       <Filter>test-data</Filter>
     </Text>
@@ -67,5 +62,10 @@
     <Text Include="test-data\empty-out.txt">
       <Filter>test-data</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="test.bat">
+      <Filter>Исходные файлы</Filter>
+    </None>
   </ItemGroup>
 </Project>

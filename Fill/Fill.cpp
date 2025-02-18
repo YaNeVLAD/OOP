@@ -29,7 +29,7 @@ struct Point
 // Necessary for yandex contest autotests
 int GetErrorCodeBasedOnArgsCount(int argc)
 {
-	if (argc == 3)
+	if (argc > 1)
 	{
 		return EXIT_FAILURE;
 	}

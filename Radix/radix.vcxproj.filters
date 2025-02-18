@@ -23,11 +23,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="test.bat">
-      <Filter>test-data</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="test-data\10-10-2147483646.txt">
       <Filter>test-data</Filter>
     </Text>
@@ -43,5 +38,10 @@
     <Text Include="test-data\16-10-FF.txt">
       <Filter>test-data</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="test.bat">
+      <Filter>Исходные файлы</Filter>
+    </None>
   </ItemGroup>
 </Project>
