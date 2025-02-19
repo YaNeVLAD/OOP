@@ -59,6 +59,12 @@
     <Text Include="test-data\usage-hint.txt">
       <Filter>test-data</Filter>
     </Text>
+    <Text Include="test-data\101-chars-wall.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="test-data\101-chars-wall-out.txt">
+      <Filter>test-data</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="test.bat">

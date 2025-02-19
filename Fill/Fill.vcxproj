@@ -150,6 +150,8 @@
     <None Include="test.bat" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="test-data\101-chars-wall-out.txt" />
+    <Text Include="test-data\101-chars-wall.txt" />
     <Text Include="test-data\empty-out.txt" />
     <Text Include="test-data\empty.txt" />
     <Text Include="test-data\invalid-char.txt" />

@@ -13,6 +13,7 @@ call :test_success empty.txt empty-out.txt
 call :test_success one-start.txt one-start-out.txt
 call :test_success two-starts.txt two-starts-out.txt
 call :test_success two-fill-areas.txt two-fill-areas-out.txt
+call :test_success 101-chars-wall.txt 101-chars-wall-out.txt
 
 call :test_wrong_flag
 call :test_fail empty.txt some_arg
