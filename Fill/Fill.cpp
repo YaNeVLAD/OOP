@@ -96,27 +96,27 @@ void PrintMap(const MapChar& map, std::ostream& output)
 	}
 }
 
-bool IsCellFillable(MapChar& filled, MapBool& visited, size_t x, size_t y)
+bool IsCellFillable(MapChar& map, MapBool& visited, size_t x, size_t y)
 {
-	return x < MAX_MAP_SIZE && y < MAX_MAP_SIZE && filled[x][y] != BORDER_CHAR && !visited[x][y];
+	return x < MAX_MAP_SIZE && y < MAX_MAP_SIZE && map[x][y] != BORDER_CHAR && !visited[x][y];
 }
 
-void TryEnqueueCell(MapChar& filled, MapBool& visited, std::queue<Point>& queue, size_t x, size_t y)
+void TryEnqueueCell(MapChar& map, MapBool& visited, std::queue<Point>& queue, size_t x, size_t y)
 {
-	if (IsCellFillable(filled, visited, x, y))
+	if (IsCellFillable(map, visited, x, y))
 	{
-		filled[x][y] = FILL_CHAR;
+		map[x][y] = FILL_CHAR;
 		queue.push({ x, y });
 		visited[x][y] = true;
 	}
 }
 
-void FillAdjacentCells(MapChar& filled, MapBool& visited, std::queue<Point>& queue, size_t x, size_t y)
+void FillAdjacentCells(MapChar& map, MapBool& visited, std::queue<Point>& queue, size_t x, size_t y)
 {
-	TryEnqueueCell(filled, visited, queue, x + 1, y);
-	TryEnqueueCell(filled, visited, queue, x - 1, y);
-	TryEnqueueCell(filled, visited, queue, x, y + 1);
-	TryEnqueueCell(filled, visited, queue, x, y - 1);
+	TryEnqueueCell(map, visited, queue, x + 1, y);
+	TryEnqueueCell(map, visited, queue, x - 1, y);
+	TryEnqueueCell(map, visited, queue, x, y + 1);
+	TryEnqueueCell(map, visited, queue, x, y - 1);
 }
 
 std::vector<Point> GetStartPoints(const MapChar& map)
@@ -137,26 +137,6 @@ std::vector<Point> GetStartPoints(const MapChar& map)
 	}
 
 	return result;
-}
-
-MapChar FillEmptyChars(const MapChar& map)
-{
-	MapChar filled(map);
-
-	for (auto& line : filled)
-	{
-		for (char& ch : line)
-		{
-			if (ch != EMPTY_CHAR)
-			{
-				continue;
-			}
-
-			ch = DIVIDER_CHAR;
-		}
-	}
-
-	return filled;
 }
 
 std::queue<Point> InitQueue(const MapChar& map, MapBool& visited, std::vector<Point> points)

@@ -63,7 +63,7 @@ call :print_passed_message
 goto :eof
 
 :test_success input output
-%PROGRAM% "%DATA%\%1" "%TEMP%\%1" > "test.txt"
+%PROGRAM% "%DATA%\%1" "%TEMP%\%1" > nul
 if ERRORLEVEL 1 goto :err
 call :assert_files_equals "%TEMP%\%1" "%DATA%\%2"
 call :print_passed_message
