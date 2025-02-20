@@ -20,7 +20,7 @@ const char EMPTY_CHAR = '\0';
 using MapChar = std::array<std::array<char, MAX_MAP_SIZE>, MAX_MAP_SIZE>;
 using MapBool = std::array<std::array<bool, MAX_MAP_SIZE>, MAX_MAP_SIZE>;
 
-struct Point
+struct Cell
 {
 	size_t x = 0;
 	size_t y = 0;
@@ -101,27 +101,36 @@ bool IsCellFillable(MapChar& map, MapBool& visited, size_t x, size_t y)
 	return x < MAX_MAP_SIZE && y < MAX_MAP_SIZE && map[x][y] != BORDER_CHAR && !visited[x][y];
 }
 
-void TryEnqueueCell(MapChar& map, MapBool& visited, std::queue<Point>& queue, size_t x, size_t y)
+void TryEnqueueCell(MapChar& map, MapBool& visited, std::queue<Cell>& queue, Cell cell)
 {
+	auto& [x, y] = cell;
 	if (IsCellFillable(map, visited, x, y))
 	{
 		map[x][y] = FILL_CHAR;
-		queue.push({ x, y });
+		queue.push(cell);
 		visited[x][y] = true;
 	}
 }
 
-void FillAdjacentCells(MapChar& map, MapBool& visited, std::queue<Point>& queue, size_t x, size_t y)
+void FillAdjacentCells(MapChar& map, MapBool& visited, std::queue<Cell>& queue)
 {
-	TryEnqueueCell(map, visited, queue, x + 1, y);
-	TryEnqueueCell(map, visited, queue, x - 1, y);
-	TryEnqueueCell(map, visited, queue, x, y + 1);
-	TryEnqueueCell(map, visited, queue, x, y - 1);
+	auto& [x, y] = queue.front();
+	queue.pop();
+
+	Cell left = { x - 1, y };
+	Cell right = { x + 1, y };
+	Cell top = { x, y - 1 };
+	Cell bottom = { x, y + 1 };
+
+	TryEnqueueCell(map, visited, queue, top);
+	TryEnqueueCell(map, visited, queue, bottom);
+	TryEnqueueCell(map, visited, queue, left);
+	TryEnqueueCell(map, visited, queue, right);
 }
 
-std::vector<Point> GetStartPoints(const MapChar& map)
+std::vector<Cell> GetStartPoints(const MapChar& map)
 {
-	std::vector<Point> result;
+	std::vector<Cell> result;
 
 	for (size_t x = 0; x < MAX_MAP_SIZE; ++x)
 	{
@@ -139,9 +148,9 @@ std::vector<Point> GetStartPoints(const MapChar& map)
 	return result;
 }
 
-std::queue<Point> InitQueue(const MapChar& map, MapBool& visited, std::vector<Point> points)
+std::queue<Cell> InitQueue(const MapChar& map, MapBool& visited, std::vector<Cell> points)
 {
-	std::queue<Point> queue;
+	std::queue<Cell> queue;
 	for (auto& point : points)
 	{
 		queue.push(point);
@@ -163,10 +172,7 @@ MapChar FillMap(const MapChar& map)
 
 	while (!queue.empty())
 	{
-		auto& [x, y] = queue.front();
-		queue.pop();
-
-		FillAdjacentCells(*filled, *visited, queue, x, y);
+		FillAdjacentCells(*filled, *visited, queue);
 	}
 
 	return *filled;
