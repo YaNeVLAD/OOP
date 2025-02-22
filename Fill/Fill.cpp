@@ -17,8 +17,7 @@ const char FILL_CHAR = '.';
 const char DIVIDER_CHAR = ' ';
 const char EMPTY_CHAR = '\0';
 
-using MapChar = std::array<std::array<char, MAX_MAP_SIZE>, MAX_MAP_SIZE>;
-using MapBool = std::array<std::array<bool, MAX_MAP_SIZE>, MAX_MAP_SIZE>;
+using Map = std::array<std::array<char, MAX_MAP_SIZE>, MAX_MAP_SIZE>;
 
 struct Cell
 {
@@ -56,11 +55,11 @@ void AssertIsLineValid(std::array<char, MAX_MAP_SIZE> line)
 	}
 }
 
-MapChar CreateMap(std::istream& input)
+std::unique_ptr<Map> CreateMap(std::istream& input)
 {
-	MapChar map{};
+	auto map = std::make_unique<Map>();
 
-	for (auto& line : map)
+	for (auto& line : *map)
 	{
 		if (!input.getline(line.data(), line.size() + 1))
 		{
@@ -86,7 +85,7 @@ void PrintLine(std::ostream& output, std::array<char, MAX_MAP_SIZE> line)
 	}
 }
 
-void PrintMap(const MapChar& map, std::ostream& output)
+void PrintMap(const Map& map, std::ostream& output)
 {
 	for (auto& line : map)
 	{
@@ -96,23 +95,30 @@ void PrintMap(const MapChar& map, std::ostream& output)
 	}
 }
 
-bool IsCellFillable(MapChar& map, MapBool& visited, size_t x, size_t y)
+bool IsCellFillable(const Map& map, size_t x, size_t y)
 {
-	return x < MAX_MAP_SIZE && y < MAX_MAP_SIZE && map[x][y] != BORDER_CHAR && !visited[x][y];
+	if (x >= MAX_MAP_SIZE || y >= MAX_MAP_SIZE)
+	{
+		return false;
+	}
+
+	bool isEmpty = map[x][y] == EMPTY_CHAR;
+	bool isDivider = map[x][y] == DIVIDER_CHAR;
+
+	return isEmpty || isDivider;
 }
 
-void TryEnqueueCell(MapChar& map, MapBool& visited, std::queue<Cell>& queue, Cell cell)
+void TryEnqueueCell(Map& map, std::queue<Cell>& queue, const Cell& cell)
 {
 	auto& [x, y] = cell;
-	if (IsCellFillable(map, visited, x, y))
+	if (IsCellFillable(map, x, y))
 	{
 		map[x][y] = FILL_CHAR;
 		queue.push(cell);
-		visited[x][y] = true;
 	}
 }
 
-void FillAdjacentCells(MapChar& map, MapBool& visited, std::queue<Cell>& queue)
+void FillAdjacentCells(Map& map, std::queue<Cell>& queue)
 {
 	auto& [x, y] = queue.front();
 	queue.pop();
@@ -122,13 +128,13 @@ void FillAdjacentCells(MapChar& map, MapBool& visited, std::queue<Cell>& queue)
 	Cell top = { x, y - 1 };
 	Cell bottom = { x, y + 1 };
 
-	TryEnqueueCell(map, visited, queue, top);
-	TryEnqueueCell(map, visited, queue, bottom);
-	TryEnqueueCell(map, visited, queue, left);
-	TryEnqueueCell(map, visited, queue, right);
+	TryEnqueueCell(map, queue, top);
+	TryEnqueueCell(map, queue, bottom);
+	TryEnqueueCell(map, queue, left);
+	TryEnqueueCell(map, queue, right);
 }
 
-std::vector<Cell> GetStartPoints(const MapChar& map)
+std::vector<Cell> GetStartPoints(const Map& map)
 {
 	std::vector<Cell> result;
 
@@ -148,43 +154,36 @@ std::vector<Cell> GetStartPoints(const MapChar& map)
 	return result;
 }
 
-std::queue<Cell> InitQueue(const MapChar& map, MapBool& visited, std::vector<Cell> points)
+std::queue<Cell> InitQueue(const std::vector<Cell>& points)
 {
 	std::queue<Cell> queue;
 	for (auto& point : points)
 	{
 		queue.push(point);
-		visited[point.x][point.y] = true;
 	}
 
 	return queue;
 }
 
-MapChar FillMap(const MapChar& map)
+void FillMap(Map& map)
 {
-	auto filled = std::make_unique<MapChar>(map);
+	auto startPoints = GetStartPoints(map);
 
-	auto startPoints = GetStartPoints(*filled);
-
-	auto visited = std::make_unique<MapBool>();
-
-	auto queue = InitQueue(*filled, *visited, startPoints);
+	auto queue = InitQueue(startPoints);
 
 	while (!queue.empty())
 	{
-		FillAdjacentCells(*filled, *visited, queue);
+		FillAdjacentCells(map, queue);
 	}
-
-	return *filled;
 }
 
 int HandleConsoleInput()
 {
-	auto map = std::make_unique<MapChar>(CreateMap(std::cin));
+	auto map = CreateMap(std::cin);
 
-	auto filled = FillMap(*map);
+	FillMap(*map);
 
-	PrintMap(filled, std::cout);
+	PrintMap(*map, std::cout);
 
 	return EXIT_SUCCESS;
 }
@@ -198,11 +197,11 @@ int HandleFileInput(const std::string& inputName, const std::string& outputName)
 		throw std::runtime_error("Failed to open file.");
 	}
 
-	auto map = std::make_unique<MapChar>(CreateMap(input));
+	auto map = CreateMap(input);
 
-	auto filled = FillMap(*map);
+	FillMap(*map);
 
-	PrintMap(filled, output);
+	PrintMap(*map, output);
 
 	return EXIT_SUCCESS;
 }
