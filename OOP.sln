@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "invert", "Invert\Invert.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fill", "Fill\Fill.vcxproj", "{16DD2F8A-444A-478F-A2FE-E88AFB163807}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "crypt", "Crypt\Crypt.vcxproj", "{ED102C85-B4DD-4781-8AA0-FC8C8150DE5A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -51,8 +53,19 @@ Global
 		{16DD2F8A-444A-478F-A2FE-E88AFB163807}.Release|x64.Build.0 = Release|x64
 		{16DD2F8A-444A-478F-A2FE-E88AFB163807}.Release|x86.ActiveCfg = Release|Win32
 		{16DD2F8A-444A-478F-A2FE-E88AFB163807}.Release|x86.Build.0 = Release|Win32
+		{ED102C85-B4DD-4781-8AA0-FC8C8150DE5A}.Debug|x64.ActiveCfg = Debug|x64
+		{ED102C85-B4DD-4781-8AA0-FC8C8150DE5A}.Debug|x64.Build.0 = Debug|x64
+		{ED102C85-B4DD-4781-8AA0-FC8C8150DE5A}.Debug|x86.ActiveCfg = Debug|Win32
+		{ED102C85-B4DD-4781-8AA0-FC8C8150DE5A}.Debug|x86.Build.0 = Debug|Win32
+		{ED102C85-B4DD-4781-8AA0-FC8C8150DE5A}.Release|x64.ActiveCfg = Release|x64
+		{ED102C85-B4DD-4781-8AA0-FC8C8150DE5A}.Release|x64.Build.0 = Release|x64
+		{ED102C85-B4DD-4781-8AA0-FC8C8150DE5A}.Release|x86.ActiveCfg = Release|Win32
+		{ED102C85-B4DD-4781-8AA0-FC8C8150DE5A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5C5DB896-2D2C-4E19-91B5-CDEBB3D8C724}
 	EndGlobalSection
 EndGlobal
