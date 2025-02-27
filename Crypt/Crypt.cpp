@@ -1,14 +1,13 @@
 ﻿#include <assert.h>
-#include <cstdint>
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
 #include <string>
 
-uint8_t MIN_KEY = 0;
-uint8_t MAX_KEY = 255;
+int MIN_KEY = 0;
+int MAX_KEY = 255;
 
-uint8_t MAX_POS = 7;
+unsigned char MAX_POS = 7;
 
 const std::string ENCRYPT_MODE_STR = "crypt";
 const std::string DECRYPT_MODE_STR = "decrypt";
@@ -25,7 +24,7 @@ struct Args
 	CryptMode mode = CryptMode::ENCRYPT;
 	std::ifstream input;
 	std::ofstream output;
-	uint8_t key = 0;
+	unsigned char key = 0;
 };
 
 void AssertIsBitPositionInRange(uint8_t position)
@@ -48,7 +47,7 @@ void AssertIsKeyInRange(int key)
 	}
 }
 
-uint8_t GetKeyFromString(const std::string& str)
+unsigned char GetKeyFromString(const std::string& str)
 {
 	try
 	{
@@ -56,7 +55,7 @@ uint8_t GetKeyFromString(const std::string& str)
 
 		AssertIsKeyInRange(key);
 
-		return static_cast<uint8_t>(key);
+		return static_cast<unsigned char>(key);
 	}
 	catch (const std::exception&)
 	{
@@ -75,7 +74,7 @@ CryptMode GetCryptModeFromString(const std::string& str)
 		return CryptMode::DECRYPT;
 	}
 
-	throw std::runtime_error("Wrong program mode: " + str + "Must be "
+	throw std::runtime_error("Wrong program mode: " + str + " Must be "
 		+ ENCRYPT_MODE_STR
 		+ " or "
 		+ DECRYPT_MODE_STR);
@@ -92,9 +91,9 @@ Args ParseArgs(int argc, char* argv[])
 
 	args.mode = GetCryptModeFromString(argv[1]);
 
-	args.input.open(argv[2]);
+	args.input.open(argv[2], std::ios::binary);
 
-	args.output.open(argv[3]);
+	args.output.open(argv[3], std::ios::binary);
 
 	if (!args.input.is_open() || !args.output.is_open())
 	{
@@ -106,13 +105,13 @@ Args ParseArgs(int argc, char* argv[])
 	return args;
 }
 
-void SwapBit(uint8_t& byte, uint8_t startPos, uint8_t destPos)
+void SwapBit(char& byte, uint8_t startPos, uint8_t destPos)
 {
 	AssertIsBitPositionInRange(startPos);
 	AssertIsBitPositionInRange(destPos);
 
-	uint8_t startBit = (byte >> startPos) & 1;
-	uint8_t destBit = (byte >> destPos) & 1;
+	char startBit = (byte >> startPos) & 1;
+	char destBit = (byte >> destPos) & 1;
 
 	byte &= ~(1 << startPos);
 	byte |= (destBit << startPos);
@@ -121,20 +120,48 @@ void SwapBit(uint8_t& byte, uint8_t startPos, uint8_t destPos)
 	byte |= (startBit << destPos);
 }
 
-void ProcessEncrypt(const Args& args)
+void ProcessEncrypt(Args& args)
 {
-	uint8_t value = 0b10101010;
-	std::cout << "Start value " << static_cast<int>(value) << std::endl;
-	assert(value == 170);
+	auto& [mode, input, output, key] = args;
 
-	SwapBit(value, 0, 7);
+	char ch;
+	while (input.get(ch))
+	{
+		ch ^= key;
 
-	std::cout << "Swapped value " << static_cast<int>(value) << std::endl;
-	assert(value == 43);
+		SwapBit(ch, 7, 5);
+		SwapBit(ch, 6, 1);
+		SwapBit(ch, 5, 0);
+		SwapBit(ch, 4, 7);
+		SwapBit(ch, 3, 6);
+		SwapBit(ch, 2, 4);
+		SwapBit(ch, 1, 3);
+		SwapBit(ch, 0, 2);
+
+		output << ch;
+	}
 }
 
-void ProcessDecrypt(const Args& args)
+void ProcessDecrypt(Args& args)
 {
+	auto& [mode, input, output, key] = args;
+
+	char ch;
+	while (input >> ch)
+	{
+		SwapBit(ch, 0, 2);
+		SwapBit(ch, 1, 3);
+		SwapBit(ch, 2, 4);
+		SwapBit(ch, 3, 6);
+		SwapBit(ch, 4, 7);
+		SwapBit(ch, 5, 0);
+		SwapBit(ch, 6, 1);
+		SwapBit(ch, 7, 5);
+
+		ch ^= key;
+
+		output << ch;
+	}
 }
 
 int main(int argc, char* argv[])
