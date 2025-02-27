@@ -13,10 +13,32 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="test-data">
+      <UniqueIdentifier>{f465bdc0-0d1b-4978-8010-51f74baf1b33}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Crypt.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="test.bat">
+      <Filter>Исходные файлы</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="test-data\empty.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="test-data\empty-lines.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="test-data\multi-lines.txt">
+      <Filter>test-data</Filter>
+    </Text>
+    <Text Include="test-data\simple.txt">
+      <Filter>test-data</Filter>
+    </Text>
   </ItemGroup>
 </Project>
