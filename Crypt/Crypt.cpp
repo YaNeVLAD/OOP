@@ -120,47 +120,57 @@ void SwapBit(char& byte, uint8_t startPos, uint8_t destPos)
 	byte |= (startBit << destPos);
 }
 
-void ProcessEncrypt(Args& args)
+char GetEncryptedChar(const char ch, unsigned char key)
+{
+	char value = ch;
+
+	value ^= key;
+
+	SwapBit(value, 7, 5);
+	SwapBit(value, 6, 1);
+	SwapBit(value, 5, 0);
+	SwapBit(value, 4, 7);
+	SwapBit(value, 3, 6);
+	SwapBit(value, 2, 4);
+	SwapBit(value, 1, 3);
+	SwapBit(value, 0, 2);
+
+	return value;
+}
+
+char GetDecryptedChar(const char ch, unsigned char key)
+{
+	char value = ch;
+
+	SwapBit(value, 0, 2);
+	SwapBit(value, 1, 3);
+	SwapBit(value, 2, 4);
+	SwapBit(value, 3, 6);
+	SwapBit(value, 4, 7);
+	SwapBit(value, 5, 0);
+	SwapBit(value, 6, 1);
+	SwapBit(value, 7, 5);
+
+	value ^= key;
+
+	return value;
+}
+
+void Process(Args& args)
 {
 	auto& [mode, input, output, key] = args;
 
 	char ch;
 	while (input.get(ch))
 	{
-		ch ^= key;
-
-		SwapBit(ch, 7, 5);
-		SwapBit(ch, 6, 1);
-		SwapBit(ch, 5, 0);
-		SwapBit(ch, 4, 7);
-		SwapBit(ch, 3, 6);
-		SwapBit(ch, 2, 4);
-		SwapBit(ch, 1, 3);
-		SwapBit(ch, 0, 2);
-
-		output << ch;
-	}
-}
-
-void ProcessDecrypt(Args& args)
-{
-	auto& [mode, input, output, key] = args;
-
-	char ch;
-	while (input >> ch)
-	{
-		SwapBit(ch, 0, 2);
-		SwapBit(ch, 1, 3);
-		SwapBit(ch, 2, 4);
-		SwapBit(ch, 3, 6);
-		SwapBit(ch, 4, 7);
-		SwapBit(ch, 5, 0);
-		SwapBit(ch, 6, 1);
-		SwapBit(ch, 7, 5);
-
-		ch ^= key;
-
-		output << ch;
+		if (mode == CryptMode::ENCRYPT)
+		{
+			output << GetEncryptedChar(ch, key);
+		}
+		else
+		{
+			output << GetDecryptedChar(ch, key);
+		}
 	}
 }
 
@@ -170,14 +180,7 @@ int main(int argc, char* argv[])
 	{
 		auto args = ParseArgs(argc, argv);
 
-		if (args.mode == CryptMode::ENCRYPT)
-		{
-			ProcessEncrypt(args);
-		}
-		else
-		{
-			ProcessDecrypt(args);
-		}
+		Process(args);
 
 		return EXIT_SUCCESS;
 	}
