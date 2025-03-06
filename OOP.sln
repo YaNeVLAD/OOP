@@ -15,6 +15,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "crypt", "Crypt\Crypt.vcxpro
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vector", "Vector\Vector.vcxproj", "{8715BA4E-50D2-4C9B-976A-5C393B9631CE}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "html_decode", "HtmlDecode\String.vcxproj", "{0201C51F-2544-4E59-AC12-B3B25E072D78}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -71,6 +73,14 @@ Global
 		{8715BA4E-50D2-4C9B-976A-5C393B9631CE}.Release|x64.Build.0 = Release|x64
 		{8715BA4E-50D2-4C9B-976A-5C393B9631CE}.Release|x86.ActiveCfg = Release|Win32
 		{8715BA4E-50D2-4C9B-976A-5C393B9631CE}.Release|x86.Build.0 = Release|Win32
+		{0201C51F-2544-4E59-AC12-B3B25E072D78}.Debug|x64.ActiveCfg = Debug|x64
+		{0201C51F-2544-4E59-AC12-B3B25E072D78}.Debug|x64.Build.0 = Debug|x64
+		{0201C51F-2544-4E59-AC12-B3B25E072D78}.Debug|x86.ActiveCfg = Debug|Win32
+		{0201C51F-2544-4E59-AC12-B3B25E072D78}.Debug|x86.Build.0 = Debug|Win32
+		{0201C51F-2544-4E59-AC12-B3B25E072D78}.Release|x64.ActiveCfg = Release|x64
+		{0201C51F-2544-4E59-AC12-B3B25E072D78}.Release|x64.Build.0 = Release|x64
+		{0201C51F-2544-4E59-AC12-B3B25E072D78}.Release|x86.ActiveCfg = Release|Win32
+		{0201C51F-2544-4E59-AC12-B3B25E072D78}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

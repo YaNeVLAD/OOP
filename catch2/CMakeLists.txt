@@ -15,6 +15,9 @@ add_executable(catch2
     "catch2.h" 
     ${CMAKE_SOURCE_DIR}/Vector/VectorProcessor.cpp
     ${CMAKE_SOURCE_DIR}/Vector/VectorProcessor.h
+    "test_html_decode.cpp"
+    ${CMAKE_SOURCE_DIR}/html_decode/HtmlDecode.cpp
+    ${CMAKE_SOURCE_DIR}/html_decode/HtmlDecode.h
 )
 
 set_target_properties(catch2 PROPERTIES CXX_STANDARD 20)
