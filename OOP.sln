@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fill", "Fill\Fill.vcxproj",
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "crypt", "Crypt\Crypt.vcxproj", "{ED102C85-B4DD-4781-8AA0-FC8C8150DE5A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vector", "Vector\Vector.vcxproj", "{8715BA4E-50D2-4C9B-976A-5C393B9631CE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -61,6 +63,14 @@ Global
 		{ED102C85-B4DD-4781-8AA0-FC8C8150DE5A}.Release|x64.Build.0 = Release|x64
 		{ED102C85-B4DD-4781-8AA0-FC8C8150DE5A}.Release|x86.ActiveCfg = Release|Win32
 		{ED102C85-B4DD-4781-8AA0-FC8C8150DE5A}.Release|x86.Build.0 = Release|Win32
+		{8715BA4E-50D2-4C9B-976A-5C393B9631CE}.Debug|x64.ActiveCfg = Debug|x64
+		{8715BA4E-50D2-4C9B-976A-5C393B9631CE}.Debug|x64.Build.0 = Debug|x64
+		{8715BA4E-50D2-4C9B-976A-5C393B9631CE}.Debug|x86.ActiveCfg = Debug|Win32
+		{8715BA4E-50D2-4C9B-976A-5C393B9631CE}.Debug|x86.Build.0 = Debug|Win32
+		{8715BA4E-50D2-4C9B-976A-5C393B9631CE}.Release|x64.ActiveCfg = Release|x64
+		{8715BA4E-50D2-4C9B-976A-5C393B9631CE}.Release|x64.Build.0 = Release|x64
+		{8715BA4E-50D2-4C9B-976A-5C393B9631CE}.Release|x86.ActiveCfg = Release|Win32
+		{8715BA4E-50D2-4C9B-976A-5C393B9631CE}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
