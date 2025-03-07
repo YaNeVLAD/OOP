@@ -51,9 +51,6 @@ static void ProcessSequence(std::string& htmlToken, std::string& result)
 	htmlToken.clear();
 }
 
-/**
- *  @throws std::runtime_error - when given wrong html encoded sequence
- */
 std::string HtmlDecode(const std::string& html)
 {
 	std::string result;
