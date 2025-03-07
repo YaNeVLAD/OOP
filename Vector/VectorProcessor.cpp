@@ -6,6 +6,9 @@
 #include <stdexcept>
 #include <string>
 
+/**
+ * @throws std::invalid_argument - when stream contains NaN element
+ */
 std::vector<double> ReadNumbers(std::istream& input)
 {
 	std::vector<double> result;
