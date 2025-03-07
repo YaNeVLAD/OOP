@@ -18,6 +18,9 @@ add_executable(catch2
     "test_html_decode.cpp"
     ${CMAKE_SOURCE_DIR}/HtmlDecode/HtmlDecode.cpp
     ${CMAKE_SOURCE_DIR}/HtmlDecode/HtmlDecode.h
+    "test_generate_prime_numbers_set.cpp"
+    ${CMAKE_SOURCE_DIR}/GeneratePrimeNumbersSet/GeneratePrimeNumbersSet.cpp
+    ${CMAKE_SOURCE_DIR}/GeneratePrimeNumbersSet/GeneratePrimeNumbersSet.h
 )
 
 set_target_properties(catch2 PROPERTIES CXX_STANDARD 20)
