@@ -30,3 +30,10 @@ TEST_CASE("Function correctly decodes all defined encoded sequences", "[HtmlDeco
 
 	REQUIRE(HtmlDecode(testStr) == resStr);
 }
+
+TEST_CASE("Function correctly parse non-finished sequence as ordinary string", "[HtmlDecode]")
+{
+	std::string testStr = "&unfinished_sequence";
+
+	REQUIRE(HtmlDecode(testStr) == testStr);
+}
