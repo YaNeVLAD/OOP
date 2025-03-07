@@ -9,19 +9,34 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(Catch2)
 
-add_executable(catch2 
-    catch2.cpp 
-    "catch2.h" 
-    "test_vector.cpp" 
+set(CATCH_SOURCES
+    catch2.cpp
+    catch2.h
+)
+
+add_executable(test_vector
+    ${CATCH_SOURCES}
+    "test_vector.cpp"
     ${CMAKE_SOURCE_DIR}/Vector/VectorProcessor.cpp
     ${CMAKE_SOURCE_DIR}/Vector/VectorProcessor.h
+)
+
+add_executable(test_html_decode
+    ${CATCH_SOURCES}
     "test_html_decode.cpp"
     ${CMAKE_SOURCE_DIR}/HtmlDecode/HtmlDecode.cpp
     ${CMAKE_SOURCE_DIR}/HtmlDecode/HtmlDecode.h
-    "test_generate_prime_numbers_set.cpp"
+    
+)
+
+add_executable(test_generate_primes
+    ${CATCH_SOURCES}
+    "test_generate_primes.cpp"
     ${CMAKE_SOURCE_DIR}/GeneratePrimeNumbersSet/GeneratePrimeNumbersSet.cpp
     ${CMAKE_SOURCE_DIR}/GeneratePrimeNumbersSet/GeneratePrimeNumbersSet.h
 )
 
-set_target_properties(catch2 PROPERTIES CXX_STANDARD 20)
-target_link_libraries(catch2 PRIVATE Catch2::Catch2)
+set_target_properties(test_vector test_html_decode test_generate_primes PROPERTIES CXX_STANDARD 20)
+target_link_libraries(test_vector PRIVATE Catch2::Catch2)
+target_link_libraries(test_html_decode PRIVATE Catch2::Catch2)
+target_link_libraries(test_generate_primes PRIVATE Catch2::Catch2)
