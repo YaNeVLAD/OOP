@@ -19,6 +19,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "html_decode", "HtmlDecode\S
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "generate_prime_numbers_set", "GeneratePrimeNumbersSet\GeneratePrimeNumbersSet.vcxproj", "{C2A40B68-EF5D-4D66-B285-322E1E185150}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dictionary_map", "DictionaryMap\DictionaryMap.vcxproj", "{DE533415-724D-469F-B02D-04A7DB402007}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -91,6 +93,14 @@ Global
 		{C2A40B68-EF5D-4D66-B285-322E1E185150}.Release|x64.Build.0 = Release|x64
 		{C2A40B68-EF5D-4D66-B285-322E1E185150}.Release|x86.ActiveCfg = Release|Win32
 		{C2A40B68-EF5D-4D66-B285-322E1E185150}.Release|x86.Build.0 = Release|Win32
+		{DE533415-724D-469F-B02D-04A7DB402007}.Debug|x64.ActiveCfg = Debug|x64
+		{DE533415-724D-469F-B02D-04A7DB402007}.Debug|x64.Build.0 = Debug|x64
+		{DE533415-724D-469F-B02D-04A7DB402007}.Debug|x86.ActiveCfg = Debug|Win32
+		{DE533415-724D-469F-B02D-04A7DB402007}.Debug|x86.Build.0 = Debug|Win32
+		{DE533415-724D-469F-B02D-04A7DB402007}.Release|x64.ActiveCfg = Release|x64
+		{DE533415-724D-469F-B02D-04A7DB402007}.Release|x64.Build.0 = Release|x64
+		{DE533415-724D-469F-B02D-04A7DB402007}.Release|x86.ActiveCfg = Release|Win32
+		{DE533415-724D-469F-B02D-04A7DB402007}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

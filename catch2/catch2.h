@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../DictionaryMap/DictionaryMap.h"
 #include "../GeneratePrimeNumbersSet/GeneratePrimeNumbersSet.h"
 #include "../HtmlDecode/HtmlDecode.h"
 #include "../Vector/VectorProcessor.h"

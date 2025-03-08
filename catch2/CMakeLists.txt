@@ -36,7 +36,15 @@ add_executable(test_generate_primes
     ${CMAKE_SOURCE_DIR}/GeneratePrimeNumbersSet/GeneratePrimeNumbersSet.h
 )
 
-set_target_properties(test_vector test_html_decode test_generate_primes PROPERTIES CXX_STANDARD 20)
+add_executable(test_dictionary
+    ${CATCH_SOURCES}
+    "test_dictionary.cpp"
+    ${CMAKE_SOURCE_DIR}/DictionaryMap/DictionaryMap.cpp
+    ${CMAKE_SOURCE_DIR}/DictionaryMap/DictionaryMap.h
+)
+
+set_target_properties(test_vector test_html_decode test_generate_primes test_dictionary PROPERTIES CXX_STANDARD 20)
 target_link_libraries(test_vector PRIVATE Catch2::Catch2)
 target_link_libraries(test_html_decode PRIVATE Catch2::Catch2)
 target_link_libraries(test_generate_primes PRIVATE Catch2::Catch2)
+target_link_libraries(test_dictionary PRIVATE Catch2::Catch2)
