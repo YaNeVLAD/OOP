@@ -5,7 +5,7 @@
 #include <vector>
 
 /**
- * @throws std::invalid_argument - when stream contains NaN element
+ * \throws std::invalid_argument - when input contains invalid number
  */
 std::vector<double> ReadNumbers(std::istream& input);
 

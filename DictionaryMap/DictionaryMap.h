@@ -9,14 +9,15 @@
 namespace Dictionary
 {
 using DictionaryType = std::map<std::string, std::set<std::string>>;
+using Entry = std::pair<std::string, std::string>;
 
 /**
- *	@brief Expected line format: <word> -- <translation>
+ *	\brief Input line format: <word> -- <translation>
  */
 DictionaryType CreateFromStream(std::istream& input);
 
 /**
- *	@brief Output line format: <word> -- <translation>
+ *	\brief Output line format: <word> -- <translation>
  */
 void WriteToStream(std::ostream& output, const DictionaryType& dictionary);
 

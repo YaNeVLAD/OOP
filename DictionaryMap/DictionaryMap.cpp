@@ -6,8 +6,6 @@ using namespace std::literals;
 
 std::string DIVIDER = " -- ";
 
-using Quote = std::pair<std::string, std::string>;
-
 static std::string ToLower(const std::string& str)
 {
 	std::string result(str);
@@ -42,21 +40,21 @@ Dictionary::DictionaryType Dictionary::CreateFromStream(std::istream& input)
 
 void Dictionary::WriteToStream(std::ostream& output, const DictionaryType& dictionary)
 {
-	std::set<Quote> printedQuotes;
+	std::set<Entry> entries;
 
 	for (const auto& [word, translations] : dictionary)
 	{
 		for (const auto& translation : translations)
 		{
-			Quote wordToTranslation = { word, translation };
-			Quote translationToWord = { translation, word };
+			Entry wordToTranslation = { word, translation };
+			Entry translationToWord = { translation, word };
 
-			if (printedQuotes.contains(wordToTranslation) || printedQuotes.contains(translationToWord))
+			if (entries.contains(wordToTranslation) || entries.contains(translationToWord))
 			{
 				continue;
 			}
 
-			printedQuotes.insert(wordToTranslation);
+			entries.insert(wordToTranslation);
 			output << word << DIVIDER << translation << std::endl;
 		}
 	}
@@ -64,28 +62,21 @@ void Dictionary::WriteToStream(std::ostream& output, const DictionaryType& dicti
 
 void Dictionary::AddToDictionary(DictionaryType& dictionary, const std::string& word, const std::string& translation)
 {
-	dictionary[ToLower(word)].insert(translation);
+	dictionary[word].insert(translation);
+	dictionary[translation].insert(word);
 }
 
 std::set<std::string> Dictionary::FindTranslations(const DictionaryType& dictionary, const std::string& word)
 {
 	std::set<std::string> result;
 
-	auto it = dictionary.find(ToLower(word));
-	if (it != dictionary.end())
-	{
-		result.insert(it->second.begin(), it->second.end());
-	}
+	std::string lowerWord = ToLower(word);
 
 	for (const auto& [key, translations] : dictionary)
 	{
-		for (const auto& translation : translations)
+		if (ToLower(key) == lowerWord)
 		{
-			if (ToLower(translation) != ToLower(word))
-			{
-				continue;
-			}
-			result.insert(key);
+			result.insert(translations.begin(), translations.end());
 		}
 	}
 
