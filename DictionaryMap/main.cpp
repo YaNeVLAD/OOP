@@ -80,7 +80,7 @@ void HandleNewWord(const std::string& word, Dictionary::DictionaryType& dict, bo
 	if (std::getline(std::cin, translation) && !translation.empty())
 	{
 		hasChanged = true;
-		Dictionary::AddToDictionary(dict, word, translation);
+		Dictionary::AddToDictionary(dict, { word, translation });
 		Print(Phrase::WORD_ADDED, word, translation);
 	}
 	else

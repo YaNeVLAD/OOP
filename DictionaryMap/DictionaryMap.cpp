@@ -30,7 +30,7 @@ Dictionary::DictionaryType Dictionary::CreateFromStream(std::istream& input)
 		std::string word = line.substr(0, delimiterPos);
 		std::string translation = line.substr(delimiterPos + DIVIDER.size());
 
-		AddToDictionary(result, word, translation);
+		AddToDictionary(result, { word, translation });
 	}
 
 	return result;
@@ -58,8 +58,9 @@ void Dictionary::WriteToStream(std::ostream& output, const DictionaryType& dicti
 	}
 }
 
-void Dictionary::AddToDictionary(DictionaryType& dictionary, const std::string& word, const std::string& translation)
+void Dictionary::AddToDictionary(DictionaryType& dictionary, const Entry& entry)
 {
+	auto& [word, translation] = entry;
 	dictionary[word].insert(translation);
 	dictionary[translation].insert(word);
 }

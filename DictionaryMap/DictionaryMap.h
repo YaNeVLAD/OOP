@@ -21,7 +21,7 @@ DictionaryType CreateFromStream(std::istream& input);
  */
 void WriteToStream(std::ostream& output, const DictionaryType& dictionary);
 
-void AddToDictionary(DictionaryType& dictionary, const std::string& word, const std::string& translation);
+void AddToDictionary(DictionaryType& dictionary, const Entry& entry);
 
 std::set<std::string> FindTranslations(const DictionaryType& dictionary, const std::string& word);
 
