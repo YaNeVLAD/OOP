@@ -1,4 +1,4 @@
-#include "DictionaryMap.h"
+#include "Dictionary.h"
 
 #include <algorithm>
 

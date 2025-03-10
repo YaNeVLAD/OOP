@@ -1,4 +1,4 @@
-#include "GeneratePrimeNumbersSet.h"
+#include "GeneratePrimeNumbers.h"
 #include <iostream>
 #include <string>
 
