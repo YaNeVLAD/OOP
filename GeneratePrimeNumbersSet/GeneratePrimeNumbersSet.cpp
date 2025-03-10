@@ -33,7 +33,7 @@ std::set<int> GeneratePrimes::GeneratePrimeNumbersSet(int upperBound)
 	{
 		if (primes[i])
 		{
-			result.insert(i);
+			result.insert(static_cast<int>(i));
 		}
 	}
 

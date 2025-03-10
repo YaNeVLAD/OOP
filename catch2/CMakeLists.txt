@@ -14,6 +14,25 @@ set(CATCH_SOURCES
     catch2.h
 )
 
+add_executable(test_all
+    ${CATCH_SOURCES}
+    "test_vector.cpp"
+    ${CMAKE_SOURCE_DIR}/Vector/VectorProcessor.cpp
+    ${CMAKE_SOURCE_DIR}/Vector/VectorProcessor.h
+
+    "test_html_decode.cpp"
+    ${CMAKE_SOURCE_DIR}/HtmlDecode/HtmlDecode.cpp
+    ${CMAKE_SOURCE_DIR}/HtmlDecode/HtmlDecode.h
+
+    "test_generate_primes.cpp"
+    ${CMAKE_SOURCE_DIR}/GeneratePrimeNumbersSet/GeneratePrimeNumbersSet.cpp
+    ${CMAKE_SOURCE_DIR}/GeneratePrimeNumbersSet/GeneratePrimeNumbersSet.h
+
+    "test_dictionary.cpp"
+    ${CMAKE_SOURCE_DIR}/DictionaryMap/DictionaryMap.cpp
+    ${CMAKE_SOURCE_DIR}/DictionaryMap/DictionaryMap.h
+)
+
 add_executable(test_vector
     ${CATCH_SOURCES}
     "test_vector.cpp"
@@ -43,7 +62,8 @@ add_executable(test_dictionary
     ${CMAKE_SOURCE_DIR}/DictionaryMap/DictionaryMap.h
 )
 
-set_target_properties(test_vector test_html_decode test_generate_primes test_dictionary PROPERTIES CXX_STANDARD 20)
+set_target_properties(test_all test_vector test_html_decode test_generate_primes test_dictionary PROPERTIES CXX_STANDARD 20)
+target_link_libraries(test_all PRIVATE Catch2::Catch2)
 target_link_libraries(test_vector PRIVATE Catch2::Catch2)
 target_link_libraries(test_html_decode PRIVATE Catch2::Catch2)
 target_link_libraries(test_generate_primes PRIVATE Catch2::Catch2)

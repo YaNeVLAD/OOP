@@ -8,7 +8,7 @@ TEST_CASE("CreateFromStream creates dictionary from input stream", "[CreateFromS
 	std::istringstream input("hello -- привет\nworld -- мир\n");
 	auto dictionary = CreateFromStream(input);
 
-	REQUIRE(dictionary.size() == 2);
+	REQUIRE(dictionary.size() == 4);
 	REQUIRE(dictionary["hello"].contains("привет"));
 	REQUIRE(dictionary["world"].contains("мир"));
 }
@@ -30,9 +30,9 @@ TEST_CASE("WriteToStream writes dictionary to output stream", "[WriteToStream]")
 TEST_CASE("AddToDictionary adds word and translation to dictionary", "[AddToDictionary]")
 {
 	DictionaryType dictionary;
-	AddToDictionary(dictionary, "hello", "привет");
+	AddToDictionary(dictionary, { "hello", "привет" });
 
-	REQUIRE(dictionary.size() == 1);
+	REQUIRE(dictionary.size() == 2);
 	REQUIRE(dictionary["hello"].contains("привет"));
 }
 
@@ -41,7 +41,8 @@ TEST_CASE("FindTranslations finds translations for a word", "[FindTranslations]"
 	DictionaryType dictionary = {
 		{ "hello", { "привет" } },
 		{ "привет", { "hello" } },
-		{ "world", { "мир" } }
+		{ "world", { "мир" } },
+		{ "мир", { "world" } },
 	};
 
 	auto translations = FindTranslations(dictionary, "hello");

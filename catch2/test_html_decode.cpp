@@ -18,7 +18,7 @@ TEST_CASE("Function throws an exception when invalid encoded sequence is given",
 TEST_CASE("Given string is correctly decoded", "[HtmlDecode]")
 {
 	std::string testStr = "Cat &lt;says&gt; &quot;Meow&quot;. M&amp;M&apos;s";
-	std::string resStr = "Cat <says> \"Meow\". M&M\'s";
+	std::string resStr = R"(Cat <says> "Meow". M&M's)";
 
 	REQUIRE(HtmlDecode(testStr) == resStr);
 }
@@ -26,7 +26,7 @@ TEST_CASE("Given string is correctly decoded", "[HtmlDecode]")
 TEST_CASE("Function correctly decodes all defined encoded sequences", "[HtmlDecode]")
 {
 	std::string testStr = "&quot;&apos;&lt;&gt;&amp;";
-	std::string resStr = "\"\'<>&";
+	std::string resStr = R"("'<>&)";
 
 	REQUIRE(HtmlDecode(testStr) == resStr);
 }
