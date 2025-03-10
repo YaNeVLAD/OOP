@@ -2,9 +2,7 @@
 
 #include <algorithm>
 
-using namespace std::literals;
-
-std::string DIVIDER = " -- ";
+const std::string DIVIDER = " -- ";
 
 static std::string ToLower(const std::string& str)
 {
