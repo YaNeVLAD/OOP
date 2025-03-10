@@ -2,7 +2,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "DictionaryMap.h"
+#include "Dictionary.h"
 
 const char YES_ANSWER = 'y';
 const const char* RUSSIAN = "Russian";

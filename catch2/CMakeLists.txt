@@ -25,12 +25,12 @@ add_executable(test_all
     ${CMAKE_SOURCE_DIR}/HtmlDecode/HtmlDecode.h
 
     "test_generate_primes.cpp"
-    ${CMAKE_SOURCE_DIR}/GeneratePrimeNumbersSet/GeneratePrimeNumbersSet.cpp
-    ${CMAKE_SOURCE_DIR}/GeneratePrimeNumbersSet/GeneratePrimeNumbersSet.h
+    ${CMAKE_SOURCE_DIR}/GeneratePrimeNumbers/GeneratePrimeNumbers.cpp
+    ${CMAKE_SOURCE_DIR}/GeneratePrimeNumbers/GeneratePrimeNumbers.h
 
     "test_dictionary.cpp"
-    ${CMAKE_SOURCE_DIR}/DictionaryMap/DictionaryMap.cpp
-    ${CMAKE_SOURCE_DIR}/DictionaryMap/DictionaryMap.h
+    ${CMAKE_SOURCE_DIR}/Dictionary/Dictionary.cpp
+    ${CMAKE_SOURCE_DIR}/Dictionary/Dictionary.h
 )
 
 add_executable(test_vector
@@ -45,21 +45,20 @@ add_executable(test_html_decode
     "test_html_decode.cpp"
     ${CMAKE_SOURCE_DIR}/HtmlDecode/HtmlDecode.cpp
     ${CMAKE_SOURCE_DIR}/HtmlDecode/HtmlDecode.h
-    
 )
 
 add_executable(test_generate_primes
     ${CATCH_SOURCES}
     "test_generate_primes.cpp"
-    ${CMAKE_SOURCE_DIR}/GeneratePrimeNumbersSet/GeneratePrimeNumbersSet.cpp
-    ${CMAKE_SOURCE_DIR}/GeneratePrimeNumbersSet/GeneratePrimeNumbersSet.h
+    ${CMAKE_SOURCE_DIR}/GeneratePrimeNumbers/GeneratePrimeNumbers.cpp
+    ${CMAKE_SOURCE_DIR}/GeneratePrimeNumbers/GeneratePrimeNumbers.h
 )
 
 add_executable(test_dictionary
     ${CATCH_SOURCES}
     "test_dictionary.cpp"
-    ${CMAKE_SOURCE_DIR}/DictionaryMap/DictionaryMap.cpp
-    ${CMAKE_SOURCE_DIR}/DictionaryMap/DictionaryMap.h
+    ${CMAKE_SOURCE_DIR}/Dictionary/Dictionary.cpp
+    ${CMAKE_SOURCE_DIR}/Dictionary/Dictionary.h
 )
 
 set_target_properties(test_all test_vector test_html_decode test_generate_primes test_dictionary PROPERTIES CXX_STANDARD 20)
