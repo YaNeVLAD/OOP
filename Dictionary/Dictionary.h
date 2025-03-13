@@ -6,7 +6,7 @@
 #include <set>
 #include <string>
 
-namespace Dictionary
+namespace dictionary
 {
 using DictionaryType = std::map<std::string, std::set<std::string>>;
 using Entry = std::pair<std::string, std::string>;
@@ -26,4 +26,4 @@ void AddToDictionary(DictionaryType& dictionary, const Entry& entry);
 std::set<std::string> FindTranslations(const DictionaryType& dictionary, const std::string& word);
 
 void PrintTranslations(std::ostream& output, const std::set<std::string>& translations);
-} // namespace Dictionary
+} // namespace dictionary

@@ -48,7 +48,7 @@ void Print(Phrase phrase, const std::string& arg1 = "", const std::string& arg2 
 	}
 }
 
-void HandleExit(const Dictionary::DictionaryType& dict, const std::string& fileName, bool hasChanged)
+void HandleExit(const dictionary::DictionaryType& dict, const std::string& fileName, bool hasChanged)
 {
 	if (!hasChanged)
 	{
@@ -67,12 +67,12 @@ void HandleExit(const Dictionary::DictionaryType& dict, const std::string& fileN
 			return;
 		}
 
-		Dictionary::WriteToStream(output, dict);
+		dictionary::WriteToStream(output, dict);
 		Print(Phrase::CHANGES_SAVED);
 	}
 }
 
-void HandleNewWord(const std::string& word, Dictionary::DictionaryType& dict, bool& hasChanged)
+void HandleNewWord(const std::string& word, dictionary::DictionaryType& dict, bool& hasChanged)
 {
 	Print(Phrase::UNKNOWN_WORD, word);
 
@@ -80,7 +80,7 @@ void HandleNewWord(const std::string& word, Dictionary::DictionaryType& dict, bo
 	if (std::getline(std::cin, translation) && !translation.empty())
 	{
 		hasChanged = true;
-		Dictionary::AddToDictionary(dict, { word, translation });
+		dictionary::AddToDictionary(dict, { word, translation });
 		Print(Phrase::WORD_ADDED, word, translation);
 	}
 	else
@@ -90,7 +90,7 @@ void HandleNewWord(const std::string& word, Dictionary::DictionaryType& dict, bo
 	}
 }
 
-void HandleUserInput(Dictionary::DictionaryType& dict, const std::string& fileName)
+void HandleUserInput(dictionary::DictionaryType& dict, const std::string& fileName)
 {
 	std::string word;
 	bool hasChanged = false;
@@ -106,10 +106,10 @@ void HandleUserInput(Dictionary::DictionaryType& dict, const std::string& fileNa
 			return HandleExit(dict, fileName, hasChanged);
 		}
 
-		auto translations = Dictionary::FindTranslations(dict, word);
+		auto translations = dictionary::FindTranslations(dict, word);
 		if (!translations.empty())
 		{
-			Dictionary::PrintTranslations(std::cout, translations);
+			dictionary::PrintTranslations(std::cout, translations);
 
 			std::cout << std::endl;
 		}
@@ -126,7 +126,7 @@ int main(int argc, char* argv[])
 	SetConsoleOutputCP(1251);
 	setlocale(LC_ALL, RUSSIAN);
 
-	Dictionary::DictionaryType dict;
+	dictionary::DictionaryType dict;
 	std::string outputName = DEFAULT_OUTPUT_FILE_NAME;
 
 	if (argc == 2)
@@ -138,7 +138,7 @@ int main(int argc, char* argv[])
 		}
 		else
 		{
-			dict = Dictionary::CreateFromStream(input);
+			dict = dictionary::CreateFromStream(input);
 			outputName = argv[1];
 		}
 	}

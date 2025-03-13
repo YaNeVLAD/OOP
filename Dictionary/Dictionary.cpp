@@ -7,14 +7,14 @@ const std::string DIVIDER = " -- ";
 static std::string ToLower(const std::string& str)
 {
 	std::string result(str);
-	std::transform(str.begin(), str.end(), result.begin(), [](auto& ch) {
-		return static_cast<unsigned char>(std::tolower(ch));
+	std::transform(str.begin(), str.end(), result.begin(), [](const char& ch) {
+		return static_cast<char>(std::tolower(ch));
 	});
 
 	return result;
 }
 
-Dictionary::DictionaryType Dictionary::CreateFromStream(std::istream& input)
+dictionary::DictionaryType dictionary::CreateFromStream(std::istream& input)
 {
 	DictionaryType result;
 
@@ -36,7 +36,7 @@ Dictionary::DictionaryType Dictionary::CreateFromStream(std::istream& input)
 	return result;
 }
 
-void Dictionary::WriteToStream(std::ostream& output, const DictionaryType& dictionary)
+void dictionary::WriteToStream(std::ostream& output, const DictionaryType& dictionary)
 {
 	std::set<Entry> entries;
 
@@ -58,14 +58,14 @@ void Dictionary::WriteToStream(std::ostream& output, const DictionaryType& dicti
 	}
 }
 
-void Dictionary::AddToDictionary(DictionaryType& dictionary, const Entry& entry)
+void dictionary::AddToDictionary(DictionaryType& dictionary, const Entry& entry)
 {
 	auto& [word, translation] = entry;
 	dictionary[word].insert(translation);
 	dictionary[translation].insert(word);
 }
 
-std::set<std::string> Dictionary::FindTranslations(const DictionaryType& dictionary, const std::string& word)
+std::set<std::string> dictionary::FindTranslations(const DictionaryType& dictionary, const std::string& word)
 {
 	std::set<std::string> result;
 
@@ -82,7 +82,7 @@ std::set<std::string> Dictionary::FindTranslations(const DictionaryType& diction
 	return result;
 }
 
-void Dictionary::PrintTranslations(std::ostream& output, const std::set<std::string>& translations)
+void dictionary::PrintTranslations(std::ostream& output, const std::set<std::string>& translations)
 {
 	if (translations.empty())
 	{

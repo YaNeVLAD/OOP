@@ -132,11 +132,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="GeneratePrimeNumbersSet.cpp" />
+    <ClCompile Include="GeneratePrimeNumbers.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GeneratePrimeNumbersSet.h" />
+    <ClInclude Include="GeneratePrimeNumbers.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

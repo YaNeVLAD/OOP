@@ -9,13 +9,11 @@ int main(int argc, char* argv[])
 		if (argc != 2)
 		{
 			throw std::invalid_argument("Invalid argument count. Usage: generate_prime_numbers_set.exe <upper_bound>");
-
-			return EXIT_FAILURE;
 		}
 
 		int upperBound = std::stoi(argv[1]);
 
-		for (const int prime : GeneratePrimes::GeneratePrimeNumbersSet(upperBound))
+		for (const int prime : GeneratePrimeNumbersSet(upperBound))
 		{
 			std::cout << prime << " ";
 		}

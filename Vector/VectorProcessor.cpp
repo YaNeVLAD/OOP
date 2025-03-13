@@ -49,6 +49,11 @@ void ProcessNumbers(std::vector<double>& vector)
 
 void PrintSortedNumbers(std::ostream& output, const std::vector<double>& vector)
 {
+	if (vector.empty())
+	{
+		return;
+	}
+
 	auto sorted(vector);
 	std::sort(sorted.begin(), sorted.end());
 

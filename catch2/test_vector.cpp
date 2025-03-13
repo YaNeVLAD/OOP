@@ -11,6 +11,21 @@ TEST_CASE("Empty vector must remain empty after processing", "[ProcessNumber]")
 	REQUIRE(empty.empty());
 }
 
+TEST_CASE("Function reads empty string as empty vector", "[ReadNumbers]")
+{
+	std::istringstream str;
+	auto result = ReadNumbers(str);
+	REQUIRE(result.empty());
+}
+
+TEST_CASE("Function prints empty vector as empty string", "[PrintSortedNumbers]")
+{
+	std::vector<double> vector;
+	std::ostringstream ossExpected;
+	PrintSortedNumbers(ossExpected, vector);
+	REQUIRE(ossExpected.str().empty());
+}
+
 TEST_CASE("Every element of the passed vector is multiplied by min element of this vector", "[ProcessNumber]")
 {
 	std::vector<double> numbers = { 3, 2, 4, 1 };

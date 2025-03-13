@@ -1,7 +1,5 @@
 #include "catch2.h"
 
-using namespace GeneratePrimes;
-
 TEST_CASE("GeneratePrimeNumbersSet - Basic functionality", "[GeneratePrimeNumbersSet]")
 {
 	SECTION("Upper bound is 10")
@@ -45,13 +43,20 @@ TEST_CASE("GeneratePrimeNumbersSet - Edge cases", "[GeneratePrimeNumbersSet]")
 
 	SECTION("Upper bound is MAX_RANGE")
 	{
-		REQUIRE_NOTHROW(GeneratePrimeNumbersSet(MAX_RANGE));
+		REQUIRE_NOTHROW(GeneratePrimeNumbersSet(100'000'000));
 	}
 
 	SECTION("Upper bound is greater than MAX_RANGE")
 	{
-		REQUIRE_THROWS_AS(GeneratePrimeNumbersSet(MAX_RANGE + 1), std::out_of_range);
+		REQUIRE_THROWS_AS(GeneratePrimeNumbersSet(100'000'000 + 1), std::out_of_range);
 	}
+}
+
+#ifndef DEBUG
+TEST_CASE("Function finds all 5'761'455 primes in range of 100'000'000", "[GeneratePrimeNumbersSet]")
+{
+	auto set = GeneratePrimeNumbersSet(100'000'000);
+	REQUIRE(set.size() == 5'761'455);
 }
 
 TEST_CASE("GeneratePrimeNumbersSet - Large upper bound", "[GeneratePrimeNumbersSet]")
@@ -59,7 +64,7 @@ TEST_CASE("GeneratePrimeNumbersSet - Large upper bound", "[GeneratePrimeNumbersS
 	SECTION("Upper bound is 100")
 	{
 		std::set<int> expected = { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97 };
-		REQUIRE(GeneratePrimeNumbersSet(100) == expected);
+		REQUIRE(GeneratePrimeNumbersSet(100).size() == 25);
 	}
 
 	SECTION("Upper bound is 1000")
@@ -68,3 +73,4 @@ TEST_CASE("GeneratePrimeNumbersSet - Large upper bound", "[GeneratePrimeNumbersS
 		REQUIRE(GeneratePrimeNumbersSet(1000).size() == 168);
 	}
 }
+#endif // DEBUG

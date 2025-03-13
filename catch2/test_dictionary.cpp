@@ -1,11 +1,11 @@
 #include "catch2.h"
 #include <sstream>
 
-using namespace Dictionary;
+using namespace dictionary;
 
 TEST_CASE("CreateFromStream creates dictionary from input stream", "[CreateFromStream]")
 {
-	std::istringstream input("hello -- привет\nworld -- мир\n");
+	std::istringstream input("hello -- привет\n\n\nworld -- мир\n");
 	auto dictionary = CreateFromStream(input);
 
 	REQUIRE(dictionary.size() == 4);
@@ -38,12 +38,10 @@ TEST_CASE("AddToDictionary adds word and translation to dictionary", "[AddToDict
 
 TEST_CASE("FindTranslations finds translations for a word", "[FindTranslations]")
 {
-	DictionaryType dictionary = {
-		{ "hello", { "привет" } },
-		{ "привет", { "hello" } },
-		{ "world", { "мир" } },
-		{ "мир", { "world" } },
-	};
+	DictionaryType dictionary;
+
+	AddToDictionary(dictionary, { "hello", "привет" });
+	AddToDictionary(dictionary, { "world", "мир" });
 
 	auto translations = FindTranslations(dictionary, "hello");
 	REQUIRE(translations.contains("привет"));
@@ -57,12 +55,12 @@ TEST_CASE("FindTranslations finds translations for a word", "[FindTranslations]"
 
 TEST_CASE("PrintTranslations prints translations in lexico order to output stream", "[PrintTranslations]")
 {
-	std::set<std::string> translations = { "привет", "здравствуйте" };
+	std::set<std::string> translations = { "здравствуйте", "ёж" };
 
 	std::ostringstream output;
 	PrintTranslations(output, translations);
 
-	std::string expectedOutput = "здравствуйте, привет";
+	std::string expectedOutput = "ёж, здравствуйте";
 	REQUIRE(output.str() == expectedOutput);
 }
 

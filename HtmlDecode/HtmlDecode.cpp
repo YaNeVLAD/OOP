@@ -7,12 +7,12 @@
 const char SEQUENCE_START = '&';
 const char SEQUENCE_END = ';';
 
-static std::string MakeSequence(std::string code)
+std::string MakeSequence(std::string code)
 {
 	return SEQUENCE_START + code + SEQUENCE_END;
 }
 
-static std::unordered_map<std::string, char> ENCODINGS = {
+const std::unordered_map<std::string, char> ENCODINGS = {
 	{ MakeSequence("quot"), '"' },
 	{ MakeSequence("apos"), '\'' },
 	{ MakeSequence("lt"), '<' },
@@ -26,7 +26,7 @@ enum class State
 	IN_HTML,
 };
 
-static char GetDecodedChar(std::string& htmlToken)
+char GetDecodedChar(std::string& htmlToken)
 {
 	auto it = ENCODINGS.find(htmlToken);
 	if (it == ENCODINGS.end())
@@ -37,13 +37,13 @@ static char GetDecodedChar(std::string& htmlToken)
 	return it->second;
 }
 
-static void ChangeState(State to, State& curr, std::string& htmlToken)
+void ChangeState(State to, State& curr, std::string& htmlToken)
 {
 	curr = to;
 	htmlToken.push_back(to == State::OUT_HTML ? SEQUENCE_END : SEQUENCE_START);
 }
 
-static void ProcessSequence(std::string& htmlToken, std::string& result)
+void ProcessSequence(std::string& htmlToken, std::string& result)
 {
 	char decoded = GetDecodedChar(htmlToken);
 	result.push_back(decoded);
