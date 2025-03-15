@@ -20,26 +20,29 @@ std::set<int> GeneratePrimeNumbersSet(int upperBound)
 		return {};
 	}
 
-	std::vector<bool> primes(upperBound + 1, true);
+	int maxFactor = static_cast<int>(sqrt(upperBound));
+	std::vector<bool> primes((upperBound / 2) + 1, true);
 
-	for (size_t p = MIN_PRIME; p <= sqrt(upperBound); ++p)
+	for (size_t p = 3; p <= maxFactor; p += 2)
 	{
-		if (!primes[p])
+		if (primes[p / 2])
 		{
-			continue;
-		}
-		for (size_t i = p * p; i <= upperBound; i += p)
-		{
-			primes[i] = false;
+			for (size_t i = p * p; i < upperBound; i += 2 * p)
+			{
+				primes[i / 2] = false;
+			}
 		}
 	}
 
 	std::set<int> result;
-	for (size_t i = MIN_PRIME; i < primes.size(); ++i)
+	result.insert(2);
+
+	for (size_t i = 1; i < primes.size(); ++i)
 	{
-		if (primes[i])
+		int number = static_cast<int>(2 * i + 1);
+		if (number <= upperBound && primes[i])
 		{
-			result.insert(static_cast<int>(i));
+			result.insert(number);
 		}
 	}
 
