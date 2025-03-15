@@ -2,6 +2,9 @@
 #include "algorithm"
 #include "regex"
 #include "stdexcept"
+#include "unordered_map"
+
+using namespace parse_url;
 
 const std::string HTTP_STR = "http";
 const std::string HTTPS_STR = "https";
@@ -10,14 +13,26 @@ const std::string FTP_STR = "ftp";
 const int MIN_PORT = 0;
 const int MAX_PORT = 65535;
 
+const std::unordered_map<std::string, Protocol> PROTOCOL_MAP = {
+	{ "http", Protocol::HTTP },
+	{ "https", Protocol::HTTPS },
+	{ "ftp", Protocol::FTP }
+};
+
+const std::unordered_map<Protocol, int> PROTOCOL_DEFAULT_PORT = {
+	{ Protocol::HTTP, 80 },
+	{ Protocol::HTTPS, 443 },
+	{ Protocol::FTP, 21 }
+};
+
 void AssertPortInRange(int port)
 {
 	if (port < MIN_PORT || port > MAX_PORT)
 	{
 		throw std::runtime_error("Wrong port. Must be in range from "
-			+ std::to_string(0)
+			+ std::to_string(MIN_PORT)
 			+ " to "
-			+ std::to_string(65535));
+			+ std::to_string(MAX_PORT));
 	}
 }
 
@@ -31,43 +46,28 @@ std::string ToLower(const std::string& str)
 	return result;
 }
 
-parse_url::Protocol ParseProtocol(const std::string& protocolStr)
+Protocol ParseProtocol(const std::string& protocolStr)
 {
 	auto lower = ToLower(protocolStr);
 
-	if (lower == HTTP_STR)
-	{
-		return parse_url::Protocol::HTTP;
-	}
-	else if (lower == HTTPS_STR)
-	{
-		return parse_url::Protocol::HTTPS;
-	}
-	else if (lower == FTP_STR)
-	{
-		return parse_url::Protocol::FTP;
-	}
-	else
+	auto it = PROTOCOL_MAP.find(lower);
+	if (it == PROTOCOL_MAP.end())
 	{
 		throw std::runtime_error("Unknown protocol: " + protocolStr);
 	}
+	return it->second;
 }
 
-int ParsePort(const std::string& portStr, parse_url::Protocol protocol)
+int ParsePort(const std::string& portStr, Protocol protocol)
 {
 	if (portStr.empty())
 	{
-		switch (protocol)
+		auto it = PROTOCOL_DEFAULT_PORT.find(protocol);
+		if (it == PROTOCOL_DEFAULT_PORT.end())
 		{
-		case parse_url::Protocol::HTTP:
-			return 80;
-		case parse_url::Protocol::HTTPS:
-			return 443;
-		case parse_url::Protocol::FTP:
-			return 21;
-		default:
-			throw std::runtime_error("Unknown protocol.");
+			throw std::runtime_error("Failed to find default port for given protocol.");
 		}
+		return it->second;
 	}
 
 	int port = std::stoi(portStr);
@@ -79,10 +79,11 @@ int ParsePort(const std::string& portStr, parse_url::Protocol protocol)
 
 bool parse_url::ParseURL(const std::string& url, UrlData& data)
 {
-	auto& [protocol, host, port, document] = data;
+	UrlData temp = data;
+	auto& [protocol, host, port, document] = temp;
 	try
 	{
-		std::regex urlRegex(R"(^(https?|ftp)://([^/:]+)(?::(\d+))?(?:/(.*))?$)", std::regex::icase);
+		std::regex urlRegex(R"(^([^/:]+)://([^/:]+)(?::(\d+))?(?:/(.*))?$)", std::regex::icase);
 		std::smatch match;
 		if (!std::regex_match(url, match, urlRegex))
 		{
@@ -96,6 +97,8 @@ bool parse_url::ParseURL(const std::string& url, UrlData& data)
 		port = ParsePort(match[3], protocol);
 
 		document = match[4].matched ? match[4].str() : "";
+
+		data = temp;
 
 		return true;
 	}

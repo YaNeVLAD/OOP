@@ -21,6 +21,8 @@ struct UrlData
 	int port = -1;
 
 	std::string document;
+
+	friend bool operator==(const UrlData&, const UrlData&) = default;
 };
 
 bool ParseURL(const std::string& url, UrlData& data);

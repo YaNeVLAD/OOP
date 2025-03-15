@@ -137,7 +137,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratePrimeNumbers.h" />
-    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

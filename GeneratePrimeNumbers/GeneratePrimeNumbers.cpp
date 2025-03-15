@@ -24,12 +24,13 @@ std::set<int> GeneratePrimeNumbersSet(int upperBound)
 
 	for (size_t p = MIN_PRIME; p <= sqrt(upperBound); ++p)
 	{
-		if (primes[p])
+		if (!primes[p])
 		{
-			for (size_t i = p * p; i <= upperBound; i += p)
-			{
-				primes[i] = false;
-			}
+			continue;
+		}
+		for (size_t i = p * p; i <= upperBound; i += p)
+		{
+			primes[i] = false;
 		}
 	}
 

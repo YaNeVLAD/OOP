@@ -31,6 +31,10 @@ add_executable(test_all
     "test_dictionary.cpp"
     ${CMAKE_SOURCE_DIR}/Dictionary/Dictionary.cpp
     ${CMAKE_SOURCE_DIR}/Dictionary/Dictionary.h
+
+    "test_parse_url.cpp"    
+    ${CMAKE_SOURCE_DIR}/ParseUrl/ParseUrl.cpp
+    ${CMAKE_SOURCE_DIR}/ParseUrl/ParseUrl.h
 )
 
 add_executable(test_vector
@@ -61,9 +65,17 @@ add_executable(test_dictionary
     ${CMAKE_SOURCE_DIR}/Dictionary/Dictionary.h
 )
 
-set_target_properties(test_all test_vector test_html_decode test_generate_primes test_dictionary PROPERTIES CXX_STANDARD 20)
+add_executable(test_parse_url
+    ${CATCH_SOURCES}
+    "test_parse_url.cpp"    
+    ${CMAKE_SOURCE_DIR}/ParseUrl/ParseUrl.cpp
+    ${CMAKE_SOURCE_DIR}/ParseUrl/ParseUrl.h
+)
+
+set_target_properties(test_all test_vector test_html_decode test_generate_primes test_dictionary test_parse_url PROPERTIES CXX_STANDARD 20)
 target_link_libraries(test_all PRIVATE Catch2::Catch2)
 target_link_libraries(test_vector PRIVATE Catch2::Catch2)
 target_link_libraries(test_html_decode PRIVATE Catch2::Catch2)
 target_link_libraries(test_generate_primes PRIVATE Catch2::Catch2)
 target_link_libraries(test_dictionary PRIVATE Catch2::Catch2)
+target_link_libraries(test_parse_url PRIVATE Catch2::Catch2)
