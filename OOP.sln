@@ -23,6 +23,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "generate_prime_numbers", "G
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "parse_url", "ParseUrl\ParseUrl.vcxproj", "{3128340B-3353-45CE-94A9-3C78E1EEDF4C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "car", "Car\Car.vcxproj", "{86E4278E-D82F-404A-B03D-0ACBD2E398B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -111,6 +113,14 @@ Global
 		{3128340B-3353-45CE-94A9-3C78E1EEDF4C}.Release|x64.Build.0 = Release|x64
 		{3128340B-3353-45CE-94A9-3C78E1EEDF4C}.Release|x86.ActiveCfg = Release|Win32
 		{3128340B-3353-45CE-94A9-3C78E1EEDF4C}.Release|x86.Build.0 = Release|Win32
+		{86E4278E-D82F-404A-B03D-0ACBD2E398B9}.Debug|x64.ActiveCfg = Debug|x64
+		{86E4278E-D82F-404A-B03D-0ACBD2E398B9}.Debug|x64.Build.0 = Debug|x64
+		{86E4278E-D82F-404A-B03D-0ACBD2E398B9}.Debug|x86.ActiveCfg = Debug|Win32
+		{86E4278E-D82F-404A-B03D-0ACBD2E398B9}.Debug|x86.Build.0 = Debug|Win32
+		{86E4278E-D82F-404A-B03D-0ACBD2E398B9}.Release|x64.ActiveCfg = Release|x64
+		{86E4278E-D82F-404A-B03D-0ACBD2E398B9}.Release|x64.Build.0 = Release|x64
+		{86E4278E-D82F-404A-B03D-0ACBD2E398B9}.Release|x86.ActiveCfg = Release|Win32
+		{86E4278E-D82F-404A-B03D-0ACBD2E398B9}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
