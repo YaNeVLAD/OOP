@@ -35,6 +35,12 @@ add_executable(test_all
     "test_parse_url.cpp"    
     ${CMAKE_SOURCE_DIR}/ParseUrl/ParseUrl.cpp
     ${CMAKE_SOURCE_DIR}/ParseUrl/ParseUrl.h
+    
+    "test_car.cpp"
+    ${CMAKE_SOURCE_DIR}/Car/CarController.cpp
+    ${CMAKE_SOURCE_DIR}/Car/CarController.h
+    ${CMAKE_SOURCE_DIR}/Car/Car.cpp
+    ${CMAKE_SOURCE_DIR}/Car/Car.h
 )
 
 add_executable(test_vector
@@ -72,10 +78,21 @@ add_executable(test_parse_url
     ${CMAKE_SOURCE_DIR}/ParseUrl/ParseUrl.h
 )
 
-set_target_properties(test_all test_vector test_html_decode test_generate_primes test_dictionary test_parse_url PROPERTIES CXX_STANDARD 20)
+add_executable(test_car
+    ${CATCH_SOURCES}
+    "test_car.cpp"
+    
+    ${CMAKE_SOURCE_DIR}/Car/CarController.cpp
+    ${CMAKE_SOURCE_DIR}/Car/CarController.h
+    ${CMAKE_SOURCE_DIR}/Car/Car.cpp
+    ${CMAKE_SOURCE_DIR}/Car/Car.h
+)
+
+set_target_properties(test_all test_vector test_html_decode test_generate_primes test_dictionary test_parse_url test_car PROPERTIES CXX_STANDARD 20)
 target_link_libraries(test_all PRIVATE Catch2::Catch2)
 target_link_libraries(test_vector PRIVATE Catch2::Catch2)
 target_link_libraries(test_html_decode PRIVATE Catch2::Catch2)
 target_link_libraries(test_generate_primes PRIVATE Catch2::Catch2)
 target_link_libraries(test_dictionary PRIVATE Catch2::Catch2)
 target_link_libraries(test_parse_url PRIVATE Catch2::Catch2)
+target_link_libraries(test_car PRIVATE Catch2::Catch2)

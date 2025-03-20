@@ -93,43 +93,45 @@ void CarController::PrintInfo()
 
 void CarController::PrintSetGearError(int arg)
 {
-	bool isReverse = m_car.GetGear() == Car::Gear::Reverse;
-	bool isNeutral = m_car.GetGear() == Car::Gear::Neutral;
+	Car::Gear gear = static_cast<Car::Gear>(arg);
+	bool isReverse = gear == Car::Gear::Reverse;
 
 	if (arg < -1 || arg > 5)
 	{
-		m_output << "Invalid gear\n";
+		m_output << "Invalid gear";
 	}
 	else if (!m_car.IsTurnedOn())
 	{
-		m_output << "Cannot set gear while engine is off\n";
+		m_output << "Cannot set gear while engine is off";
 	}
-	else if ((isReverse && m_car.GetSpeed() > 0 && arg >= 1) || (isNeutral && m_car.GetSpeed() > 0 && arg == -1))
+	else if (isReverse && m_car.GetSpeed() > 0)
 	{
-		m_output << "Cannot switch to forward gear while reversing\n";
+		m_output << "Cannot reverse while moving";
 	}
 	else
 	{
-		m_output << "Unsuitable current speed\n";
+		m_output << "Unsuitable current speed";
 	}
+	m_output << std::endl;
 }
 
 void CarController::PrintSetSpeedError(int arg)
 {
 	if (arg < 0)
 	{
-		m_output << "Speed cannot be negative\n";
+		m_output << "Speed cannot be negative";
 	}
 	else if (!m_car.IsTurnedOn())
 	{
-		m_output << "Cannot set speed while engine is off\n";
+		m_output << "Cannot set speed while engine is off";
 	}
 	else if (m_car.GetGear() == Car::Gear::Neutral && arg > m_car.GetSpeed())
 	{
-		m_output << "Cannot accelerate on neutral\n";
+		m_output << "Cannot accelerate on neutral";
 	}
 	else
 	{
-		m_output << "Speed is m_output of gear range\n";
+		m_output << "Speed is out of gear range";
 	}
+	m_output << std::endl;
 }

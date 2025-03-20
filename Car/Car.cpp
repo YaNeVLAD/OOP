@@ -49,6 +49,16 @@ bool Car::SetGear(Gear gear)
 		return false;
 	}
 
+	if (gear == Gear::Reverse && m_speed != 0)
+	{
+		return false;
+	}
+
+	if (m_gear == Gear::Reverse && m_speed != 0)
+	{
+		return false;
+	}
+
 	if (!m_isEngineOn && gear != Gear::Neutral)
 	{
 		return false;
@@ -56,16 +66,6 @@ bool Car::SetGear(Gear gear)
 
 	auto& [minSpeed, maxSpeed] = m_gearSpeedLimits[gear];
 	if (m_speed < minSpeed || m_speed > maxSpeed)
-	{
-		return false;
-	}
-
-	if (gear == Gear::Reverse && m_speed != 0)
-	{
-		return false;
-	}
-
-	if (m_gear == Gear::Reverse && m_speed != 0)
 	{
 		return false;
 	}
