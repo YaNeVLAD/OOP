@@ -10,16 +10,16 @@ void RunTestCase(const std::vector<std::string>& commands, const std::string& ex
 		controller.ExecuteCommand(command);
 	}
 
-	REQUIRE(output.str() == expectedOutput);
+	REQUIRE(expectedOutput == output.str());
 }
 
-TEST_CASE("Engine On and Off")
+TEST_CASE("Engine On and Off", "[Car]")
 {
 	RunTestCase({ "EngineOn", "EngineOff" }, "");
 	RunTestCase({ "EngineOn", "SetGear 1", "EngineOff" }, "Car must be stopped and in neutral gear\n");
 }
 
-TEST_CASE("Set Gear")
+TEST_CASE("Set Gear", "[Car]")
 {
 	RunTestCase({ "EngineOn", "SetGear 10" }, "Invalid gear\n");
 	RunTestCase({ "SetGear 1" }, "Cannot set gear while engine is off\n");
@@ -28,7 +28,7 @@ TEST_CASE("Set Gear")
 	RunTestCase({ "EngineOn", "SetGear 1" }, "");
 }
 
-TEST_CASE("Set Speed")
+TEST_CASE("Set Speed", "[Car]")
 {
 	RunTestCase({ "EngineOn", "SetGear 1", "SetSpeed -5" }, "Speed cannot be negative\n");
 	RunTestCase({ "SetSpeed 10" }, "Cannot set speed while engine is off\n");
@@ -37,12 +37,53 @@ TEST_CASE("Set Speed")
 	RunTestCase({ "EngineOn", "SetGear 1", "SetSpeed 20" }, "");
 }
 
-TEST_CASE("Neutral Gear Behavior")
+TEST_CASE("Speed limits for each gear", "[Car]")
 {
-	RunTestCase({ "EngineOn", "SetGear 1", "SetSpeed 20", "SetGear 0", "SetSpeed 30" }, "Cannot accelerate on neutral\n");
+	RunTestCase({ "EngineOn", "SetGear -1", "SetSpeed 0" }, "");
+	RunTestCase({ "EngineOn", "SetGear -1", "SetSpeed 20" }, "");
+	RunTestCase({ "EngineOn", "SetGear -1", "SetSpeed 21" }, "Speed is out of gear range\n");
+
+	RunTestCase({ "EngineOn", "SetGear 1", "SetSpeed 0" }, "");
+	RunTestCase({ "EngineOn", "SetGear 1", "SetSpeed 30" }, "");
+	RunTestCase({ "EngineOn", "SetGear 1", "SetSpeed 31" }, "Speed is out of gear range\n");
+
+	RunTestCase({ "EngineOn", "SetGear 1", "SetSpeed 20", "SetGear 2", "SetSpeed 19" }, "Speed is out of gear range\n");
+	RunTestCase({ "EngineOn", "SetGear 1", "SetSpeed 20", "SetGear 2", "SetSpeed 20" }, "");
+	RunTestCase({ "EngineOn", "SetGear 1", "SetSpeed 20", "SetGear 2", "SetSpeed 50" }, "");
+	RunTestCase({ "EngineOn", "SetGear 1", "SetSpeed 20", "SetGear 2", "SetSpeed 51" }, "Speed is out of gear range\n");
+
+	RunTestCase({ "EngineOn", "SetGear 1", "SetSpeed 20", "SetGear 2", "SetSpeed 30", "SetGear 3", "SetSpeed 29" }, "Speed is out of gear range\n");
+	RunTestCase({ "EngineOn", "SetGear 1", "SetSpeed 20", "SetGear 2", "SetSpeed 30", "SetGear 3", "SetSpeed 30" }, "");
+	RunTestCase({ "EngineOn", "SetGear 1", "SetSpeed 20", "SetGear 2", "SetSpeed 30", "SetGear 3", "SetSpeed 60" }, "");
+	RunTestCase({ "EngineOn", "SetGear 1", "SetSpeed 20", "SetGear 2", "SetSpeed 30", "SetGear 3", "SetSpeed 61" }, "Speed is out of gear range\n");
+
+	RunTestCase({ "EngineOn", "SetGear 1", "SetSpeed 20", "SetGear 2", "SetSpeed 40", "SetGear 4", "SetSpeed 39" }, "Speed is out of gear range\n");
+	RunTestCase({ "EngineOn", "SetGear 1", "SetSpeed 20", "SetGear 2", "SetSpeed 40", "SetGear 4", "SetSpeed 40" }, "");
+	RunTestCase({ "EngineOn", "SetGear 1", "SetSpeed 20", "SetGear 2", "SetSpeed 40", "SetGear 4", "SetSpeed 90" }, "");
+	RunTestCase({ "EngineOn", "SetGear 1", "SetSpeed 20", "SetGear 2", "SetSpeed 40", "SetGear 4", "SetSpeed 91" }, "Speed is out of gear range\n");
+
+	RunTestCase({ "EngineOn", "SetGear 1", "SetSpeed 20", "SetGear 2", "SetSpeed 30", "SetGear 3", "SetSpeed 50", "SetGear 5", "SetSpeed 49" }, "Speed is out of gear range\n");
+	RunTestCase({ "EngineOn", "SetGear 1", "SetSpeed 20", "SetGear 2", "SetSpeed 30", "SetGear 3", "SetSpeed 50", "SetGear 5", "SetSpeed 50" }, "");
+	RunTestCase({ "EngineOn", "SetGear 1", "SetSpeed 20", "SetGear 2", "SetSpeed 30", "SetGear 3", "SetSpeed 50", "SetGear 5", "SetSpeed 150" }, "");
+	RunTestCase({ "EngineOn", "SetGear 1", "SetSpeed 20", "SetGear 2", "SetSpeed 30", "SetGear 3", "SetSpeed 50", "SetGear 5", "SetSpeed 151" }, "Speed is out of gear range\n");
 }
 
-TEST_CASE("Full Valid Sequence")
+TEST_CASE("Test direction", "[Car]")
+{
+	RunTestCase({ "EngineOn", "SetGear -1", "SetSpeed 5", "SetSpeed 0", "Info" },
+		"Engine: on\nDirection: standing still\nSpeed: 0\nGear: -1\n");
+
+	RunTestCase({ "EngineOn", "SetGear 1", "SetSpeed 15", "SetSpeed 0", "Info" },
+		"Engine: on\nDirection: standing still\nSpeed: 0\nGear: 1\n");
+
+	RunTestCase({ "EngineOn", "SetGear 1", "SetSpeed 15", "Info" },
+		"Engine: on\nDirection: forward\nSpeed: 15\nGear: 1\n");
+
+	RunTestCase({ "EngineOn", "SetGear -1", "SetSpeed 15", "SetGear 0", "SetSpeed 5", "Info" },
+		"Engine: on\nDirection: backward\nSpeed: 5\nGear: 0\n");
+}
+
+TEST_CASE("Full Valid Sequence", "[Car]")
 {
 	RunTestCase(
 		{ "EngineOn", "SetGear 1", "SetSpeed 20", "SetGear 2", "SetSpeed 30", "SetGear 3", "SetSpeed 50", "SetGear 4",

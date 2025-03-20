@@ -4,14 +4,14 @@
 #include <sstream>
 #include <unordered_map>
 
-const std::unordered_map<std::string, bool (Car::*)()> NO_ARG_COMMANDS = {
-	{ "EngineOn", &Car::TurnOnEngine },
-	{ "EngineOff", &Car::TurnOffEngine },
+const std::unordered_map<std::string, std::function<bool(Car&)>> NO_ARG_COMMANDS = {
+	{ "EngineOn", [](Car& car) { return car.TurnOnEngine(); } },
+	{ "EngineOff", [](Car& car) { return car.TurnOffEngine(); } },
 };
 
-const std::unordered_map<std::string, bool (Car::*)(int)> ARG_COMMANDS = {
-	{ "SetGear", &Car::SetGear },
-	{ "SetSpeed", &Car::SetSpeed },
+const std::unordered_map<std::string, std::function<bool(Car&, int)>> ARG_COMMANDS = {
+	{ "SetGear", [](Car& car, int gear) { return car.SetGear(gear); } },
+	{ "SetSpeed", [](Car& car, int speed) { return car.SetSpeed(speed); } },
 };
 
 CarController::CarController(std::ostream& m_output)
