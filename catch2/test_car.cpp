@@ -2,9 +2,8 @@
 
 void RunTestCase(const std::vector<std::string>& commands, const std::string& expectedOutput)
 {
-	std::istringstream input;
 	std::ostringstream output;
-	CarController controller(input, output);
+	CarController controller(output);
 
 	for (const auto& command : commands)
 	{

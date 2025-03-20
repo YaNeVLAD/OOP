@@ -5,7 +5,7 @@
 
 int main()
 {
-	CarController controller(std::cin, std::cout);
+	CarController controller(std::cout);
 
 	std::string line;
 	while (std::getline(std::cin, line))

@@ -14,9 +14,8 @@ const std::unordered_map<std::string, bool (Car::*)(int)> ARG_COMMANDS = {
 	{ "SetSpeed", &Car::SetSpeed },
 };
 
-CarController::CarController(std::istream& in, std::ostream& m_output)
-	: m_input(in)
-	, m_output(m_output)
+CarController::CarController(std::ostream& m_output)
+	: m_output(m_output)
 {
 }
 
