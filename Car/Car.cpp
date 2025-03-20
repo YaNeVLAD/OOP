@@ -1,5 +1,6 @@
 #include "Car.h"
-#include <math.h>
+
+#include <iostream>
 
 Car::Car()
 {
@@ -33,15 +34,12 @@ bool Car::TurnOnEngine()
 
 bool Car::TurnOffEngine()
 {
-	if (m_gear != Gear::Neutral && m_speed != 0)
+	if (m_gear != Gear::Neutral || m_speed != 0)
 	{
 		return false;
 	}
-	else
-	{
-		m_isEngineOn = false;
-		return true;
-	}
+	m_isEngineOn = false;
+	return true;
 }
 
 bool Car::SetGear(Gear gear)
@@ -57,17 +55,17 @@ bool Car::SetGear(Gear gear)
 	}
 
 	auto& [minSpeed, maxSpeed] = m_gearSpeedLimits[gear];
-	if (m_speed < minSpeed && m_speed > maxSpeed)
+	if (m_speed < minSpeed || m_speed > maxSpeed)
 	{
 		return false;
 	}
 
-	if (m_speed != 0 && gear == Gear::Reverse)
+	if (gear == Gear::Reverse && m_speed != 0)
 	{
 		return false;
 	}
 
-	if ((m_gear == Gear::Reverse && m_direction == Direction::Backward) && m_speed != 0)
+	if (m_gear == Gear::Reverse && m_speed != 0)
 	{
 		return false;
 	}
@@ -83,30 +81,44 @@ bool Car::SetGear(int gear)
 
 bool Car::SetSpeed(int speed)
 {
+	if (speed < 0)
+	{
+		return false;
+	}
+	if (!m_isEngineOn)
+	{
+		return false;
+	}
+	if (m_gear == Gear::Neutral && speed > m_speed)
+	{
+		return false;
+	}
+
 	auto& [minSpeed, maxSpeed] = m_gearSpeedLimits[m_gear];
 	if (speed < minSpeed || speed > maxSpeed)
 	{
 		return false;
 	}
 
-	if (abs(speed) > abs(m_speed))
-	{
-		if (m_gear != Gear::Reverse)
-		{
-			m_direction = Direction::Forward;
-		}
+	ChangeDirection(speed);
 
-		if (m_gear == Gear::Reverse || m_gear == Gear::Neutral)
-		{
-			m_direction = Direction::Backward;
-		}
-	}
+	m_speed = speed;
 
+	return true;
+}
+
+void Car::ChangeDirection(int speed)
+{
 	if (speed == 0)
 	{
 		m_direction = Direction::Still;
 	}
-
-	m_speed = speed;
-	return true;
+	else if (m_gear == Gear::Reverse)
+	{
+		m_direction = Direction::Backward;
+	}
+	else
+	{
+		m_direction = Direction::Forward;
+	}
 }

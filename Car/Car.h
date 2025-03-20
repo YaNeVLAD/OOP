@@ -38,13 +38,16 @@ public:
 
 private:
 	std::unordered_map<Gear, std::pair<int, int>> m_gearSpeedLimits = {
-		{ Gear::Reverse, { 0, 20 } }, { Gear::Neutral, { 0, 20 } }, { Gear::First, { 0, 30 } },
-		{ Gear::Second, { 20, 50 } }, { Gear::Third, { 30, 60 } },
-		{ Gear::Fourth, { 40, 90 } }, { Gear::Fifth, { 50, 150 } }
+		{ Gear::Reverse, { 0, 20 } }, { Gear::Neutral, { INT_MIN, INT_MAX } },
+		{ Gear::First, { 0, 30 } }, { Gear::Second, { 20, 50 } },
+		{ Gear::Third, { 30, 60 } }, { Gear::Fourth, { 40, 90 } },
+		{ Gear::Fifth, { 50, 150 } }
 	};
 
 	bool m_isEngineOn = false;
 	Gear m_gear = Gear::Neutral;
 	int m_speed = 0;
 	Direction m_direction = Direction::Still;
+
+	void ChangeDirection(int speed);
 };

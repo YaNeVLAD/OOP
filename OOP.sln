@@ -25,6 +25,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "parse_url", "ParseUrl\Parse
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "car", "Car\Car.vcxproj", "{86E4278E-D82F-404A-B03D-0ACBD2E398B9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}"
+	ProjectSection(SolutionItems) = preProject
+		TextFile1.txt = TextFile1.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
