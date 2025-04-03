@@ -27,8 +27,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "car", "Car\Car.vcxproj", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}"
 	ProjectSection(SolutionItems) = preProject
+		BazaDan.txt = BazaDan.txt
 		TextFile1.txt = TextFile1.txt
+		TextFile2.txt = TextFile2.txt
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "my_vector", "MyVector\MyVector.vcxproj", "{5E6BE57F-3A05-4160-AD07-A27F242583FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -126,6 +130,14 @@ Global
 		{86E4278E-D82F-404A-B03D-0ACBD2E398B9}.Release|x64.Build.0 = Release|x64
 		{86E4278E-D82F-404A-B03D-0ACBD2E398B9}.Release|x86.ActiveCfg = Release|Win32
 		{86E4278E-D82F-404A-B03D-0ACBD2E398B9}.Release|x86.Build.0 = Release|Win32
+		{5E6BE57F-3A05-4160-AD07-A27F242583FC}.Debug|x64.ActiveCfg = Debug|x64
+		{5E6BE57F-3A05-4160-AD07-A27F242583FC}.Debug|x64.Build.0 = Debug|x64
+		{5E6BE57F-3A05-4160-AD07-A27F242583FC}.Debug|x86.ActiveCfg = Debug|Win32
+		{5E6BE57F-3A05-4160-AD07-A27F242583FC}.Debug|x86.Build.0 = Debug|Win32
+		{5E6BE57F-3A05-4160-AD07-A27F242583FC}.Release|x64.ActiveCfg = Release|x64
+		{5E6BE57F-3A05-4160-AD07-A27F242583FC}.Release|x64.Build.0 = Release|x64
+		{5E6BE57F-3A05-4160-AD07-A27F242583FC}.Release|x86.ActiveCfg = Release|Win32
+		{5E6BE57F-3A05-4160-AD07-A27F242583FC}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

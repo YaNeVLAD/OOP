@@ -41,6 +41,12 @@ add_executable(test_all
     ${CMAKE_SOURCE_DIR}/Car/CarController.h
     ${CMAKE_SOURCE_DIR}/Car/Car.cpp
     ${CMAKE_SOURCE_DIR}/Car/Car.h
+    
+    "test_my_vector.cpp"
+    ${CMAKE_SOURCE_DIR}/MyVector/ContainerBase.hpp
+    ${CMAKE_SOURCE_DIR}/MyVector/Iteratable.hpp
+    ${CMAKE_SOURCE_DIR}/MyVector/Allocator.hpp
+    ${CMAKE_SOURCE_DIR}/MyVector/Vector.hpp
 )
 
 add_executable(test_vector
@@ -88,7 +94,26 @@ add_executable(test_car
     ${CMAKE_SOURCE_DIR}/Car/Car.h
 )
 
-set_target_properties(test_all test_vector test_html_decode test_generate_primes test_dictionary test_parse_url test_car PROPERTIES CXX_STANDARD 20)
+add_executable(test_my_vector
+    ${CATCH_SOURCES}
+    "test_my_vector.cpp"
+
+    ${CMAKE_SOURCE_DIR}/MyVector/ContainerBase.hpp
+    ${CMAKE_SOURCE_DIR}/MyVector/Iteratable.hpp
+    ${CMAKE_SOURCE_DIR}/MyVector/Allocator.hpp
+    ${CMAKE_SOURCE_DIR}/MyVector/Vector.hpp
+)
+
+set_target_properties(
+test_all 
+test_vector 
+test_html_decode
+test_generate_primes
+test_dictionary
+test_parse_url
+test_car
+test_my_vector
+PROPERTIES CXX_STANDARD 20)
 target_link_libraries(test_all PRIVATE Catch2::Catch2)
 target_link_libraries(test_vector PRIVATE Catch2::Catch2)
 target_link_libraries(test_html_decode PRIVATE Catch2::Catch2)
@@ -96,3 +121,4 @@ target_link_libraries(test_generate_primes PRIVATE Catch2::Catch2)
 target_link_libraries(test_dictionary PRIVATE Catch2::Catch2)
 target_link_libraries(test_parse_url PRIVATE Catch2::Catch2)
 target_link_libraries(test_car PRIVATE Catch2::Catch2)
+target_link_libraries(test_my_vector PRIVATE Catch2::Catch2)
