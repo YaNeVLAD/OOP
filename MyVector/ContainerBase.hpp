@@ -8,6 +8,9 @@ namespace details
 template <typename TValue>
 class ContainerBase
 {
+	static_assert(std::is_object_v<TValue>, "The C++ Standard forbids containers of non-object types "
+											"because of [container.requirements].");
+
 	using Allocator = Allocator<TValue>;
 
 public:
@@ -28,7 +31,7 @@ public:
 
 	ContainerBase& operator=(ContainerBase&& other) noexcept;
 
-	~ContainerBase();
+	virtual ~ContainerBase();
 
 	template <typename... Args>
 	TReference EmplaceBack(Args&&... args);

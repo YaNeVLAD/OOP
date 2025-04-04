@@ -20,11 +20,11 @@ public:
 	Vector(std::initializer_list<TValue> list)
 		: Base()
 	{
-		this->Reserve(list.size());
+		Base::Reserve(list.size());
 
 		for (auto& value : list)
 		{
-			this->EmplaceBack(value);
+			Base::EmplaceBack(value);
 		}
 	}
 
@@ -32,26 +32,44 @@ public:
 
 	void PushBack(TValue&& value)
 	{
-		this->EmplaceBack(std::forward<TValue>(value));
+		Base::EmplaceBack(std::forward<TValue>(value));
 	}
 
 	void PushBack(const TValue& value)
 	{
-		this->EmplaceBack(value);
+		Base::EmplaceBack(value);
 	}
 
 	typename Base::TReference operator[](size_t index)
 	{
-		if (index >= this->Size())
+		if (index >= Base::Size())
 		{
 			throw std::out_of_range("Vector index is out of range");
 		}
 
-		return *(this->Begin() + index);
+		return *(Base::Begin() + index);
 	}
 
 	typename Base::TConstReference operator[](size_t index) const
 	{
 		return const_cast<Vector&>(*this)[index];
+	}
+
+	bool operator==(const Vector& other) const
+	{
+		if (Base::Size() != other.Size())
+		{
+			return false;
+		}
+
+		for (size_t i = 0; i < Base::Size(); ++i)
+		{
+			if (this->operator[](i) != other[i])
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 };

@@ -1,6 +1,10 @@
 ﻿#include <iostream>
 
 #include "Vector.hpp"
+#include <algorithm>
+#include <ranges>
+#include <string>
+#include <vector>
 
 struct Spy
 {
@@ -58,11 +62,24 @@ void PrintSpy(const Vector<Spy>& vec)
 
 int main()
 {
-	Vector<Spy> vec{ Spy(), Spy() };
+	std::vector<int> v{ 1, 2, 3 };
+	Vector<int> vec{ 1, 2, 3 };
+
 	for (auto& val : vec)
 	{
-		val.data = 444;
+		val = 444;
 	}
+
+	{
+		Vector<int> vec1{ 5, 4, 3, 2, 1 };
+		std::ranges::sort(vec1);
+
+		for (auto& val : vec1)
+		{
+			std::cout << val << std::endl;
+		}
+	}
+
 	vec.Reserve(10);
 	vec.EmplaceBack();
 	vec.EmplaceBack();
@@ -71,13 +88,9 @@ int main()
 	vec.Resize(3);
 	vec.EmplaceBack();
 
-	vec.PushBack(Spy());
 	vec.PopBack();
 	vec.PopBack();
 	vec.EmplaceBack();
-	auto& a = vec[1];
-	a.data = 333;
-	PrintSpy(vec);
 
 	std::cout << "Program end" << std::endl;
 }

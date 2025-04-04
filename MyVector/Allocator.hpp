@@ -20,7 +20,10 @@ class Allocator
 												"because of [allocator.requirements].");
 
 public:
-	TPointer Allocate(size_t size)
+	Allocator() = default;
+	~Allocator() = default;
+
+	[[nodiscard]] TPointer Allocate(size_t size)
 	{
 		return static_cast<TPointer>(::operator new(CalculateBlockSize(size)));
 	}
@@ -33,7 +36,7 @@ public:
 		}
 	}
 
-	TPointer Reallocate(TPointer block, size_t oldSize, size_t newSize)
+	[[nodiscard]] TPointer Reallocate(TPointer block, size_t oldSize, size_t newSize)
 	{
 		TPointer newBlock = Allocate(newSize);
 

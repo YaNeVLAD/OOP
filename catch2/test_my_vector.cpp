@@ -1,4 +1,7 @@
 #include "catch2.h"
+
+#include <algorithm>
+
 /////////////////////////////////////////////////////
 //
 //	ALLOCATOR TESTS
@@ -253,16 +256,6 @@ TEST_CASE("Iteratable provides correct iterators")
 {
 	Vector<int> vec = { 1, 2, 3 };
 
-	SECTION("Forward iterators")
-	{
-		int sum = 0;
-		for (auto it = vec.begin(); it != vec.end(); ++it)
-		{
-			sum += *it;
-		}
-		REQUIRE(sum == 6);
-	}
-
 	SECTION("Const iterators")
 	{
 		const Vector<int>& constVec = vec;
@@ -276,6 +269,31 @@ TEST_CASE("Iteratable provides correct iterators")
 		REQUIRE(*rit == 3);
 		++rit;
 		REQUIRE(*rit == 2);
+	}
+
+	SECTION("Range-based for")
+	{
+		int sum = 0;
+		for (auto& val : vec)
+		{
+			sum += val;
+		}
+		REQUIRE(sum == 6);
+	}
+
+	SECTION("STL Algorithm compatibility")
+	{
+		Vector<std::string> output;
+		output.Resize(3);
+		Vector<std::string> expected = { "3", "2", "1" };
+
+		std::transform(vec.begin(), vec.end(), output.begin(), [](int val) {
+			return std::to_string(val);
+		});
+
+		std::reverse(output.begin(), output.end());
+
+		REQUIRE(output == expected);
 	}
 }
 

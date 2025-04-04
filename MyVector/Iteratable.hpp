@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iterator>
-#include <utility>
 
 namespace details
 {
@@ -21,65 +20,23 @@ public:
 	using TReverseIterator = std::reverse_iterator<TIterator>;
 	using TConstReverseIterator = std::reverse_iterator<TConstIterator>;
 
-	TIterator begin()
-	{
-		return Ptr()->Begin();
-	}
+	TIterator begin() { return Ptr()->Begin(); }
+	TIterator end() { return Ptr()->End(); }
 
-	TIterator end()
-	{
-		return Ptr()->End();
-	}
+	TConstIterator begin() const { return Ptr()->Begin(); }
+	TConstIterator end() const { return Ptr()->End(); }
 
-	TConstIterator begin() const
-	{
-		return Ptr()->Begin();
-	}
+	TConstIterator cbegin() const { return begin(); }
+	TConstIterator cend() const { return end(); }
 
-	TConstIterator end() const
-	{
-		return Ptr()->End();
-	}
+	TReverseIterator rbegin() { return TReverseIterator(end()); }
+	TReverseIterator rend() { return TReverseIterator(begin()); }
 
-	TConstIterator cbegin() const
-	{
-		return begin();
-	}
+	TConstReverseIterator rbegin() const { return TConstReverseIterator(end()); }
+	TConstReverseIterator rend() const { return TConstReverseIterator(begin()); }
 
-	TConstIterator cend() const
-	{
-		return end();
-	}
-
-	TReverseIterator rbegin()
-	{
-		return TReverseIterator(end());
-	}
-
-	TReverseIterator rend()
-	{
-		return TReverseIterator(begin());
-	}
-
-	TConstReverseIterator rbegin() const
-	{
-		return TConstReverseIterator(end());
-	}
-
-	TConstReverseIterator rend() const
-	{
-		return TConstReverseIterator(begin());
-	}
-
-	TConstReverseIterator crbegin() const
-	{
-		return rbegin();
-	}
-
-	TConstReverseIterator crend() const
-	{
-		return rend();
-	}
+	TConstReverseIterator crbegin() const { return rbegin(); }
+	TConstReverseIterator crend() const { return rend(); }
 };
 
 } // namespace details
