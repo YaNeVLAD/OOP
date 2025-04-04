@@ -34,6 +34,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решен
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "my_vector", "MyVector\MyVector.vcxproj", "{5E6BE57F-3A05-4160-AD07-A27F242583FC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "shapes", "Shapes\Shapes.vcxproj", "{248797EA-63FE-40D3-B0CA-D9EA10C8F13E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -138,6 +140,14 @@ Global
 		{5E6BE57F-3A05-4160-AD07-A27F242583FC}.Release|x64.Build.0 = Release|x64
 		{5E6BE57F-3A05-4160-AD07-A27F242583FC}.Release|x86.ActiveCfg = Release|Win32
 		{5E6BE57F-3A05-4160-AD07-A27F242583FC}.Release|x86.Build.0 = Release|Win32
+		{248797EA-63FE-40D3-B0CA-D9EA10C8F13E}.Debug|x64.ActiveCfg = Debug|x64
+		{248797EA-63FE-40D3-B0CA-D9EA10C8F13E}.Debug|x64.Build.0 = Debug|x64
+		{248797EA-63FE-40D3-B0CA-D9EA10C8F13E}.Debug|x86.ActiveCfg = Debug|Win32
+		{248797EA-63FE-40D3-B0CA-D9EA10C8F13E}.Debug|x86.Build.0 = Debug|Win32
+		{248797EA-63FE-40D3-B0CA-D9EA10C8F13E}.Release|x64.ActiveCfg = Release|x64
+		{248797EA-63FE-40D3-B0CA-D9EA10C8F13E}.Release|x64.Build.0 = Release|x64
+		{248797EA-63FE-40D3-B0CA-D9EA10C8F13E}.Release|x86.ActiveCfg = Release|Win32
+		{248797EA-63FE-40D3-B0CA-D9EA10C8F13E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
