@@ -19,24 +19,24 @@ std::string Circle::ToString()
 	return std::string();
 }
 
-uint32_t Circle::GetOutlineColor()
+Color Circle::GetOutlineColor()
 {
-	return 0;
+	return m_outlineColor;
 }
 
-uint32_t Circle::GetFillColor()
+Color Circle::GetFillColor()
 {
-	return 0;
+	return m_fillColor;
 }
 
 Point Circle::GetCenter()
 {
-	return Point();
+	return m_center;
 }
 
 double Circle::GetRadius()
 {
-	return 0.0;
+	return m_radius;
 }
 
 void Circle::Draw(const ICanvas& canvas)

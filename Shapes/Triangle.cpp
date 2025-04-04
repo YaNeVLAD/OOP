@@ -19,12 +19,12 @@ std::string Triangle::ToString()
 	return std::string();
 }
 
-uint32_t Triangle::GetOutlineColor()
+Color Triangle::GetOutlineColor()
 {
 	return 0;
 }
 
-uint32_t Triangle::GetFillColor()
+Color Triangle::GetFillColor()
 {
 	return 0;
 }

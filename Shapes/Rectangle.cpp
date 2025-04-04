@@ -19,12 +19,12 @@ std::string Rectangle::ToString()
 	return std::string();
 }
 
-uint32_t Rectangle::GetOutlineColor()
+Color Rectangle::GetOutlineColor()
 {
 	return 0;
 }
 
-uint32_t Rectangle::GetFillColor()
+Color Rectangle::GetFillColor()
 {
 	return 0;
 }

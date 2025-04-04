@@ -42,6 +42,9 @@
     <ClCompile Include="MockCanvas.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Color.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Point.h">
@@ -74,8 +77,11 @@
     <ClInclude Include="Canvas.h">
       <Filter>Файлы заголовков\impl</Filter>
     </ClInclude>
-    <ClInclude Include="MockCanvas.h">
+    <ClInclude Include="Color.h">
       <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="MockCanvas.h">
+      <Filter>Файлы заголовков\impl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

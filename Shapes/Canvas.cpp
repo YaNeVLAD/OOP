@@ -1,17 +1,17 @@
 #include "Canvas.h"
 
-void Canvas::DrawLine(Point from, Point to, uint32_t lineColor)
+void Canvas::DrawLine(Point from, Point to, Color lineColor)
 {
 }
 
-void Canvas::FillPolygon(const std::vector<Point>& points, uint32_t fillColor)
+void Canvas::FillPolygon(const std::vector<Point>& points, Color fillColor)
 {
 }
 
-void Canvas::DrawCircle(Point center, double radius, uint32_t lineColor)
+void Canvas::DrawCircle(Point center, double radius, Color lineColor)
 {
 }
 
-void Canvas::FillCircle(Point center, double radius, uint32_t fillColor)
+void Canvas::FillCircle(Point center, double radius, Color fillColor)
 {
 }

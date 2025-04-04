@@ -13,11 +13,17 @@ public:
 	double GetArea() override;
 	double GetPerimeter() override;
 	std::string ToString() override;
-	uint32_t GetOutlineColor() override;
-	uint32_t GetFillColor() override;
+	Color GetOutlineColor() override;
+	Color GetFillColor() override;
 
 	void Draw(const ICanvas& canvas) override;
 
 	Point GetCenter();
 	double GetRadius();
+
+private:
+	Point m_center;
+	double m_radius;
+	Color m_fillColor;
+	Color m_outlineColor;
 };

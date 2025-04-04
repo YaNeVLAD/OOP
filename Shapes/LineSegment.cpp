@@ -19,7 +19,7 @@ std::string LineSegment::ToString()
 	return std::string();
 }
 
-uint32_t LineSegment::GetOutlineColor()
+Color LineSegment::GetOutlineColor()
 {
 	return 0;
 }

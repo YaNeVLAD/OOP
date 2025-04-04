@@ -13,7 +13,7 @@ public:
 	double GetArea() override;
 	double GetPerimeter() override;
 	std::string ToString() override;
-	uint32_t GetOutlineColor() override;
+	Color GetOutlineColor() override;
 
 	void Draw(const ICanvas& canvas) override;
 
