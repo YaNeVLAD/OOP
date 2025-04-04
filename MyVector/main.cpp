@@ -2,9 +2,8 @@
 
 #include "Vector.hpp"
 #include <algorithm>
-#include <ranges>
-#include <string>
-#include <vector>
+#include <iomanip>
+#include <sstream>
 
 struct Spy
 {
@@ -62,35 +61,38 @@ void PrintSpy(const Vector<Spy>& vec)
 
 int main()
 {
-	std::vector<int> v{ 1, 2, 3 };
-	Vector<int> vec{ 1, 2, 3 };
+	Vector<double> numbers;
+	Vector<std::string> others;
 
-	for (auto& val : vec)
+	std::cout << "Enter Text:" << std::endl;
+
+	std::string line;
+	std::string token;
+	while (std::getline(std::cin, line))
 	{
-		val = 444;
-	}
-
-	{
-		Vector<int> vec1{ 5, 4, 3, 2, 1 };
-		std::ranges::sort(vec1);
-
-		for (auto& val : vec1)
+		std::istringstream iss(line);
+		while (iss >> token)
 		{
-			std::cout << val << std::endl;
+			try
+			{
+				numbers.PushBack(std::stod(token));
+			}
+			catch (const std::exception&)
+			{
+				others.PushBack(token);
+			}
 		}
 	}
 
-	vec.Reserve(10);
-	vec.EmplaceBack();
-	vec.EmplaceBack();
-	vec.EmplaceBack();
-	vec.EmplaceBack();
-	vec.Resize(3);
-	vec.EmplaceBack();
+	std::cout << "Text contains " << numbers.Size() << " numbers" << std::endl;
+	std::cout << "Text contains " << others.Size() << " not number elements" << std::endl;
+	std::cout << "Total count " << numbers.Size() + others.Size() << " elements";
 
-	vec.PopBack();
-	vec.PopBack();
-	vec.EmplaceBack();
+	std::cout << "Sorted numbers: " << std::endl;
+	std::sort(numbers.begin(), numbers.end());
 
-	std::cout << "Program end" << std::endl;
+	for (const auto& num : numbers)
+	{
+		std::cout << std::fixed << std::setprecision(2) << num << " ";
+	}
 }
