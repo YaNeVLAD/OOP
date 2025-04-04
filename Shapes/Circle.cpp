@@ -38,3 +38,7 @@ double Circle::GetRadius()
 {
 	return 0.0;
 }
+
+void Circle::Draw(const ICanvas& canvas)
+{
+}

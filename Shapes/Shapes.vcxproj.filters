@@ -36,6 +36,12 @@
     <ClCompile Include="LineSegment.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Canvas.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="MockCanvas.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Point.h">
@@ -59,5 +65,20 @@
     <ClInclude Include="IShape.h">
       <Filter>Файлы заголовков\interface</Filter>
     </ClInclude>
+    <ClInclude Include="ICanvasDrawable.h">
+      <Filter>Файлы заголовков\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ICanvas.h">
+      <Filter>Файлы заголовков\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Canvas.h">
+      <Filter>Файлы заголовков\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="MockCanvas.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

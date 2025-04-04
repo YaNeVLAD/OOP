@@ -48,3 +48,7 @@ double Rectangle::GetHeight()
 {
 	return 0.0;
 }
+
+void Rectangle::Draw(const ICanvas& canvas)
+{
+}

@@ -33,3 +33,7 @@ Point LineSegment::GetEndPoint()
 {
 	return Point();
 }
+
+void LineSegment::Draw(const ICanvas& canvas)
+{
+}

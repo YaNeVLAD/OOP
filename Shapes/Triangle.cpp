@@ -43,3 +43,7 @@ Point Triangle::GetVertex3()
 {
 	return Point();
 }
+
+void Triangle::Draw(const ICanvas& canvas)
+{
+}
