@@ -84,7 +84,4 @@
       <Filter>Файлы заголовков\impl</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
 </Project>

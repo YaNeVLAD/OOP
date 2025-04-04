@@ -1,6 +1,8 @@
 #include "Circle.h"
 
 Circle::Circle(Point center, double radius)
+	: m_radius(radius)
+	, m_center(center)
 {
 }
 

@@ -1,4 +1,5 @@
 #include "Color.h"
+#include <utility>
 
 const Color Color::Red(255, 0, 0);
 const Color Color::Green(0, 255, 0);
@@ -26,7 +27,17 @@ Color::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 }
 
-Color Color::ToInt() const
+Color Color::operator=(const Color& other)
+{
+	return Color(other);
+}
+
+Color Color::operator=(Color&& other) noexcept
+{
+	return Color(std::move(other));
+}
+
+uint32_t Color::ToInt() const
 {
 	return (red << 24) | (green << 16) | (blue << 8) | alpha;
 }
