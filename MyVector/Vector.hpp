@@ -64,7 +64,7 @@ public:
 
 		for (size_t i = 0; i < Base::Size(); ++i)
 		{
-			if (this->operator[](i) != other[i])
+			if ((*this)[i] != other[i])
 			{
 				return false;
 			}
