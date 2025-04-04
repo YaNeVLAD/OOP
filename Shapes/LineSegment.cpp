@@ -1,6 +1,9 @@
 #include "LineSegment.h"
 
-LineSegment::LineSegment(Point a, Point b)
+LineSegment::LineSegment(Point start, Point end, Color outlineColor)
+	: m_start(start)
+	, m_end(end)
+	, m_outlineColor(outlineColor)
 {
 }
 
@@ -21,19 +24,20 @@ std::string LineSegment::ToString() const
 
 Color LineSegment::GetOutlineColor() const
 {
-	return 0;
+	return m_outlineColor;
 }
 
-Point LineSegment::GetStartPoint()
+Point LineSegment::GetStartPoint() const
 {
-	return Point();
+	return m_start;
 }
 
-Point LineSegment::GetEndPoint()
+Point LineSegment::GetEndPoint() const
 {
-	return Point();
+	return m_end;
 }
 
 void LineSegment::Draw(const ICanvas& canvas)
 {
+	canvas.DrawLine(m_start, m_end, m_outlineColor);
 }
