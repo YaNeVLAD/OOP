@@ -8,7 +8,7 @@ class Circle
 	, public ICanvasDrawable
 {
 public:
-	Circle(Point center, double radius);
+	Circle(Point center, double radius, Color fillColor = Color::White, Color outlineColor = Color::White);
 
 	double GetArea() const override;
 	double GetPerimeter() const override;

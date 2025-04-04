@@ -1,19 +1,24 @@
 #include "Circle.h"
 
-Circle::Circle(Point center, double radius)
-	: m_radius(radius)
-	, m_center(center)
+#define _USE_MATH_DEFINES
+#include <math.h>
+
+Circle::Circle(Point center, double radius, Color fillColor, Color outlineColor)
+	: m_center(center)
+	, m_radius(radius)
+	, m_fillColor(fillColor)
+	, m_outlineColor(outlineColor)
 {
 }
 
 double Circle::GetArea() const
 {
-	return 0.0;
+	return M_PI * pow(m_radius, 2);
 }
 
 double Circle::GetPerimeter() const
 {
-	return 0.0;
+	return 2 * M_PI * m_radius;
 }
 
 std::string Circle::ToString() const
@@ -43,4 +48,6 @@ double Circle::GetRadius() const
 
 void Circle::Draw(const ICanvas& canvas)
 {
+	canvas.FillCircle(m_center, m_radius, m_fillColor);
+	canvas.DrawCircle(m_center, m_radius, m_outlineColor);
 }
