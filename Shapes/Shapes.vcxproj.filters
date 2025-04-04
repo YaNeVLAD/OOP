@@ -19,30 +19,42 @@
     <Filter Include="Файлы заголовков\impl">
       <UniqueIdentifier>{94b53f40-1aa1-45fe-af78-3fcf0c41630f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\impl">
+      <UniqueIdentifier>{b9bff6d1-bad1-4cc2-83cd-73d0d42b4cc4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Triangle.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="Rectangle.cpp">
-      <Filter>Исходные файлы</Filter>
+    <ClCompile Include="Canvas.cpp">
+      <Filter>Исходные файлы\impl</Filter>
     </ClCompile>
     <ClCompile Include="Circle.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="LineSegment.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="Canvas.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="MockCanvas.cpp">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Исходные файлы\impl</Filter>
     </ClCompile>
     <ClCompile Include="Color.cpp">
+      <Filter>Исходные файлы\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="LineSegment.cpp">
+      <Filter>Исходные файлы\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="MockCanvas.cpp">
+      <Filter>Исходные файлы\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="Point.cpp">
+      <Filter>Исходные файлы\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="Rectangle.cpp">
+      <Filter>Исходные файлы\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="ShapeParser.cpp">
+      <Filter>Исходные файлы\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="Triangle.cpp">
+      <Filter>Исходные файлы\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -83,5 +95,14 @@
     <ClInclude Include="MockCanvas.h">
       <Filter>Файлы заголовков\impl</Filter>
     </ClInclude>
+    <ClInclude Include="ShapeParser.h">
+      <Filter>Файлы заголовков\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Shapes.txt" />
   </ItemGroup>
 </Project>

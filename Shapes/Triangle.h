@@ -8,7 +8,8 @@ class Triangle
 	, public ICanvasDrawable
 {
 public:
-	Triangle(Point a, Point b, Point c);
+	Triangle() = default;
+	Triangle(Point a, Point b, Point c, Color fillColor = Color::White, Color outlineColor = Color::Transparent);
 
 	double GetArea() const override;
 	double GetPerimeter() const override;
@@ -16,9 +17,16 @@ public:
 	Color GetOutlineColor() const override;
 	Color GetFillColor() const override;
 
-	void Draw(const ICanvas& canvas) override;
+	void Draw(const ICanvas& canvas) const override;
 
-	Point GetVertex1();
-	Point GetVertex2();
-	Point GetVertex3();
+	Point GetVertex1() const;
+	Point GetVertex2() const;
+	Point GetVertex3() const;
+
+private:
+	Point m_p0;
+	Point m_p1;
+	Point m_p2;
+	Color m_fillColor;
+	Color m_outlineColor;
 };

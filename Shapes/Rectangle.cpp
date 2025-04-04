@@ -1,54 +1,85 @@
 #include "Rectangle.h"
+#include <format>
 
-Rectangle::Rectangle(Point left, Point top, Point right, Point bottom)
+Rectangle::Rectangle(Point leftTop, Point rightBottom, Color fillColor, Color outlineColor)
+	: m_leftTop(leftTop)
+	, m_rightBottom(rightBottom)
+	, m_fillColor(fillColor)
+	, m_outlineColor(outlineColor)
 {
 }
 
 double Rectangle::GetArea() const
 {
-	return 0.0;
+	return GetWidth() * GetHeight();
 }
 
 double Rectangle::GetPerimeter() const
 {
-	return 0.0;
+	return 2 * (GetWidth() + GetHeight());
 }
 
 std::string Rectangle::ToString() const
 {
-	return std::string();
+	return std::format(
+		"Rectangle:\n"
+		"  Left Top: ({:.2f}, {:.2f})\n"
+		"  Right Bottom: ({:.2f}, {:.2f})\n"
+		"  Width: {:.2f}\n"
+		"  Height: {:.2f}\n"
+		"  Area: {:.2f}\n"
+		"  Perimeter: {:.2f}\n"
+		"  Fill color: {:08X}\n"
+		"  Outline color: {:08X}\n",
+		m_leftTop.x, m_leftTop.y,
+		m_rightBottom.x, m_rightBottom.y,
+		GetWidth(),
+		GetHeight(),
+		GetArea(),
+		GetPerimeter(),
+		m_fillColor.ToInt(),
+		m_outlineColor.ToInt());
 }
 
 Color Rectangle::GetOutlineColor() const
 {
-	return 0;
+	return m_outlineColor;
 }
 
 Color Rectangle::GetFillColor() const
 {
-	return 0;
+	return m_fillColor;
 }
 
-Point Rectangle::GetLeftTop()
+Point Rectangle::GetLeftTop() const
 {
-	return Point();
+	return m_leftTop;
 }
 
-Point Rectangle::GetRightBottom()
+Point Rectangle::GetRightBottom() const
 {
-	return Point();
+	return m_rightBottom;
 }
 
-double Rectangle::GetWidth()
+double Rectangle::GetWidth() const
 {
-	return 0.0;
+	return abs(m_rightBottom.x - m_leftTop.x);
 }
 
-double Rectangle::GetHeight()
+double Rectangle::GetHeight() const
 {
-	return 0.0;
+	return abs(m_rightBottom.y - m_leftTop.y);
 }
 
-void Rectangle::Draw(const ICanvas& canvas)
+void Rectangle::Draw(const ICanvas& canvas) const
 {
+	std::vector<Point> vertices = {
+		m_leftTop,
+		{ m_rightBottom.x, m_leftTop.y },
+		m_rightBottom,
+		{ m_leftTop.x, m_rightBottom.y }
+	};
+
+	canvas.FillPolygon(vertices, m_fillColor);
+	canvas.DrawPolygon(vertices, m_outlineColor);
 }

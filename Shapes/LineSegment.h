@@ -8,6 +8,7 @@ class LineSegment
 	, public ICanvasDrawable
 {
 public:
+	LineSegment() = default;
 	LineSegment(Point start, Point end, Color outlineColor = Color::White);
 
 	double GetArea() const override;
@@ -15,7 +16,7 @@ public:
 	std::string ToString() const override;
 	Color GetOutlineColor() const override;
 
-	void Draw(const ICanvas& canvas) override;
+	void Draw(const ICanvas& canvas) const override;
 
 	Point GetStartPoint() const;
 	Point GetEndPoint() const;

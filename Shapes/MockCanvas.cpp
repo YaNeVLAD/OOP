@@ -1,5 +1,10 @@
 #include "MockCanvas.h"
 
+MockCanvas::MockCanvas(std::ostream& output)
+	: m_output(output)
+{
+}
+
 void MockCanvas::DrawLine(Point from, Point to, Color lineColor) const
 {
 }

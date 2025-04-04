@@ -1,10 +1,28 @@
 #pragma once
 
+///////////////////////////////////
+//  Shapes
+///////////////////////////////////
+
+#include "../Shapes/Circle.h"
+#include "../Shapes/Color.h"
+#include "../Shapes/ICanvas.h"
+#include "../Shapes/ICanvasDrawable.h"
+#include "../Shapes/IShape.h"
+#include "../Shapes/ISolidShape.h"
+#include "../Shapes/LineSegment.h"
+#include "../Shapes/MockCanvas.h"
+#include "../Shapes/Point.h"
+#include "../Shapes/Rectangle.h"
+#include "../Shapes/Triangle.h"
+
+///////////////////////////////////
 #include "../Car/CarController.h"
 #include "../Dictionary/Dictionary.h"
 #include "../GeneratePrimeNumbers/GeneratePrimeNumbers.h"
 #include "../HtmlDecode/HtmlDecode.h"
 #include "../MyVector/Vector.hpp"
 #include "../ParseUrl/ParseUrl.h"
+#include "../Shapes/MockCanvas.h"
 #include "../Vector/VectorProcessor.h"
 #include <catch2/catch_all.hpp>

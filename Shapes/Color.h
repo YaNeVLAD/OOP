@@ -4,16 +4,16 @@
 
 struct Color
 {
+	Color();
+	Color(Color&& other) = default;
+	Color(const Color& other) noexcept = default;
+
 	Color(uint32_t hex);
 
 	Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
 
-	Color() = default;
-	Color(Color&& other) = default;
-	Color(const Color& other) noexcept = default;
-
-	Color operator=(const Color& other);
-	Color operator=(Color&& other) noexcept;
+	Color& operator=(const Color& other) = default;
+	Color& operator=(Color&& other) noexcept = default;
 
 	static const Color Red;
 	static const Color Green;
@@ -32,8 +32,8 @@ struct Color
 		return ToInt();
 	}
 
-	uint8_t red = 255;
-	uint8_t green = 255;
-	uint8_t blue = 255;
-	uint8_t alpha = 255;
+	uint8_t r;
+	uint8_t g;
+	uint8_t b;
+	uint8_t a;
 };

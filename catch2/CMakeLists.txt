@@ -47,6 +47,27 @@ add_executable(test_all
     ${CMAKE_SOURCE_DIR}/MyVector/Iteratable.hpp
     ${CMAKE_SOURCE_DIR}/MyVector/Allocator.hpp
     ${CMAKE_SOURCE_DIR}/MyVector/Vector.hpp
+
+    "test_shapes.cpp"
+    ${CMAKE_SOURCE_DIR}/Shapes/Circle.cpp
+    ${CMAKE_SOURCE_DIR}/Shapes/Color.cpp
+    ${CMAKE_SOURCE_DIR}/Shapes/LineSegment.cpp
+    ${CMAKE_SOURCE_DIR}/Shapes/MockCanvas.cpp
+    ${CMAKE_SOURCE_DIR}/Shapes/Point.cpp
+    ${CMAKE_SOURCE_DIR}/Shapes/Rectangle.cpp
+    ${CMAKE_SOURCE_DIR}/Shapes/Triangle.cpp
+
+    ${CMAKE_SOURCE_DIR}/Shapes/Circle.h
+    ${CMAKE_SOURCE_DIR}/Shapes/Color.h
+    ${CMAKE_SOURCE_DIR}/Shapes/ICanvas.h
+    ${CMAKE_SOURCE_DIR}/Shapes/ICanvasDrawable.h
+    ${CMAKE_SOURCE_DIR}/Shapes/IShape.h
+    ${CMAKE_SOURCE_DIR}/Shapes/ISolidShape.h
+    ${CMAKE_SOURCE_DIR}/Shapes/LineSegment.h
+    ${CMAKE_SOURCE_DIR}/Shapes/MockCanvas.h
+    ${CMAKE_SOURCE_DIR}/Shapes/Point.h
+    ${CMAKE_SOURCE_DIR}/Shapes/Rectangle.h
+    ${CMAKE_SOURCE_DIR}/Shapes/Triangle.h
 )
 
 add_executable(test_vector
@@ -104,6 +125,32 @@ add_executable(test_my_vector
     ${CMAKE_SOURCE_DIR}/MyVector/Vector.hpp
 )
 
+add_executable(test_shapes
+    ${CATCH_SOURCES}
+
+    "test_shapes.cpp"
+
+    ${CMAKE_SOURCE_DIR}/Shapes/Circle.cpp
+    ${CMAKE_SOURCE_DIR}/Shapes/Color.cpp
+    ${CMAKE_SOURCE_DIR}/Shapes/LineSegment.cpp
+    ${CMAKE_SOURCE_DIR}/Shapes/MockCanvas.cpp
+    ${CMAKE_SOURCE_DIR}/Shapes/Point.cpp
+    ${CMAKE_SOURCE_DIR}/Shapes/Rectangle.cpp
+    ${CMAKE_SOURCE_DIR}/Shapes/Triangle.cpp
+
+    ${CMAKE_SOURCE_DIR}/Shapes/Circle.h
+    ${CMAKE_SOURCE_DIR}/Shapes/Color.h
+    ${CMAKE_SOURCE_DIR}/Shapes/ICanvas.h
+    ${CMAKE_SOURCE_DIR}/Shapes/ICanvasDrawable.h
+    ${CMAKE_SOURCE_DIR}/Shapes/IShape.h
+    ${CMAKE_SOURCE_DIR}/Shapes/ISolidShape.h
+    ${CMAKE_SOURCE_DIR}/Shapes/LineSegment.h
+    ${CMAKE_SOURCE_DIR}/Shapes/MockCanvas.h
+    ${CMAKE_SOURCE_DIR}/Shapes/Point.h
+    ${CMAKE_SOURCE_DIR}/Shapes/Rectangle.h
+    ${CMAKE_SOURCE_DIR}/Shapes/Triangle.h
+)
+
 set_target_properties(
 test_all 
 test_vector 
@@ -113,6 +160,7 @@ test_dictionary
 test_parse_url
 test_car
 test_my_vector
+test_shapes
 PROPERTIES CXX_STANDARD 20)
 target_link_libraries(test_all PRIVATE Catch2::Catch2)
 target_link_libraries(test_vector PRIVATE Catch2::Catch2)
@@ -122,3 +170,4 @@ target_link_libraries(test_dictionary PRIVATE Catch2::Catch2)
 target_link_libraries(test_parse_url PRIVATE Catch2::Catch2)
 target_link_libraries(test_car PRIVATE Catch2::Catch2)
 target_link_libraries(test_my_vector PRIVATE Catch2::Catch2)
+target_link_libraries(test_shapes PRIVATE Catch2::Catch2)
