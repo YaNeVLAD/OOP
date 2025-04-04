@@ -4,27 +4,27 @@ Triangle::Triangle(Point a, Point b, Point c)
 {
 }
 
-double Triangle::GetArea()
+double Triangle::GetArea() const
 {
 	return 0.0;
 }
 
-double Triangle::GetPerimeter()
+double Triangle::GetPerimeter() const
 {
 	return 0.0;
 }
 
-std::string Triangle::ToString()
+std::string Triangle::ToString() const
 {
 	return std::string();
 }
 
-Color Triangle::GetOutlineColor()
+Color Triangle::GetOutlineColor() const
 {
 	return 0;
 }
 
-Color Triangle::GetFillColor()
+Color Triangle::GetFillColor() const
 {
 	return 0;
 }

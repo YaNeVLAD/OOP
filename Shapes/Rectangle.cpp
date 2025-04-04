@@ -4,27 +4,27 @@ Rectangle::Rectangle(Point left, Point top, Point right, Point bottom)
 {
 }
 
-double Rectangle::GetArea()
+double Rectangle::GetArea() const
 {
 	return 0.0;
 }
 
-double Rectangle::GetPerimeter()
+double Rectangle::GetPerimeter() const
 {
 	return 0.0;
 }
 
-std::string Rectangle::ToString()
+std::string Rectangle::ToString() const
 {
 	return std::string();
 }
 
-Color Rectangle::GetOutlineColor()
+Color Rectangle::GetOutlineColor() const
 {
 	return 0;
 }
 
-Color Rectangle::GetFillColor()
+Color Rectangle::GetFillColor() const
 {
 	return 0;
 }

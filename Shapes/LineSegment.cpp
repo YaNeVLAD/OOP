@@ -4,22 +4,22 @@ LineSegment::LineSegment(Point a, Point b)
 {
 }
 
-double LineSegment::GetArea()
+double LineSegment::GetArea() const
 {
 	return 0.0;
 }
 
-double LineSegment::GetPerimeter()
+double LineSegment::GetPerimeter() const
 {
 	return 0.0;
 }
 
-std::string LineSegment::ToString()
+std::string LineSegment::ToString() const
 {
 	return std::string();
 }
 
-Color LineSegment::GetOutlineColor()
+Color LineSegment::GetOutlineColor() const
 {
 	return 0;
 }

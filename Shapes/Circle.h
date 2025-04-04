@@ -10,16 +10,16 @@ class Circle
 public:
 	Circle(Point center, double radius);
 
-	double GetArea() override;
-	double GetPerimeter() override;
-	std::string ToString() override;
-	Color GetOutlineColor() override;
-	Color GetFillColor() override;
+	double GetArea() const override;
+	double GetPerimeter() const override;
+	std::string ToString() const override;
+	Color GetOutlineColor() const override;
+	Color GetFillColor() const override;
 
 	void Draw(const ICanvas& canvas) override;
 
-	Point GetCenter();
-	double GetRadius();
+	Point GetCenter() const;
+	double GetRadius() const;
 
 private:
 	Point m_center;
