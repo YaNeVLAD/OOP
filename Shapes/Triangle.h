@@ -3,6 +3,8 @@
 #include "ISolidShape.h"
 #include "Point.h"
 
+#include <tuple>
+
 class Triangle
 	: public ISolidShape
 	, public ICanvasDrawable
@@ -24,6 +26,8 @@ public:
 	Point GetVertex3() const;
 
 private:
+	std::tuple<double, double, double> GetLinesLength() const;
+
 	Point m_p0;
 	Point m_p1;
 	Point m_p2;

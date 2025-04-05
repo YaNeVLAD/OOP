@@ -12,9 +12,7 @@ Triangle::Triangle(Point a, Point b, Point c, Color fillColor, Color outlineColo
 
 double Triangle::GetArea() const
 {
-	double a = m_p0.DistanceTo(m_p1);
-	double b = m_p1.DistanceTo(m_p2);
-	double c = m_p2.DistanceTo(m_p0);
+	auto [a, b, c] = GetLinesLength();
 
 	double p = (a + b + c) / 2;
 
@@ -23,9 +21,7 @@ double Triangle::GetArea() const
 
 double Triangle::GetPerimeter() const
 {
-	double a = m_p0.DistanceTo(m_p1);
-	double b = m_p1.DistanceTo(m_p2);
-	double c = m_p2.DistanceTo(m_p0);
+	auto [a, b, c] = GetLinesLength();
 
 	return (a + b + c);
 }
@@ -73,6 +69,15 @@ Point Triangle::GetVertex2() const
 Point Triangle::GetVertex3() const
 {
 	return m_p2;
+}
+
+std::tuple<double, double, double> Triangle::GetLinesLength() const
+{
+	double a = m_p0.DistanceTo(m_p1);
+	double b = m_p1.DistanceTo(m_p2);
+	double c = m_p2.DistanceTo(m_p0);
+
+	return { a, b, c };
 }
 
 void Triangle::Draw(const ICanvas& canvas) const
