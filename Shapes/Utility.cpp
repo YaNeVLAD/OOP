@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <iomanip>
 
-void PrintShapeInfo(std::ostream& output, const TShapePtr& shape)
+void PrintShapeInfo(std::ostream& output, const ShapePtr& shape)
 {
 	if (!shape)
 	{
@@ -15,7 +15,7 @@ void PrintShapeInfo(std::ostream& output, const TShapePtr& shape)
 	output << shape->ToString();
 }
 
-const TShapePtr& FindShapeWithMinPerimeter(const std::vector<TShapePtr>& shapes)
+const ShapePtr& FindShapeWithMinPerimeter(const std::vector<ShapePtr>& shapes)
 {
 	if (shapes.empty())
 	{
@@ -29,7 +29,7 @@ const TShapePtr& FindShapeWithMinPerimeter(const std::vector<TShapePtr>& shapes)
 	return *std::ranges::min_element(shapes, lessPerimeter);
 }
 
-const TShapePtr& FindShapeWithMaxArea(const std::vector<TShapePtr>& shapes)
+const ShapePtr& FindShapeWithMaxArea(const std::vector<ShapePtr>& shapes)
 {
 	if (shapes.empty())
 	{

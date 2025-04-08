@@ -4,8 +4,8 @@
 #include <ostream>
 #include <vector>
 
-using TShapePtr = std::unique_ptr<BaseShape>;
+using ShapePtr = std::unique_ptr<BaseShape>;
 
-void PrintShapeInfo(std::ostream& output, const TShapePtr& shape);
-const TShapePtr& FindShapeWithMinPerimeter(const std::vector<TShapePtr>& shapes);
-const TShapePtr& FindShapeWithMaxArea(const std::vector<TShapePtr>& shapes);
+void PrintShapeInfo(std::ostream& output, const ShapePtr& shape);
+const ShapePtr& FindShapeWithMinPerimeter(const std::vector<ShapePtr>& shapes);
+const ShapePtr& FindShapeWithMaxArea(const std::vector<ShapePtr>& shapes);

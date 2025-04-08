@@ -6,7 +6,7 @@
 
 Circle::Circle(Point center, double radius, Color fillColor, Color outlineColor)
 	: m_center(center)
-	, m_radius(radius)
+	, m_radius(abs(radius))
 	, BaseSolidShape(fillColor, outlineColor)
 {
 }

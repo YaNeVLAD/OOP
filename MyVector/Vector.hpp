@@ -63,11 +63,19 @@ public:
 		}
 
 		Vector<TValue> temp;
-		temp.Resize(other.Size());
 
-		for (size_t i = 0; i < temp.Size(); ++i)
+		try
 		{
-			temp[i] = static_cast<TValue>(other[i]);
+			temp.Resize(other.Size());
+
+			for (size_t i = 0; i < temp.Size(); ++i)
+			{
+				temp[i] = static_cast<TValue>(other[i]);
+			}
+		}
+		catch (const std::exception&)
+		{
+			throw std::runtime_error("An exception was thrown during type conversion");
 		}
 
 		*this = std::move(temp);

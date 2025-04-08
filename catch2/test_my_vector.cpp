@@ -330,6 +330,7 @@ TEST_CASE("Vector specific methods work as intended")
 
 	SECTION("Operator= for Vector with different element type work as intended")
 	{
+		// Проверить на кастомных типах с перегруженным оператором приведения к типам
 		SECTION("Assigning Vector<int> to Vector<double>")
 		{
 			Vector<int> source = { 1, 2, 3 };
@@ -390,16 +391,43 @@ TEST_CASE("Vector specific methods work as intended")
 			REQUIRE(destination[2] == 3.0);
 			REQUIRE(destination[3] == 4.0);
 			REQUIRE(destination[4] == 5.0);
+		};
 
-			Vector<char> another_destination = { 'a', 'b', 'c', 'd', 'e', 'f' };
-			another_destination = source;
+		SECTION("Assigning Vector of different size")
+		{
+			Vector<int> source = { 1, 2 };
+			Vector<double> destination = { 1.0, 2.0, 3.0, 4.0, 5.0 };
+			destination = source;
 
-			REQUIRE(another_destination.Size() == 5);
-			REQUIRE(another_destination[0] == '\x01');
-			REQUIRE(another_destination[1] == '\x02');
-			REQUIRE(another_destination[2] == '\x03');
-			REQUIRE(another_destination[3] == '\x04');
-			REQUIRE(another_destination[4] == '\x05');
-		}
+			REQUIRE(destination.Size() == 2);
+			REQUIRE(destination[0] == 1.0);
+			REQUIRE(destination[1] == 2.0);
+		};
+
+		SECTION("Convertable type throws an exception during conversion")
+		{
+			struct A
+			{
+				int val;
+
+				A() = default;
+
+				A(int v)
+					: val(v)
+				{
+				}
+
+				operator int() const
+				{
+					throw std::runtime_error("LOL");
+					return val;
+				}
+			};
+
+			Vector<int> destination;
+			Vector<A> source{ 1, 2, 3, 4 };
+
+			REQUIRE_THROWS_AS(destination = source, std::runtime_error);
+		};
 	}
 }

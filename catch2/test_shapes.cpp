@@ -1,4 +1,4 @@
-#include "catch2.h"
+﻿#include "catch2.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
 
@@ -151,6 +151,18 @@ TEST_CASE("Edge cases with MockCanvas verification")
 		REQUIRE(output.find("radius 0.0") != std::string::npos);
 	}
 
+	SECTION("Negative radius circle drawing")
+	{
+		// Бросать исключение
+		Circle circle({ 0, 0 }, -10);
+
+		auto output = GetCanvasOutput([&circle](MockCanvas& mock) {
+			circle.Draw(mock);
+		});
+
+		REQUIRE(output.find("radius 10.0") != std::string::npos);
+	}
+
 	SECTION("Triangle with colinear points")
 	{
 		Triangle triangle({ 0, 0 }, { 2, 0 }, { 1, 0 });
@@ -182,5 +194,148 @@ TEST_CASE("MockCanvas method coverage")
 		REQUIRE(output.find("DrawCircle") != std::string::npos);
 		REQUIRE(output.find("FillCircle") != std::string::npos);
 		REQUIRE(output.find("DrawPolygon") != std::string::npos);
+	}
+}
+
+TEST_CASE("PrintShapeInfo with new shapes")
+{
+	std::stringstream ss;
+
+	SECTION("Null shape pointer")
+	{
+		ShapePtr shape = nullptr;
+		PrintShapeInfo(ss, shape);
+		REQUIRE(ss.str() == "Shape not found\n");
+	}
+
+	SECTION("Valid Circle pointer")
+	{
+		ShapePtr circle = std::make_unique<Circle>(Point{ 1.0, 2.0 }, 5.0);
+		PrintShapeInfo(ss, circle);
+		REQUIRE(ss.str() == circle->ToString());
+	}
+
+	SECTION("Valid Rectangle pointer")
+	{
+		ShapePtr rectangle = std::make_unique<Rectangle>(Point{ 0.0, 0.0 }, Point{ 4.0, 3.0 });
+		PrintShapeInfo(ss, rectangle);
+		REQUIRE(ss.str() == rectangle->ToString());
+	}
+
+	SECTION("Valid LineSegment pointer")
+	{
+		ShapePtr line = std::make_unique<LineSegment>(Point{ 1.0, 1.0 }, Point{ 5.0, 5.0 });
+		PrintShapeInfo(ss, line);
+		REQUIRE(ss.str() == line->ToString());
+	}
+
+	SECTION("Valid Triangle pointer")
+	{
+		ShapePtr triangle = std::make_unique<Triangle>(Point{ 0.0, 0.0 }, Point{ 1.0, 0.0 }, Point{ 0.5, 1.0 });
+		PrintShapeInfo(ss, triangle);
+		REQUIRE(ss.str() == triangle->ToString());
+	}
+}
+
+TEST_CASE("FindShapeWithMinPerimeter with new shapes")
+{
+	std::vector<ShapePtr> shapes;
+	Point origin{ 0, 0 };
+
+	SECTION("Empty vector")
+	{
+		const auto& result = FindShapeWithMinPerimeter(shapes);
+		REQUIRE(result == nullptr);
+	}
+
+	SECTION("Single shape")
+	{
+		shapes.push_back(std::make_unique<Circle>(origin, 5.0));
+		const auto& result = FindShapeWithMinPerimeter(shapes);
+		REQUIRE(result != nullptr);
+		REQUIRE(dynamic_cast<Circle*>(result.get())->GetRadius() == 5.0);
+	}
+
+	SECTION("Multiple shapes with different perimeters")
+	{
+		shapes.push_back(std::make_unique<Circle>(origin, 5.0));
+		shapes.push_back(std::make_unique<Rectangle>(origin, Point{ 4.0, 6.0 }));
+		shapes.push_back(std::make_unique<Circle>(origin, 3.0));
+		shapes.push_back(std::make_unique<LineSegment>(origin, Point{ 1.0, 0.0 }));
+		shapes.push_back(std::make_unique<Triangle>(origin, Point{ 1.0, 0.0 }, Point{ 0.5, 1.0 }));
+
+		const auto& result = FindShapeWithMinPerimeter(shapes);
+		REQUIRE(result != nullptr);
+		REQUIRE(dynamic_cast<LineSegment*>(result.get())->GetPerimeter() == 1.0);
+	}
+
+	SECTION("Multiple shapes with equal minimum perimeter")
+	{
+		shapes.push_back(std::make_unique<LineSegment>(origin, Point{ 1.0, 0.0 }));
+		shapes.push_back(std::make_unique<LineSegment>(origin, Point{ 0.0, 1.0 }));
+		shapes.push_back(std::make_unique<Triangle>(origin, Point{ 1.0, 0.0 }, Point{ 1.0, std::numeric_limits<double>::epsilon() }));
+
+		const auto& result = FindShapeWithMinPerimeter(shapes);
+		REQUIRE(result != nullptr);
+		REQUIRE(result->GetPerimeter() == 1.0);
+	}
+}
+
+TEST_CASE("FindShapeWithMaxArea with new shapes")
+{
+	std::vector<ShapePtr> shapes;
+	Point origin{ 0, 0 };
+
+	SECTION("Empty vector")
+	{
+		const auto& result = FindShapeWithMaxArea(shapes);
+		REQUIRE(result == nullptr);
+	}
+
+	SECTION("Single shape")
+	{
+		shapes.push_back(std::make_unique<Rectangle>(origin, Point{ 4.0, 5.0 }));
+		const auto& result = FindShapeWithMaxArea(shapes);
+		REQUIRE(result != nullptr);
+		REQUIRE(dynamic_cast<Rectangle*>(result.get())->GetWidth() == 4.0);
+		REQUIRE(dynamic_cast<Rectangle*>(result.get())->GetHeight() == 5.0);
+	}
+
+	SECTION("Multiple shapes with different areas")
+	{
+		shapes.push_back(std::make_unique<Circle>(origin, 3.0));
+		shapes.push_back(std::make_unique<Rectangle>(origin, Point{ 4.0, 5.0 }));
+		shapes.push_back(std::make_unique<Circle>(origin, 2.0));
+		shapes.push_back(std::make_unique<Rectangle>(origin, Point{ 6.0, 7.0 }));
+		shapes.push_back(std::make_unique<Triangle>(origin, Point{ 4.0, 0.0 }, Point{ 2.0, 3.0 }));
+
+		const auto& result = FindShapeWithMaxArea(shapes);
+		REQUIRE(result != nullptr);
+		REQUIRE(dynamic_cast<Rectangle*>(result.get())->GetWidth() == 6.0);
+		REQUIRE(dynamic_cast<Rectangle*>(result.get())->GetHeight() == 7.0);
+	}
+
+	SECTION("Multiple shapes with equal maximum area")
+	{
+		shapes.push_back(std::make_unique<Rectangle>(origin, Point{ 5.0, 5.0 }));
+		shapes.push_back(std::make_unique<Circle>(origin, std::sqrt(25.0 / M_PI)));
+		shapes.push_back(std::make_unique<Rectangle>(origin, Point{ 25.0, 1.0 }));
+
+		const auto& result = FindShapeWithMaxArea(shapes);
+		REQUIRE(result != nullptr);
+		double max_area = shapes[0]->GetArea();
+		for (const auto& shape : shapes)
+		{
+			max_area = std::max(max_area, shape->GetArea());
+		}
+		REQUIRE(result->GetArea() == max_area);
+	}
+
+	SECTION("LineSegment has zero area")
+	{
+		shapes.push_back(std::make_unique<LineSegment>(origin, Point{ 5.0, 0.0 }));
+		const auto& result = FindShapeWithMaxArea(shapes);
+		REQUIRE(result != nullptr);
+		REQUIRE(result->GetArea() == 0.0);
 	}
 }
