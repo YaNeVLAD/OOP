@@ -327,4 +327,79 @@ TEST_CASE("Vector specific methods work as intended")
 	{
 		REQUIRE_THROWS_AS(vec[vec.Size() + 1], std::out_of_range);
 	}
+
+	SECTION("Operator= for Vector with different element type work as intended")
+	{
+		SECTION("Assigning Vector<int> to Vector<double>")
+		{
+			Vector<int> source = { 1, 2, 3 };
+			Vector<double> destination;
+			destination = source;
+
+			REQUIRE(destination.Size() == 3);
+			REQUIRE(destination[0] == 1.0);
+			REQUIRE(destination[1] == 2.0);
+			REQUIRE(destination[2] == 3.0);
+		}
+
+		SECTION("Assigning Vector<int> to Vector<char>")
+		{
+			Vector<int> source = { 65, 66, 67 };
+			Vector<char> destination;
+			destination = source;
+
+			REQUIRE(destination.Size() == 3);
+			REQUIRE(destination[0] == 'A');
+			REQUIRE(destination[1] == 'B');
+			REQUIRE(destination[2] == 'C');
+		}
+
+		SECTION("Assigning Vector<char> to Vector<int>")
+		{
+			Vector<char> source = { 'a', 'b', 'c' };
+			Vector<int> destination;
+			destination = source;
+
+			REQUIRE(destination.Size() == 3);
+			REQUIRE(destination[0] == 97);
+			REQUIRE(destination[1] == 98);
+			REQUIRE(destination[2] == 99);
+		}
+
+		SECTION("Assigning Vector<int> to Vector<int>")
+		{
+			Vector<int> source = { 4, 5, 6 };
+			Vector<int> destination;
+			destination = source;
+
+			REQUIRE(destination.Size() == 3);
+			REQUIRE(destination[0] == 4);
+			REQUIRE(destination[1] == 5);
+			REQUIRE(destination[2] == 6);
+		}
+
+		SECTION("Assigning Vector of different size")
+		{
+			Vector<int> source = { 1, 2, 3, 4, 5 };
+			Vector<double> destination = { 1.0, 2.0 };
+			destination = source;
+
+			REQUIRE(destination.Size() == 5);
+			REQUIRE(destination[0] == 1.0);
+			REQUIRE(destination[1] == 2.0);
+			REQUIRE(destination[2] == 3.0);
+			REQUIRE(destination[3] == 4.0);
+			REQUIRE(destination[4] == 5.0);
+
+			Vector<char> another_destination = { 'a', 'b', 'c', 'd', 'e', 'f' };
+			another_destination = source;
+
+			REQUIRE(another_destination.Size() == 5);
+			REQUIRE(another_destination[0] == '\x01');
+			REQUIRE(another_destination[1] == '\x02');
+			REQUIRE(another_destination[2] == '\x03');
+			REQUIRE(another_destination[3] == '\x04');
+			REQUIRE(another_destination[4] == '\x05');
+		}
+	}
 }
