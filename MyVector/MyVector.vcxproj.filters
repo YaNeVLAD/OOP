@@ -34,6 +34,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Natvis Include="ContainerBase.natvis" />
+    <Natvis Include="Vector.natvis" />
   </ItemGroup>
 </Project>

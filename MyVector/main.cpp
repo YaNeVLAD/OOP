@@ -32,7 +32,7 @@ int main()
 
 	std::cout << "Text contains " << numbers.Size() << " numbers" << std::endl;
 	std::cout << "Text contains " << others.Size() << " not number elements" << std::endl;
-	std::cout << "Total count " << numbers.Size() + others.Size() << " elements";
+	std::cout << "Total count " << numbers.Size() + others.Size() << " elements" << std::endl;
 
 	std::cout << "Sorted numbers: " << std::endl;
 	std::sort(numbers.begin(), numbers.end());
