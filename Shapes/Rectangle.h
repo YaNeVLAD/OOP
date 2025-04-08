@@ -1,10 +1,10 @@
 #pragma once
+#include "BaseSolidShape.h"
 #include "ICanvasDrawable.h"
-#include "ISolidShape.h"
 #include "Point.h"
 
 class Rectangle
-	: public ISolidShape
+	: public BaseSolidShape
 	, public ICanvasDrawable
 {
 public:
@@ -14,8 +14,6 @@ public:
 	double GetArea() const override;
 	double GetPerimeter() const override;
 	std::string ToString() const override;
-	Color GetOutlineColor() const override;
-	Color GetFillColor() const override;
 
 	void Draw(const ICanvas& canvas) const override;
 
@@ -27,6 +25,4 @@ public:
 private:
 	Point m_leftTop;
 	Point m_rightBottom;
-	Color m_fillColor;
-	Color m_outlineColor;
 };

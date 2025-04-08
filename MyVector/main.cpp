@@ -1,9 +1,9 @@
-﻿#include <iostream>
+﻿#include <algorithm>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
 
 #include "Vector.hpp"
-#include <algorithm>
-#include <iomanip>
-#include <sstream>
 
 int main()
 {

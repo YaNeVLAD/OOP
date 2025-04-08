@@ -1,21 +1,20 @@
 #pragma once
+#include "BaseSolidShape.h"
 #include "ICanvasDrawable.h"
-#include "ISolidShape.h"
 #include "Point.h"
 
 class Circle
-	: public ISolidShape
+	: public BaseSolidShape
 	, public ICanvasDrawable
 {
 public:
 	Circle() = default;
 	Circle(Point center, double radius, Color fillColor = Color::White, Color outlineColor = Color::Transparent);
+	~Circle() = default;
 
 	double GetArea() const override;
 	double GetPerimeter() const override;
 	std::string ToString() const override;
-	Color GetOutlineColor() const override;
-	Color GetFillColor() const override;
 
 	void Draw(const ICanvas& canvas) const override;
 
@@ -25,6 +24,4 @@ public:
 private:
 	Point m_center;
 	double m_radius;
-	Color m_fillColor;
-	Color m_outlineColor;
 };

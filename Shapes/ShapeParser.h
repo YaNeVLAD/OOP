@@ -12,7 +12,7 @@ class ShapeParser
 public:
 	explicit ShapeParser(std::istream& input);
 
-	std::vector<std::unique_ptr<IShape>> Parse();
+	std::vector<std::unique_ptr<BaseShape>> Parse();
 
 private:
 	std::unique_ptr<Circle> ParseCircle(std::istream& input);

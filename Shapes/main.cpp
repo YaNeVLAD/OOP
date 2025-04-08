@@ -12,10 +12,10 @@ int main()
 	auto& maxAreaShape = FindShapeWithMaxArea(shapes);
 	auto& minPerimeterShape = FindShapeWithMinPerimeter(shapes);
 
-	std::cout << "Max Area: " << std::endl;
+	std::cout << "Max Area shape: " << std::endl;
 	PrintShapeInfo(std::cout, maxAreaShape);
 
-	std::cout << "Min Perimeter: " << std::endl;
+	std::cout << "Min Perimeter shape: " << std::endl;
 	PrintShapeInfo(std::cout, minPerimeterShape);
 
 	Canvas canvas{ "Canvas", 1024, 860 };

@@ -4,7 +4,7 @@
 LineSegment::LineSegment(Point start, Point end, Color outlineColor)
 	: m_start(start)
 	, m_end(end)
-	, m_outlineColor(outlineColor)
+	, BaseShape(outlineColor)
 {
 }
 
@@ -21,20 +21,14 @@ double LineSegment::GetPerimeter() const
 std::string LineSegment::ToString() const
 {
 	return std::format(
-		"LineSegment:\n"
-		"  Start: ({:.2f}, {:.2f})\n"
-		"  End: ({:.2f}, {:.2f})\n"
-		"  Length: {:.2f}\n"
-		"  Outline color: {:08X}\n",
-		m_start.x, m_start.y,
-		m_end.x, m_end.y,
-		m_start.DistanceTo(m_end),
-		m_outlineColor.ToInt());
-}
-
-Color LineSegment::GetOutlineColor() const
-{
-	return m_outlineColor;
+			   "LineSegment:\n"
+			   "  Start: ({:.2f}, {:.2f})\n"
+			   "  End: ({:.2f}, {:.2f})\n"
+			   "  Length: {:.2f}\n",
+			   m_start.x, m_start.y,
+			   m_end.x, m_end.y,
+			   m_start.DistanceTo(m_end))
+		+ BaseShape::ToString();
 }
 
 Point LineSegment::GetStartPoint() const
@@ -49,5 +43,5 @@ Point LineSegment::GetEndPoint() const
 
 void LineSegment::Draw(const ICanvas& canvas) const
 {
-	canvas.DrawLine(m_start, m_end, m_outlineColor);
+	canvas.DrawLine(m_start, m_end, GetOutlineColor());
 }

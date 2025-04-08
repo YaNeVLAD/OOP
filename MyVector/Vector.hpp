@@ -2,7 +2,6 @@
 
 #include <initializer_list>
 #include <stdexcept>
-#include <utility>
 
 #include "ContainerBase.hpp"
 #include "Iteratable.hpp"
@@ -53,6 +52,27 @@ public:
 	typename Base::TConstReference operator[](size_t index) const
 	{
 		return const_cast<Vector&>(*this)[index];
+	}
+
+	template <typename TOtherValue>
+	Vector& operator=(const Vector<TOtherValue>& other)
+	{
+		if (static_cast<const void*>(this) == static_cast<const void*>(&other))
+		{
+			return *this;
+		}
+
+		Vector<TValue> temp;
+		temp.Resize(other.Size());
+
+		for (size_t i = 0; i < temp.Size(); ++i)
+		{
+			temp[i] = static_cast<TValue>(other[i]);
+		}
+
+		*this = std::move(temp);
+
+		return *this;
 	}
 
 	bool operator==(const Vector& other) const

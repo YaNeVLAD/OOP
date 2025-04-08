@@ -1,6 +1,12 @@
 #include "MockCanvas.h"
 
 #include <format>
+#include <iostream>
+
+MockCanvas::MockCanvas()
+	: m_output(std::cout)
+{
+}
 
 MockCanvas::MockCanvas(std::ostream& output)
 	: m_output(output)
@@ -14,6 +20,18 @@ void MockCanvas::DrawLine(Point from, Point to, Color lineColor) const
 		from.x, from.y,
 		to.x, to.y,
 		lineColor.ToInt());
+}
+
+void MockCanvas::DrawPolygon(const std::vector<Point>& points, Color lineColor) const
+{
+	m_output << "DrawPolygon: vertices [";
+	for (size_t i = 0; i < points.size(); ++i)
+	{
+		if (i > 0)
+			m_output << ", ";
+		m_output << std::format("({:.1f}, {:.1f})", points[i].x, points[i].y);
+	}
+	m_output << std::format("], color {:08X}\n", lineColor.ToInt());
 }
 
 void MockCanvas::FillPolygon(const std::vector<Point>& points, Color fillColor) const

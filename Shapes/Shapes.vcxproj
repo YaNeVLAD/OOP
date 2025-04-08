@@ -135,6 +135,8 @@
     <ClCompile Include="Canvas.cpp" />
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="BaseShape.cpp" />
+    <ClCompile Include="BaseSolidShape.cpp" />
     <ClCompile Include="LineSegment.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MockCanvas.cpp" />
@@ -150,8 +152,8 @@
     <ClInclude Include="Color.h" />
     <ClInclude Include="ICanvas.h" />
     <ClInclude Include="ICanvasDrawable.h" />
-    <ClInclude Include="IShape.h" />
-    <ClInclude Include="ISolidShape.h" />
+    <ClInclude Include="BaseShape.h" />
+    <ClInclude Include="BaseSolidShape.h" />
     <ClInclude Include="ShapeParser.h" />
     <ClInclude Include="LineSegment.h" />
     <ClInclude Include="MockCanvas.h" />

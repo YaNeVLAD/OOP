@@ -56,18 +56,22 @@ add_executable(test_all
     ${CMAKE_SOURCE_DIR}/Shapes/Point.cpp
     ${CMAKE_SOURCE_DIR}/Shapes/Rectangle.cpp
     ${CMAKE_SOURCE_DIR}/Shapes/Triangle.cpp
+    ${CMAKE_SOURCE_DIR}/Shapes/Utility.cpp
+    ${CMAKE_SOURCE_DIR}/Shapes/BaseShape.cpp
+    ${CMAKE_SOURCE_DIR}/Shapes/BaseSolidShape.cpp
 
     ${CMAKE_SOURCE_DIR}/Shapes/Circle.h
     ${CMAKE_SOURCE_DIR}/Shapes/Color.h
     ${CMAKE_SOURCE_DIR}/Shapes/ICanvas.h
     ${CMAKE_SOURCE_DIR}/Shapes/ICanvasDrawable.h
-    ${CMAKE_SOURCE_DIR}/Shapes/IShape.h
-    ${CMAKE_SOURCE_DIR}/Shapes/ISolidShape.h
+    ${CMAKE_SOURCE_DIR}/Shapes/BaseShape.h
+    ${CMAKE_SOURCE_DIR}/Shapes/BaseSolidShape.h
     ${CMAKE_SOURCE_DIR}/Shapes/LineSegment.h
     ${CMAKE_SOURCE_DIR}/Shapes/MockCanvas.h
     ${CMAKE_SOURCE_DIR}/Shapes/Point.h
     ${CMAKE_SOURCE_DIR}/Shapes/Rectangle.h
     ${CMAKE_SOURCE_DIR}/Shapes/Triangle.h
+    ${CMAKE_SOURCE_DIR}/Shapes/Utility.h
 )
 
 add_executable(test_vector
@@ -137,18 +141,22 @@ add_executable(test_shapes
     ${CMAKE_SOURCE_DIR}/Shapes/Point.cpp
     ${CMAKE_SOURCE_DIR}/Shapes/Rectangle.cpp
     ${CMAKE_SOURCE_DIR}/Shapes/Triangle.cpp
+    ${CMAKE_SOURCE_DIR}/Shapes/Utility.cpp
+    ${CMAKE_SOURCE_DIR}/Shapes/BaseShape.cpp
+    ${CMAKE_SOURCE_DIR}/Shapes/BaseSolidShape.cpp
 
     ${CMAKE_SOURCE_DIR}/Shapes/Circle.h
     ${CMAKE_SOURCE_DIR}/Shapes/Color.h
     ${CMAKE_SOURCE_DIR}/Shapes/ICanvas.h
     ${CMAKE_SOURCE_DIR}/Shapes/ICanvasDrawable.h
-    ${CMAKE_SOURCE_DIR}/Shapes/IShape.h
-    ${CMAKE_SOURCE_DIR}/Shapes/ISolidShape.h
+    ${CMAKE_SOURCE_DIR}/Shapes/BaseShape.h
+    ${CMAKE_SOURCE_DIR}/Shapes/BaseSolidShape.h
     ${CMAKE_SOURCE_DIR}/Shapes/LineSegment.h
     ${CMAKE_SOURCE_DIR}/Shapes/MockCanvas.h
     ${CMAKE_SOURCE_DIR}/Shapes/Point.h
     ${CMAKE_SOURCE_DIR}/Shapes/Rectangle.h
     ${CMAKE_SOURCE_DIR}/Shapes/Triangle.h
+    ${CMAKE_SOURCE_DIR}/Shapes/Utility.h
 )
 
 set_target_properties(

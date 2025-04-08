@@ -1,12 +1,12 @@
 #pragma once
+#include "BaseSolidShape.h"
 #include "ICanvasDrawable.h"
-#include "ISolidShape.h"
 #include "Point.h"
 
 #include <tuple>
 
 class Triangle
-	: public ISolidShape
+	: public BaseSolidShape
 	, public ICanvasDrawable
 {
 public:
@@ -16,8 +16,6 @@ public:
 	double GetArea() const override;
 	double GetPerimeter() const override;
 	std::string ToString() const override;
-	Color GetOutlineColor() const override;
-	Color GetFillColor() const override;
 
 	void Draw(const ICanvas& canvas) const override;
 
@@ -31,6 +29,4 @@ private:
 	Point m_p0;
 	Point m_p1;
 	Point m_p2;
-	Color m_fillColor;
-	Color m_outlineColor;
 };

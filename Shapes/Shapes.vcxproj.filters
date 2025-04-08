@@ -57,6 +57,12 @@
     <ClCompile Include="Utility.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="BaseShape.cpp">
+      <Filter>Исходные файлы\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseSolidShape.cpp">
+      <Filter>Исходные файлы\impl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Point.h">
@@ -73,12 +79,6 @@
     </ClInclude>
     <ClInclude Include="Triangle.h">
       <Filter>Файлы заголовков\impl</Filter>
-    </ClInclude>
-    <ClInclude Include="ISolidShape.h">
-      <Filter>Файлы заголовков\interface</Filter>
-    </ClInclude>
-    <ClInclude Include="IShape.h">
-      <Filter>Файлы заголовков\interface</Filter>
     </ClInclude>
     <ClInclude Include="ICanvasDrawable.h">
       <Filter>Файлы заголовков\interface</Filter>
@@ -100,6 +100,12 @@
     </ClInclude>
     <ClInclude Include="Utility.h">
       <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseShape.h">
+      <Filter>Файлы заголовков\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseSolidShape.h">
+      <Filter>Файлы заголовков\impl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

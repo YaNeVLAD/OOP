@@ -4,8 +4,7 @@
 Rectangle::Rectangle(Point leftTop, Point rightBottom, Color fillColor, Color outlineColor)
 	: m_leftTop(leftTop)
 	, m_rightBottom(rightBottom)
-	, m_fillColor(fillColor)
-	, m_outlineColor(outlineColor)
+	, BaseSolidShape(fillColor, outlineColor)
 {
 }
 
@@ -22,33 +21,16 @@ double Rectangle::GetPerimeter() const
 std::string Rectangle::ToString() const
 {
 	return std::format(
-		"Rectangle:\n"
-		"  Left Top: ({:.2f}, {:.2f})\n"
-		"  Right Bottom: ({:.2f}, {:.2f})\n"
-		"  Width: {:.2f}\n"
-		"  Height: {:.2f}\n"
-		"  Area: {:.2f}\n"
-		"  Perimeter: {:.2f}\n"
-		"  Fill color: {:08X}\n"
-		"  Outline color: {:08X}\n",
-		m_leftTop.x, m_leftTop.y,
-		m_rightBottom.x, m_rightBottom.y,
-		GetWidth(),
-		GetHeight(),
-		GetArea(),
-		GetPerimeter(),
-		m_fillColor.ToInt(),
-		m_outlineColor.ToInt());
-}
-
-Color Rectangle::GetOutlineColor() const
-{
-	return m_outlineColor;
-}
-
-Color Rectangle::GetFillColor() const
-{
-	return m_fillColor;
+			   "Rectangle:\n"
+			   "  Left Top: ({:.2f}, {:.2f})\n"
+			   "  Right Bottom: ({:.2f}, {:.2f})\n"
+			   "  Width: {:.2f}\n"
+			   "  Height: {:.2f}\n",
+			   m_leftTop.x, m_leftTop.y,
+			   m_rightBottom.x, m_rightBottom.y,
+			   GetWidth(),
+			   GetHeight())
+		+ BaseSolidShape::ToString();
 }
 
 Point Rectangle::GetLeftTop() const
@@ -80,6 +62,6 @@ void Rectangle::Draw(const ICanvas& canvas) const
 		{ m_leftTop.x, m_rightBottom.y }
 	};
 
-	canvas.FillPolygon(vertices, m_fillColor);
-	canvas.DrawPolygon(vertices, m_outlineColor);
+	canvas.FillPolygon(vertices, GetFillColor());
+	canvas.DrawPolygon(vertices, GetOutlineColor());
 }

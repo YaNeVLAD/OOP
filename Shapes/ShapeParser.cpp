@@ -14,9 +14,9 @@ ShapeParser::ShapeParser(std::istream& input)
 {
 }
 
-std::vector<std::unique_ptr<IShape>> ShapeParser::Parse()
+std::vector<std::unique_ptr<BaseShape>> ShapeParser::Parse()
 {
-	std::vector<std::unique_ptr<IShape>> shapes;
+	std::vector<std::unique_ptr<BaseShape>> shapes;
 
 	std::string line;
 	std::string shapeType;

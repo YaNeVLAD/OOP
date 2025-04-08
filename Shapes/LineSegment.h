@@ -1,10 +1,10 @@
 #pragma once
+#include "BaseShape.h"
 #include "ICanvasDrawable.h"
-#include "IShape.h"
 #include "Point.h"
 
 class LineSegment
-	: public IShape
+	: public BaseShape
 	, public ICanvasDrawable
 {
 public:
@@ -14,7 +14,6 @@ public:
 	double GetArea() const override;
 	double GetPerimeter() const override;
 	std::string ToString() const override;
-	Color GetOutlineColor() const override;
 
 	void Draw(const ICanvas& canvas) const override;
 
@@ -24,5 +23,4 @@ public:
 private:
 	Point m_start;
 	Point m_end;
-	Color m_outlineColor;
 };

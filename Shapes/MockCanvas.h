@@ -6,9 +6,11 @@
 class MockCanvas : public ICanvas
 {
 public:
+	MockCanvas();
 	explicit MockCanvas(std::ostream& output);
 
 	void DrawLine(Point from, Point to, Color lineColor) const override;
+	void DrawPolygon(const std::vector<Point>& points, Color lineColor) const override;
 	void FillPolygon(const std::vector<Point>& points, Color fillColor) const override;
 	void DrawCircle(Point center, double radius, Color lineColor) const override;
 	void FillCircle(Point center, double radius, Color fillColor) const override;

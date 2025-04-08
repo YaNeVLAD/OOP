@@ -4,17 +4,18 @@
 //  Shapes
 ///////////////////////////////////
 
+#include "../Shapes/BaseShape.h"
+#include "../Shapes/BaseSolidShape.h"
 #include "../Shapes/Circle.h"
 #include "../Shapes/Color.h"
 #include "../Shapes/ICanvas.h"
 #include "../Shapes/ICanvasDrawable.h"
-#include "../Shapes/IShape.h"
-#include "../Shapes/ISolidShape.h"
 #include "../Shapes/LineSegment.h"
 #include "../Shapes/MockCanvas.h"
 #include "../Shapes/Point.h"
 #include "../Shapes/Rectangle.h"
 #include "../Shapes/Triangle.h"
+#include "../Shapes/Utility.h"
 
 ///////////////////////////////////
 #include "../Car/CarController.h"

@@ -7,8 +7,7 @@
 Circle::Circle(Point center, double radius, Color fillColor, Color outlineColor)
 	: m_center(center)
 	, m_radius(radius)
-	, m_fillColor(fillColor)
-	, m_outlineColor(outlineColor)
+	, BaseSolidShape(fillColor, outlineColor)
 {
 }
 
@@ -25,29 +24,12 @@ double Circle::GetPerimeter() const
 std::string Circle::ToString() const
 {
 	return std::format(
-		"Circle:\n"
-		"  Center: ({:.2f}, {:.2f})\n"
-		"  Radius: {:.2f}\n"
-		"  Area: {:.2f}\n"
-		"  Perimeter: {:.2f}\n"
-		"  Fill color: {:08X}\n"
-		"  Outline color: {:08X}\n",
-		m_center.x, m_center.y,
-		m_radius,
-		GetArea(),
-		GetPerimeter(),
-		m_fillColor.ToInt(),
-		m_outlineColor.ToInt());
-}
-
-Color Circle::GetOutlineColor() const
-{
-	return m_outlineColor;
-}
-
-Color Circle::GetFillColor() const
-{
-	return m_fillColor;
+			   "Circle:\n"
+			   "  Center: ({:.2f}, {:.2f})\n"
+			   "  Radius: {:.2f}\n",
+			   m_center.x, m_center.y,
+			   m_radius)
+		+ BaseSolidShape::ToString();
 }
 
 Point Circle::GetCenter() const
@@ -62,6 +44,6 @@ double Circle::GetRadius() const
 
 void Circle::Draw(const ICanvas& canvas) const
 {
-	canvas.FillCircle(m_center, m_radius, m_fillColor);
-	canvas.DrawCircle(m_center, m_radius, m_outlineColor);
+	canvas.FillCircle(m_center, m_radius, GetFillColor());
+	canvas.DrawCircle(m_center, m_radius, GetOutlineColor());
 }
