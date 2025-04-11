@@ -31,6 +31,24 @@ int main()
 	{
 		Date date(01, 01, 1970);
 		Date date2(31, 12, 9999);
+		Date id;
+		if (std::cin >> id)
+		{
+			std::cout << id << std::endl;
+		}
+		else
+		{
+			std::cout << "WRONG DATE" << std::endl;
+		}
+
+		date == date2;
+		date != date2;
+		date > date2;
+		date < date2;
+		date >= date2;
+		date <= date2;
+
+		int x = 10, int y = 5;
 
 		std::cout << date.GetDay() << std::endl;
 		std::cout << static_cast<int>(date.GetMonth()) << std::endl;

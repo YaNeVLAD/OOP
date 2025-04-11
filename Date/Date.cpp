@@ -108,8 +108,7 @@ Month Date::GetMonth() const
 
 DayOfWeek Date::GetDayOfWeek() const
 {
-	auto wd = InnerDayOfWeek{ m_timepoint };
-	return static_cast<DayOfWeek>(wd.c_encoding());
+	return static_cast<DayOfWeek>(InnerDayOfWeek{ m_timepoint }.c_encoding());
 }
 
 unsigned Date::GetYear() const
@@ -204,30 +203,31 @@ std::ostream& operator<<(std::ostream& os, const Date& date)
 
 std::istream& operator>>(std::istream& is, Date& date)
 {
-	unsigned day = 0, month = 0, year = 0;
-	char dot1 = 0, dot2 = 0;
+	unsigned day, month, year;
+	char dot1, dot2;
 
-	if (is >> day >> dot1 >> month >> dot2 >> year)
+	if (!(is >> day >> dot1 >> month >> dot2 >> year))
 	{
-		if (dot1 == '.' && dot2 == '.')
-		{
-			try
-			{
-				date = Date(day, static_cast<Month>(month), year);
-			}
-			catch (const std::exception&)
-			{
-				is.setstate(std::ios::failbit);
-			}
-		}
+		is.setstate(std::ios::failbit);
+		return is;
 	}
-	else
+
+	if (dot1 != '.' || dot2 != '.')
 	{
-		if (!is.fail())
-		{
-			is.setstate(std::ios::failbit);
-		}
+		is.setstate(std::ios::failbit);
+		return is;
 	}
+
+	try
+	{
+		date = Date(day, static_cast<Month>(month), year);
+	}
+	catch (const std::exception&)
+	{
+		is.setstate(std::ios::failbit);
+	}
+
+	is.setstate(std::ios::goodbit);
 
 	return is;
 }

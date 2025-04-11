@@ -62,14 +62,7 @@ public:
 	Date& operator+=(int days);
 	Date& operator-=(int days);
 
-	bool operator==(const Date& other) const = default;
-	bool operator!=(const Date& other) const = default;
-
-	bool operator>(const Date& other) const = default;
-	bool operator<(const Date& other) const = default;
-
-	bool operator>=(const Date& other) const = default;
-	bool operator<=(const Date& other) const = default;
+	auto operator<=>(const Date& other) const = default;
 
 	friend std::ostream& operator<<(std::ostream& out, const Date& date);
 	friend std::istream& operator>>(std::istream& in, Date& date);
