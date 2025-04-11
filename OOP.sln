@@ -31,6 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решен
 		TextFile1.txt = TextFile1.txt
 		TextFile2.txt = TextFile2.txt
 		TextFile3.txt = TextFile3.txt
+		TextFile4.txt = TextFile4.txt
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "my_vector", "MyVector\MyVector.vcxproj", "{5E6BE57F-3A05-4160-AD07-A27F242583FC}"
@@ -39,7 +40,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "shapes", "Shapes\Shapes.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "my_string", "MyString\MyString.vcxproj", "{ADCAE518-B0B5-4196-995D-7B566AB701B4}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Date", "Date\Date.vcxproj", "{3CC188C2-82C7-4D97-A3FB-E7AF9E7E033D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "date", "Date\Date.vcxproj", "{3CC188C2-82C7-4D97-A3FB-E7AF9E7E033D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

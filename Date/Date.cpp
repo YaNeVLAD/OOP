@@ -168,7 +168,7 @@ Date Date::operator-(int days) const
 
 int Date::operator-(const Date& other) const
 {
-	return static_cast<int>((m_timepoint - other.m_timepoint).count());
+	return (m_timepoint - other.m_timepoint).count();
 }
 
 Date& Date::operator+=(int days)
@@ -187,6 +187,11 @@ Date& Date::operator-=(int days)
 	m_timepoint = newTimePoint;
 
 	return *this;
+}
+
+std::string Date::ToString() const
+{
+	return DateToString(m_timepoint);
 }
 
 Date::Date(const std::chrono::sys_days& timePoint)
@@ -225,6 +230,7 @@ std::istream& operator>>(std::istream& is, Date& date)
 	catch (const std::exception&)
 	{
 		is.setstate(std::ios::failbit);
+		return is;
 	}
 
 	is.setstate(std::ios::goodbit);

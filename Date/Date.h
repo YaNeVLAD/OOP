@@ -67,6 +67,8 @@ public:
 	friend std::ostream& operator<<(std::ostream& out, const Date& date);
 	friend std::istream& operator>>(std::istream& in, Date& date);
 
+	std::string ToString() const;
+
 private:
 	explicit Date(const std::chrono::sys_days& timePoint);
 
