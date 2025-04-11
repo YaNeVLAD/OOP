@@ -3,208 +3,201 @@
 #include <format>
 #include <stdexcept>
 
-#include "DateConstants.hpp"
+using namespace std::chrono_literals;
+
+namespace
+{
+
+using InnerYear = std::chrono::year;
+using InnerMonth = std::chrono::month;
+using InnerDay = std::chrono::day;
+using InnerEpochDays = std::chrono::sys_days;
+using InnerDate = std::chrono::year_month_day;
+using InnerDays = std::chrono::days;
+using InnerDayOfWeek = std::chrono::weekday;
+
+constexpr unsigned MAX_YEAR = 9999;
+constexpr unsigned MIN_YEAR = 1970;
+constexpr unsigned MIN_MONTH = 1;
+constexpr unsigned MAX_MONTH = 12;
+
+constexpr InnerEpochDays MIN_DATE = InnerDate{ 1970y / std::chrono::January / 1d };
+constexpr InnerEpochDays MAX_DATE = InnerDate{ 9999y / std::chrono::December / 31d };
+
+std::string DateToString(const InnerDate& date)
+{
+	return std::format("{:02}.{:02}.{:04}",
+		static_cast<unsigned>(date.day()),
+		static_cast<unsigned>(date.month()),
+		static_cast<int>(date.year()));
+}
+
+void AssertIsTimePointInRange(const InnerEpochDays& timePoint)
+{
+	if (timePoint < MIN_DATE || timePoint > MAX_DATE)
+	{
+		auto date = InnerDate{ timePoint };
+
+		throw std::out_of_range(
+			std::format("Date {} is outside the valid range [{}, {}]",
+				DateToString(date),
+				DateToString(MIN_DATE),
+				DateToString(MAX_DATE)));
+	}
+}
+
+InnerDate ValidateDate(unsigned day, unsigned month, unsigned year)
+{
+	if (year < MIN_YEAR || year > MAX_YEAR)
+	{
+		throw std::out_of_range(std::format("Year must be in range from {} ot {}",
+			MIN_YEAR, MAX_YEAR));
+	}
+	if (month < MIN_MONTH || month > MAX_MONTH)
+	{
+		throw std::out_of_range(std::format("Month must be in range from {} ot {}",
+			MIN_MONTH, MAX_MONTH));
+	}
+
+	InnerDate date = InnerYear(year) / InnerMonth{ month } / InnerDay{ day };
+
+	if (!date.ok())
+	{
+		throw std::invalid_argument("Invalid date components (e.g., day out of range for month)");
+	}
+
+	return date;
+}
+
+} // namespace
 
 Date::Date()
-	: m_timestamp(0)
+	: m_timepoint(MIN_DATE)
 {
 }
 
-Date::Date(unsigned timestamp)
-	: m_timestamp(timestamp)
+Date::Date(unsigned daysSinceEpoch)
+	: m_timepoint(MIN_DATE + InnerDays{ daysSinceEpoch })
 {
-	AssertIsTimestampInRange();
+	AssertIsTimePointInRange(m_timepoint);
 }
 
 Date::Date(unsigned day, unsigned month, unsigned year)
-	: Date(day, static_cast<Month>(month), year)
 {
+	auto date = ValidateDate(day, month, year);
+
+	m_timepoint = InnerEpochDays{ date };
+
+	AssertIsTimePointInRange(m_timepoint);
 }
 
 Date::Date(unsigned day, Month month, unsigned year)
-	: m_timestamp(DateToTimestamp(day, month, year))
+	: Date(day, static_cast<unsigned>(month), year)
 {
-	AssertIsDateInRange(day, month, year);
 }
 
 unsigned Date::GetDay() const
 {
-	return std::get<0>(TimestampToDate());
+	return static_cast<unsigned>(InnerDate{ m_timepoint }.day());
 }
 
 Month Date::GetMonth() const
 {
-	return std::get<1>(TimestampToDate());
+	return static_cast<Month>(static_cast<unsigned>(InnerDate{ m_timepoint }.month()));
 }
 
 DayOfWeek Date::GetDayOfWeek() const
 {
-	return static_cast<DayOfWeek>((m_timestamp + 4) % 7);
+	auto wd = InnerDayOfWeek{ m_timepoint };
+	return static_cast<DayOfWeek>(wd.c_encoding());
 }
 
 unsigned Date::GetYear() const
 {
-	return std::get<2>(TimestampToDate());
+	return static_cast<unsigned>(static_cast<int>(InnerDate{ m_timepoint }.year()));
 }
 
 Date& Date::operator++()
 {
-	AssertIsTimestampInRange(m_timestamp + 1);
-	++m_timestamp;
+	auto next = m_timepoint + InnerDays{ 1 };
+	AssertIsTimePointInRange(next);
+	m_timepoint = next;
+
 	return *this;
 }
 
 Date Date::operator++(int)
 {
 	Date temp = *this;
-	AssertIsTimestampInRange(m_timestamp + 1);
 	++(*this);
+
 	return temp;
 }
 
 Date& Date::operator--()
 {
-	AssertIsTimestampInRange(m_timestamp - 1);
-	--m_timestamp;
+	auto prev = m_timepoint - InnerDays{ 1 };
+	AssertIsTimePointInRange(prev);
+	m_timepoint = prev;
+
 	return *this;
 }
 
 Date Date::operator--(int)
 {
 	Date temp = *this;
-	AssertIsTimestampInRange(m_timestamp - 1);
 	--(*this);
+
 	return temp;
 }
 
-Date Date::operator+(unsigned days)
+Date Date::operator+(int days) const
 {
-	AssertIsTimestampInRange(m_timestamp + days);
-	return Date(m_timestamp + days);
+	auto newTimePoint = m_timepoint + InnerDays{ days };
+	AssertIsTimePointInRange(newTimePoint);
+
+	return Date(newTimePoint);
 }
 
-Date Date::operator-(unsigned days)
+Date Date::operator-(int days) const
 {
-	AssertIsTimestampInRange(m_timestamp - days);
-	return Date(m_timestamp - days);
+	auto newTimePoint = m_timepoint + InnerDays{ days };
+	AssertIsTimePointInRange(newTimePoint);
+
+	return Date(newTimePoint);
 }
 
-int Date::operator-(const Date& other)
+int Date::operator-(const Date& other) const
 {
-	return m_timestamp - other.m_timestamp;
+	return static_cast<int>((m_timepoint - other.m_timepoint).count());
 }
 
-Date& Date::operator+=(unsigned days)
+Date& Date::operator+=(int days)
 {
-	AssertIsTimestampInRange(m_timestamp + days);
-	m_timestamp += days;
+	auto newTimePoint = m_timepoint + InnerDays{ days };
+	AssertIsTimePointInRange(newTimePoint);
+	m_timepoint = newTimePoint;
+
 	return *this;
 }
 
-Date& Date::operator-=(unsigned days)
+Date& Date::operator-=(int days)
 {
-	AssertIsTimestampInRange(m_timestamp - days);
-	m_timestamp -= days;
+	auto newTimePoint = m_timepoint - InnerDays{ days };
+	AssertIsTimePointInRange(newTimePoint);
+	m_timepoint = newTimePoint;
+
 	return *this;
 }
 
-bool Date::operator==(const Date& other)
+Date::Date(const std::chrono::sys_days& timePoint)
+	: m_timepoint(timePoint)
 {
-	return m_timestamp == other.m_timestamp;
-}
-
-bool Date::operator!=(const Date& other)
-{
-	return !(this->operator==(other));
-}
-
-bool Date::operator>(const Date& other)
-{
-	return m_timestamp > other.m_timestamp;
-}
-
-bool Date::operator<(const Date& other)
-{
-	return m_timestamp < other.m_timestamp;
-}
-
-bool Date::operator>=(const Date& other)
-{
-	return !(this->operator<(other));
-}
-
-bool Date::operator<=(const Date& other)
-{
-	return !(this->operator>(other));
-}
-
-void Date::AssertIsTimestampInRange(std::optional<unsigned> timestamp) const
-{
-	unsigned value = timestamp.has_value() ? timestamp.value() : m_timestamp;
-	if (value > s_maxTimestamp)
-	{
-		throw std::logic_error("Date must be in range from 01:01:1970 to 31:12:9999");
-	}
-}
-
-void Date::AssertIsDateInRange(unsigned day, Month month, unsigned year) const
-{
-	if (day > 31)
-	{
-		throw std::logic_error("Day must be in range from 1 to 31");
-	}
-	if (month > Month::December || month < Month::January)
-	{
-		throw std::logic_error("Month must be in range from 1 to 12");
-	}
-	if (year < 1970 || year > 9999)
-	{
-		throw std::runtime_error("Year must be in range from 1970 to 9999");
-	}
-	AssertIsTimestampInRange(DateToTimestamp(day, month, year));
-}
-
-std::tuple<unsigned, Month, unsigned> Date::TimestampToDate() const
-{
-	using namespace date_constants;
-
-	unsigned days = m_timestamp + 719468;
-	unsigned era = days / 146097;
-	days -= era * 146097;
-	unsigned yoe = (days - days / 1460 + days / 36524 - days / 146096) / 365;
-	unsigned year = era * 400 + yoe;
-	unsigned doy = days - (yoe * 365 + yoe / 4 - yoe / 100);
-
-	if (doy >= 367)
-	{
-		year += 1;
-		doy -= 366;
-	}
-
-	unsigned mp = (5 * doy + 2) / 153;
-	unsigned day = doy - (153 * mp + 2) / 5 + 1;
-	Month month = static_cast<Month>(mp + (mp < 10 ? 3 : -9));
-
-	return { day, month, year + (mp >= 10 ? 1 : 0) };
-}
-
-unsigned Date::DateToTimestamp(unsigned day, Month month, unsigned year) const
-{
-	unsigned m = static_cast<unsigned>(month);
-	unsigned y = year - (m < 3 ? 1 : 0);
-
-	unsigned era = y / 400;
-	unsigned yoe = y % 400;
-	unsigned doy = (153 * (m > 2 ? m - 3 : m + 9) + 2) / 5 + day - 1;
-	unsigned doe = yoe * 365 + yoe / 4 - yoe / 100 + doy;
-
-	return era * 146097 + doe - 719468;
 }
 
 std::ostream& operator<<(std::ostream& os, const Date& date)
 {
-	os << std::format("{:02}.{:02}.{:04}",
-		date.GetDay(), static_cast<int>(date.GetMonth()), date.GetYear());
+	os << DateToString(date.m_timepoint);
 
 	return os;
 }

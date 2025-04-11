@@ -1,8 +1,7 @@
 #pragma once
+#include <chrono>
 #include <istream>
-#include <optional>
 #include <ostream>
-#include <tuple>
 
 enum class Month
 {
@@ -22,7 +21,7 @@ enum class Month
 
 enum class DayOfWeek
 {
-	Sunday,
+	Sunday = 0,
 	Monday,
 	Tuesday,
 	Wednesday,
@@ -36,7 +35,7 @@ class Date
 public:
 	Date();
 
-	explicit Date(unsigned timestamp);
+	explicit Date(unsigned daysSinceEpoch);
 
 	Date(unsigned day, unsigned month, unsigned year);
 	Date(unsigned day, Month month, unsigned year);
@@ -55,35 +54,28 @@ public:
 	Date& operator--();
 	Date operator--(int);
 
-	Date operator+(unsigned days);
+	Date operator+(int days) const;
 
-	Date operator-(unsigned days);
-	int operator-(const Date& other);
+	Date operator-(int days) const;
+	int operator-(const Date& other) const;
 
-	Date& operator+=(unsigned days);
-	Date& operator-=(unsigned days);
+	Date& operator+=(int days);
+	Date& operator-=(int days);
 
-	bool operator==(const Date& other);
-	bool operator!=(const Date& other);
+	bool operator==(const Date& other) const = default;
+	bool operator!=(const Date& other) const = default;
 
-	bool operator>(const Date& other);
-	bool operator<(const Date& other);
+	bool operator>(const Date& other) const = default;
+	bool operator<(const Date& other) const = default;
 
-	bool operator>=(const Date& other);
-	bool operator<=(const Date& other);
+	bool operator>=(const Date& other) const = default;
+	bool operator<=(const Date& other) const = default;
 
 	friend std::ostream& operator<<(std::ostream& out, const Date& date);
 	friend std::istream& operator>>(std::istream& in, Date& date);
 
 private:
-	void AssertIsTimestampInRange(std::optional<unsigned> timestamp = std::nullopt) const;
-	void AssertIsDateInRange(unsigned day, Month month, unsigned year) const;
+	explicit Date(const std::chrono::sys_days& timePoint);
 
-	std::tuple<unsigned, Month, unsigned> TimestampToDate() const;
-
-	unsigned DateToTimestamp(unsigned day, Month month, unsigned year) const;
-
-	unsigned m_timestamp;
-
-	static constexpr unsigned s_maxTimestamp = 2932896;
+	std::chrono::sys_days m_timepoint;
 };
