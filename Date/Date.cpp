@@ -1,94 +1,93 @@
 #include "Date.h"
 
+#include <chrono>
 #include <format>
 #include <stdexcept>
 
-using namespace std::chrono_literals;
-
 namespace
 {
+constexpr unsigned DAYS_EPOCH = 719'468;
+constexpr unsigned MAX_EPOCH_DAYS = 2'932'896;
 
-using InnerYear = std::chrono::year;
-using InnerMonth = std::chrono::month;
-using InnerDay = std::chrono::day;
-using InnerEpochDays = std::chrono::sys_days;
-using InnerDate = std::chrono::year_month_day;
-using InnerDays = std::chrono::days;
-using InnerDayOfWeek = std::chrono::weekday;
-
-constexpr unsigned MAX_YEAR = 9999;
-constexpr unsigned MIN_YEAR = 1970;
-constexpr unsigned MIN_MONTH = 1;
-constexpr unsigned MAX_MONTH = 12;
-
-constexpr InnerEpochDays MIN_DATE = InnerDate{ 1970y / std::chrono::January / 1d };
-constexpr InnerEpochDays MAX_DATE = InnerDate{ 9999y / std::chrono::December / 31d };
-
-std::string DateToString(const InnerDate& date)
+constexpr bool IsLeap(unsigned y) noexcept
 {
-	return std::format("{:02}.{:02}.{:04}",
-		static_cast<unsigned>(date.day()),
-		static_cast<unsigned>(date.month()),
-		static_cast<int>(date.year()));
+	return y % 4 == 0 && (y % 100 != 0 || y % 400 == 0);
 }
 
-void AssertIsTimePointInRange(const InnerEpochDays& timePoint)
+constexpr unsigned LastDayOfMonthCommonYear(unsigned m) noexcept
 {
-	if (timePoint < MIN_DATE || timePoint > MAX_DATE)
-	{
-		auto date = InnerDate{ timePoint };
+	constexpr unsigned char a[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+	return a[m - 1];
+}
 
-		throw std::out_of_range(
-			std::format("Date {} is outside the valid range [{}, {}]",
-				DateToString(date),
-				DateToString(MIN_DATE),
-				DateToString(MAX_DATE)));
+// courtesy of Howard Hinnant
+// https://howardhinnant.github.io/date_algorithms.html#last_day_of_month
+constexpr unsigned LastDayOfMonth(unsigned m, unsigned y) noexcept
+{
+	return m != 2 || !IsLeap(y) ? LastDayOfMonthCommonYear(m) : 29u;
+}
+
+void AssertIsEpochInRange(unsigned epochDays)
+{
+	if (epochDays > MAX_EPOCH_DAYS)
+	{
+		throw std::out_of_range(std::format("Date is out of range [{} - {}]",
+			Date::Min().ToString(), Date::Max().ToString()));
 	}
 }
 
-InnerDate ValidateDate(unsigned day, unsigned month, unsigned year)
+void AssertIsDateValid(unsigned day, unsigned month, unsigned year)
 {
-	if (year < MIN_YEAR || year > MAX_YEAR)
+	constexpr unsigned MAX_YEAR = 9999;
+	constexpr unsigned MIN_YEAR = 1970;
+	constexpr unsigned MAX_MONTH = 12;
+	constexpr unsigned MIN_MONTH = 1;
+
+	if (day > LastDayOfMonth(month, year))
 	{
-		throw std::out_of_range(std::format("Year must be in range from {} ot {}",
-			MIN_YEAR, MAX_YEAR));
+		throw std::out_of_range("Day is out of range of given month");
 	}
 	if (month < MIN_MONTH || month > MAX_MONTH)
 	{
-		throw std::out_of_range(std::format("Month must be in range from {} ot {}",
-			MIN_MONTH, MAX_MONTH));
+		throw std::out_of_range("Month must be in range from 1 to 12");
 	}
-
-	InnerDate date = InnerYear(year) / InnerMonth{ month } / InnerDay{ day };
-
-	if (!date.ok())
+	if (year < MIN_YEAR || year > MAX_YEAR)
 	{
-		throw std::invalid_argument("Invalid date components (e.g., day out of range for month)");
+		throw std::out_of_range("Year must be in range from 1970 to 9999");
 	}
-
-	return date;
 }
-
 } // namespace
 
-Date::Date()
-	: m_timepoint(MIN_DATE)
+Date Date::Min()
 {
+	return Date();
+}
+
+Date Date::Max()
+{
+	return Date(MAX_EPOCH_DAYS);
+}
+
+Date Date::Now()
+{
+	using namespace std::chrono;
+	auto now = system_clock::now();
+	auto epochDays = duration_cast<days>(now.time_since_epoch());
+
+	return Date(epochDays.count());
 }
 
 Date::Date(unsigned daysSinceEpoch)
-	: m_timepoint(MIN_DATE + InnerDays{ daysSinceEpoch })
+	: m_epochDays(daysSinceEpoch)
 {
-	AssertIsTimePointInRange(m_timepoint);
+	AssertIsEpochInRange(m_epochDays);
 }
 
 Date::Date(unsigned day, unsigned month, unsigned year)
+	: m_epochDays(FromDate(day, month, year))
 {
-	auto date = ValidateDate(day, month, year);
-
-	m_timepoint = InnerEpochDays{ date };
-
-	AssertIsTimePointInRange(m_timepoint);
+	AssertIsDateValid(day, month, year);
+	AssertIsEpochInRange(m_epochDays);
 }
 
 Date::Date(unsigned day, Month month, unsigned year)
@@ -96,31 +95,31 @@ Date::Date(unsigned day, Month month, unsigned year)
 {
 }
 
-unsigned Date::GetDay() const
+unsigned Date::GetDay() const noexcept
 {
-	return static_cast<unsigned>(InnerDate{ m_timepoint }.day());
+	return std::get<0>(ToDate());
 }
 
-Month Date::GetMonth() const
+Month Date::GetMonth() const noexcept
 {
-	return static_cast<Month>(static_cast<unsigned>(InnerDate{ m_timepoint }.month()));
+	return static_cast<Month>(std::get<1>(ToDate()));
 }
 
-DayOfWeek Date::GetDayOfWeek() const
+DayOfWeek Date::GetDayOfWeek() const noexcept
 {
-	return static_cast<DayOfWeek>(InnerDayOfWeek{ m_timepoint }.c_encoding());
+	return static_cast<DayOfWeek>((m_epochDays + 4) % 7);
 }
 
-unsigned Date::GetYear() const
+unsigned Date::GetYear() const noexcept
 {
-	return static_cast<unsigned>(static_cast<int>(InnerDate{ m_timepoint }.year()));
+	return std::get<2>(ToDate());
 }
 
 Date& Date::operator++()
 {
-	auto next = m_timepoint + InnerDays{ 1 };
-	AssertIsTimePointInRange(next);
-	m_timepoint = next;
+	auto next = m_epochDays + 1;
+	AssertIsEpochInRange(next);
+	m_epochDays = next;
 
 	return *this;
 }
@@ -135,9 +134,9 @@ Date Date::operator++(int)
 
 Date& Date::operator--()
 {
-	auto prev = m_timepoint - InnerDays{ 1 };
-	AssertIsTimePointInRange(prev);
-	m_timepoint = prev;
+	auto prev = m_epochDays - 1;
+	AssertIsEpochInRange(prev);
+	m_epochDays = prev;
 
 	return *this;
 }
@@ -152,58 +151,84 @@ Date Date::operator--(int)
 
 Date Date::operator+(int days) const
 {
-	auto newTimePoint = m_timepoint + InnerDays{ days };
-	AssertIsTimePointInRange(newTimePoint);
+	auto newEpoch = m_epochDays + days;
+	AssertIsEpochInRange(newEpoch);
 
-	return Date(newTimePoint);
+	return Date(newEpoch);
 }
 
 Date Date::operator-(int days) const
 {
-	auto newTimePoint = m_timepoint + InnerDays{ days };
-	AssertIsTimePointInRange(newTimePoint);
+	auto newEpoch = m_epochDays - days;
+	AssertIsEpochInRange(newEpoch);
 
-	return Date(newTimePoint);
+	return Date(newEpoch);
 }
 
 int Date::operator-(const Date& other) const
 {
-	return (m_timepoint - other.m_timepoint).count();
+	return static_cast<int>(m_epochDays - other.m_epochDays);
 }
 
 Date& Date::operator+=(int days)
 {
-	auto newTimePoint = m_timepoint + InnerDays{ days };
-	AssertIsTimePointInRange(newTimePoint);
-	m_timepoint = newTimePoint;
+	auto newEpoch = m_epochDays + days;
+	AssertIsEpochInRange(newEpoch);
+	m_epochDays = newEpoch;
 
 	return *this;
 }
 
 Date& Date::operator-=(int days)
 {
-	auto newTimePoint = m_timepoint - InnerDays{ days };
-	AssertIsTimePointInRange(newTimePoint);
-	m_timepoint = newTimePoint;
+	auto newEpoch = m_epochDays - days;
+	AssertIsEpochInRange(newEpoch);
+	m_epochDays = newEpoch;
 
 	return *this;
 }
 
-std::string Date::ToString() const
+std::string Date::ToString() const noexcept
 {
-	return DateToString(m_timepoint);
+	return std::format("{:02}.{:02}.{:04}",
+		GetDay(),
+		static_cast<unsigned>(GetMonth()),
+		GetYear());
 }
 
-Date::Date(const std::chrono::sys_days& timePoint)
-	: m_timepoint(timePoint)
+// courtesy of Howard Hinnant
+// https://howardhinnant.github.io/date_algorithms.html#days_from_civil
+constexpr unsigned Date::FromDate(unsigned day, unsigned month, unsigned year) const noexcept
 {
+	year -= month <= 2;
+	const unsigned era = (year >= 0 ? year : year - 399) / 400;
+	const unsigned yoe = year - era * 400;
+	const unsigned doy = (153 * (month > 2 ? month - 3 : month + 9) + 2) / 5 + day - 1;
+	const unsigned doe = yoe * 365 + yoe / 4 - yoe / 100 + doy;
+	return era * 146097 + doe - 719468;
+}
+
+// courtesy of Howard Hinnant
+// https://howardhinnant.github.io/date_algorithms.html#civil_from_days
+constexpr std::tuple<unsigned, unsigned, unsigned> Date::ToDate() const noexcept
+{
+	const unsigned z = m_epochDays + DAYS_EPOCH;
+
+	const unsigned era = (z >= 0 ? z : z - 146096) / 146097;
+	const unsigned doe = z - era * 146097;
+	const unsigned yoe = (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365;
+	const unsigned y = yoe + era * 400;
+	const unsigned doy = doe - (365 * yoe + yoe / 4 - yoe / 100);
+	const unsigned mp = (5 * doy + 2) / 153;
+	const unsigned d = doy - (153 * mp + 2) / 5 + 1;
+	const unsigned m = mp < 10 ? mp + 3 : mp - 9;
+
+	return std::tuple<unsigned, unsigned, unsigned>(d, m, y + (m <= 2));
 }
 
 std::ostream& operator<<(std::ostream& os, const Date& date)
 {
-	os << DateToString(date.m_timepoint);
-
-	return os;
+	return os << date.ToString();
 }
 
 std::istream& operator>>(std::istream& is, Date& date)
@@ -230,10 +255,7 @@ std::istream& operator>>(std::istream& is, Date& date)
 	catch (const std::exception&)
 	{
 		is.setstate(std::ios::failbit);
-		return is;
 	}
-
-	is.setstate(std::ios::goodbit);
 
 	return is;
 }

@@ -80,12 +80,10 @@ inline ContainerBase<TValue>::ContainerBase(const ContainerBase& other)
 
 template <class TValue>
 inline ContainerBase<TValue>::ContainerBase(ContainerBase&& other) noexcept
-	: m_data(other.m_data)
-	, m_size(other.m_size)
-	, m_capacity(other.m_capacity)
+	: m_data(std::exchange(other.m_data, nullptr))
+	, m_size(std::exchange(other.m_size, 0))
+	, m_capacity(std::exchange(other.m_capacity, 0))
 {
-	other.m_data = nullptr;
-	other.m_size = other.m_capacity = 0;
 }
 
 template <class TValue>
@@ -100,7 +98,9 @@ inline ContainerBase<TValue>& ContainerBase<TValue>::operator=(const ContainerBa
 		m_capacity = other.m_capacity;
 		m_data = m_allocator.Allocate(m_capacity);
 		for (size_t i = 0; i < m_size; ++i)
+		{
 			new (&m_data[i]) TValue(other.m_data[i]);
+		}
 	}
 	return *this;
 }

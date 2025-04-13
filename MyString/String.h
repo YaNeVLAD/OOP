@@ -20,9 +20,9 @@ public:
 
 	String(const std::string& stlString);
 
-	String(const char* cString, size_t len);
-
 	String(const std::initializer_list<char>& list);
+
+	String(const char* cString, size_t len);
 
 	char& operator[](size_t index);
 
@@ -35,6 +35,14 @@ public:
 	size_t Size() const;
 
 	bool Empty() const;
+
+	bool operator==(const String& other) const;
+	bool operator!=(const String& other) const;
+
+	std::strong_ordering operator<=>(const String& other) const;
+
+	friend std::ostream& operator<<(std::ostream& os, const String& str);
+	friend std::istream& operator>>(std::istream& is, String& str);
 
 private:
 	void EmplaceAllWithTerminator(const char* cString, size_t len);

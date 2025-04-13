@@ -1,7 +1,8 @@
 #pragma once
-#include <chrono>
+
 #include <istream>
 #include <ostream>
+#include <tuple>
 
 enum class Month
 {
@@ -33,20 +34,24 @@ enum class DayOfWeek
 class Date
 {
 public:
-	Date();
+	static Date Min();
+	static Date Max();
+	static Date Now();
+
+	Date() = default;
 
 	explicit Date(unsigned daysSinceEpoch);
 
 	Date(unsigned day, unsigned month, unsigned year);
 	Date(unsigned day, Month month, unsigned year);
 
-	unsigned GetDay() const;
+	unsigned GetDay() const noexcept;
 
-	Month GetMonth() const;
+	Month GetMonth() const noexcept;
 
-	DayOfWeek GetDayOfWeek() const;
+	DayOfWeek GetDayOfWeek() const noexcept;
 
-	unsigned GetYear() const;
+	unsigned GetYear() const noexcept;
 
 	Date& operator++();
 	Date operator++(int);
@@ -62,15 +67,17 @@ public:
 	Date& operator+=(int days);
 	Date& operator-=(int days);
 
-	auto operator<=>(const Date& other) const = default;
+	auto operator<=>(const Date& other) const noexcept = default;
 
 	friend std::ostream& operator<<(std::ostream& out, const Date& date);
 	friend std::istream& operator>>(std::istream& in, Date& date);
 
-	std::string ToString() const;
+	std::string ToString() const noexcept;
 
 private:
-	explicit Date(const std::chrono::sys_days& timePoint);
+	constexpr unsigned FromDate(unsigned day, unsigned month, unsigned year) const noexcept;
 
-	std::chrono::sys_days m_timepoint;
+	constexpr std::tuple<unsigned, unsigned, unsigned> ToDate() const noexcept;
+
+	unsigned m_epochDays = 0;
 };

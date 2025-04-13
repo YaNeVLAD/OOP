@@ -29,15 +29,17 @@ int main()
 {
 	try
 	{
-		Date date;
-		if (std::cin >> date)
-		{
-			std::cout << date << std::endl;
-		}
-		else
-		{
-			std::cout << "WRONG DATE" << std::endl;
-		}
+		// Date date;
+		Date date(31, 12, 2222);
+
+		// if (std::cin >> date)
+		//{
+		//	std::cout << date << std::endl;
+		// }
+		// else
+		//{
+		//	std::cout << "WRONG DATE" << std::endl;
+		// }
 
 		std::cout << date.GetDay() << std::endl;
 		std::cout << static_cast<int>(date.GetMonth()) << std::endl;

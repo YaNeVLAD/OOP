@@ -1,24 +1,29 @@
 #include "String.h"
 
-#include <cassert>
+#include <istream>
+#include <ostream>
+
+constexpr const char* EMPTY_STRING = "";
+constexpr char TERMINATOR = '\0';
 
 String::String()
-	: Base()
+	: String(EMPTY_STRING, 0)
 {
-	Base::EmplaceBack('\0');
 }
 
 String::String(const char* cString)
-	: Base()
+	: String(cString, std::strlen(cString))
 {
-	size_t len = std::strlen(cString);
-	EmplaceAllWithTerminator(cString, len);
 }
 
 String::String(const std::string& stlString)
-	: Base()
+	: String(stlString.data(), stlString.size())
 {
-	EmplaceAllWithTerminator(stlString.data(), stlString.size());
+}
+
+String::String(const std::initializer_list<char>& list)
+	: String(list.begin(), list.size())
+{
 }
 
 String::String(const char* cString, size_t len)
@@ -27,15 +32,9 @@ String::String(const char* cString, size_t len)
 	EmplaceAllWithTerminator(cString, len);
 }
 
-String::String(const std::initializer_list<char>& list)
-	: Base()
-{
-	EmplaceAllWithTerminator(list.begin(), list.size());
-}
-
 char& String::operator[](size_t index)
 {
-	if (index >= Base::Size())
+	if (index >= Size())
 	{
 		throw std::out_of_range("String index is out of range");
 	}
@@ -68,6 +67,34 @@ bool String::Empty() const
 	return Size() == 0;
 }
 
+bool String::operator==(const String& other) const
+{
+	if (Size() != other.Size())
+	{
+		return false;
+	}
+
+	for (size_t i = 0; i < Size(); ++i)
+	{
+		if ((*this)[i] != other[i])
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool String::operator!=(const String& other) const
+{
+	return !(*this == other);
+}
+
+std::strong_ordering String::operator<=>(const String& other) const
+{
+	return std::lexicographical_compare_three_way(begin(), end(), other.begin(), other.end());
+}
+
 void String::EmplaceAllWithTerminator(const char* cString, size_t len)
 {
 	Base::Reserve(len + 1);
@@ -76,5 +103,27 @@ void String::EmplaceAllWithTerminator(const char* cString, size_t len)
 	{
 		Base::EmplaceBack(cString[i]);
 	}
-	Base::EmplaceBack('\0');
+	Base::EmplaceBack(TERMINATOR);
+}
+
+std::ostream& operator<<(std::ostream& os, const String& str)
+{
+	os << str.Data();
+
+	return os;
+}
+
+std::istream& operator>>(std::istream& is, String& str)
+{
+	std::string line;
+	if (!(is >> line))
+	{
+		is.setstate(std::ios::failbit);
+		return is;
+	}
+
+	str = line;
+	is.setstate(std::ios::goodbit);
+
+	return is;
 }

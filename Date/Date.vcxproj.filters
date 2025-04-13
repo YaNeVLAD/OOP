@@ -26,9 +26,6 @@
     <ClInclude Include="Date.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="DateConstants.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="Date.natvis" />
