@@ -75,9 +75,9 @@ public:
 	std::string ToString() const noexcept;
 
 private:
-	constexpr unsigned FromDate(unsigned day, unsigned month, unsigned year) const noexcept;
+	unsigned FromDate(unsigned day, unsigned month, unsigned year) const noexcept;
 
-	constexpr std::tuple<unsigned, unsigned, unsigned> ToDate() const noexcept;
+	std::tuple<unsigned, unsigned, unsigned> ToDate() const noexcept;
 
 	unsigned m_epochDays = 0;
 };

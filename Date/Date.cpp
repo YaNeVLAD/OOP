@@ -9,12 +9,12 @@ namespace
 constexpr unsigned DAYS_EPOCH = 719'468;
 constexpr unsigned MAX_EPOCH_DAYS = 2'932'896;
 
-constexpr bool IsLeap(unsigned y) noexcept
+bool IsLeap(unsigned y) noexcept
 {
 	return y % 4 == 0 && (y % 100 != 0 || y % 400 == 0);
 }
 
-constexpr unsigned LastDayOfMonthCommonYear(unsigned m) noexcept
+unsigned LastDayOfMonthCommonYear(unsigned m) noexcept
 {
 	constexpr unsigned char a[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 	return a[m - 1];
@@ -22,7 +22,7 @@ constexpr unsigned LastDayOfMonthCommonYear(unsigned m) noexcept
 
 // courtesy of Howard Hinnant
 // https://howardhinnant.github.io/date_algorithms.html#last_day_of_month
-constexpr unsigned LastDayOfMonth(unsigned m, unsigned y) noexcept
+unsigned LastDayOfMonth(unsigned m, unsigned y) noexcept
 {
 	return m != 2 || !IsLeap(y) ? LastDayOfMonthCommonYear(m) : 29u;
 }
@@ -60,12 +60,12 @@ void AssertIsDateValid(unsigned day, unsigned month, unsigned year)
 
 Date Date::Min()
 {
-	return Date();
+	return Date{};
 }
 
 Date Date::Max()
 {
-	return Date(MAX_EPOCH_DAYS);
+	return Date{ MAX_EPOCH_DAYS };
 }
 
 Date Date::Now()
@@ -198,7 +198,7 @@ std::string Date::ToString() const noexcept
 
 // courtesy of Howard Hinnant
 // https://howardhinnant.github.io/date_algorithms.html#days_from_civil
-constexpr unsigned Date::FromDate(unsigned day, unsigned month, unsigned year) const noexcept
+unsigned Date::FromDate(unsigned day, unsigned month, unsigned year) const noexcept
 {
 	year -= month <= 2;
 	const unsigned era = (year >= 0 ? year : year - 399) / 400;
@@ -210,7 +210,7 @@ constexpr unsigned Date::FromDate(unsigned day, unsigned month, unsigned year) c
 
 // courtesy of Howard Hinnant
 // https://howardhinnant.github.io/date_algorithms.html#civil_from_days
-constexpr std::tuple<unsigned, unsigned, unsigned> Date::ToDate() const noexcept
+std::tuple<unsigned, unsigned, unsigned> Date::ToDate() const noexcept
 {
 	const unsigned z = m_epochDays + DAYS_EPOCH;
 

@@ -30,7 +30,7 @@ int main()
 	try
 	{
 		// Date date;
-		Date date(31, 12, 2222);
+		Date date = Date::Now();
 
 		// if (std::cin >> date)
 		//{
