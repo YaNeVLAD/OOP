@@ -76,6 +76,13 @@ add_executable(test_all
     "test_date.cpp"
     ${CMAKE_SOURCE_DIR}/Date/Date.cpp
     ${CMAKE_SOURCE_DIR}/Date/Date.h
+    
+    "test_my_string.cpp"
+    ${CMAKE_SOURCE_DIR}/MyVector/ContainerBase.hpp
+    ${CMAKE_SOURCE_DIR}/MyVector/Iteratable.hpp
+    ${CMAKE_SOURCE_DIR}/MyVector/Allocator.hpp
+    ${CMAKE_SOURCE_DIR}/MyString/String.cpp
+    ${CMAKE_SOURCE_DIR}/MyString/String.h
 )
 
 add_executable(test_vector
@@ -171,6 +178,17 @@ add_executable(test_date
     ${CMAKE_SOURCE_DIR}/Date/Date.h
 )
 
+add_executable(test_my_string
+    ${CATCH_SOURCES}
+    
+    "test_my_string.cpp"
+    ${CMAKE_SOURCE_DIR}/MyVector/ContainerBase.hpp
+    ${CMAKE_SOURCE_DIR}/MyVector/Iteratable.hpp
+    ${CMAKE_SOURCE_DIR}/MyVector/Allocator.hpp
+    ${CMAKE_SOURCE_DIR}/MyString/String.cpp
+    ${CMAKE_SOURCE_DIR}/MyString/String.h
+)
+
 set_target_properties(
 test_all 
 test_vector 
@@ -182,6 +200,7 @@ test_car
 test_my_vector
 test_shapes
 test_date
+test_my_string
 PROPERTIES CXX_STANDARD 20)
 target_link_libraries(test_all PRIVATE Catch2::Catch2)
 target_link_libraries(test_vector PRIVATE Catch2::Catch2)
@@ -193,3 +212,4 @@ target_link_libraries(test_car PRIVATE Catch2::Catch2)
 target_link_libraries(test_my_vector PRIVATE Catch2::Catch2)
 target_link_libraries(test_shapes PRIVATE Catch2::Catch2)
 target_link_libraries(test_date PRIVATE Catch2::Catch2)
+target_link_libraries(test_my_string PRIVATE Catch2::Catch2)

@@ -136,9 +136,6 @@
     <ClCompile Include="String.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Allocator.hpp" />
-    <ClInclude Include="ContainerBase.hpp" />
-    <ClInclude Include="Iteratable.hpp" />
     <ClInclude Include="String.h" />
   </ItemGroup>
   <ItemGroup>

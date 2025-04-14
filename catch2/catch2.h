@@ -23,6 +23,7 @@
 #include "../Dictionary/Dictionary.h"
 #include "../GeneratePrimeNumbers/GeneratePrimeNumbers.h"
 #include "../HtmlDecode/HtmlDecode.h"
+#include "../MyString/String.h"
 #include "../MyVector/Vector.hpp"
 #include "../ParseUrl/ParseUrl.h"
 #include "../Vector/VectorProcessor.h"
