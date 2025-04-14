@@ -66,13 +66,4 @@ int main()
 	std::cout << "////////////////////////////" << std::endl;
 	std::cout << "Average Time: " << avg << "ms" << std::endl;
 	std::cout << "////////////////////////////" << std::endl;
-
-	// String str;
-	// std::string stl;
-	// stl = stl + "12345" + "12345" + "12345" + "12345";
-
-	// str = str + "12345" + "12345" + "12345" + "12345";
-
-	// std::cout << stl << std::endl;
-	// std::cout << str << std::endl;
 }
