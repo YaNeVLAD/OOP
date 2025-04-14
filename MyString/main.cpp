@@ -1,40 +1,78 @@
 ﻿#include "String.h"
-#include <iostream>
 
+#include <chrono>
+#include <iostream>
+#include <numeric>
 #include <string>
+#include <vector>
+
+using Clock = std::chrono::high_resolution_clock;
+using MilliSeconds = std::chrono::milliseconds;
+
+template <class Function>
+	requires std::is_invocable_v<Function>
+auto RunWithTimer(const std::string& name, Function&& func)
+{
+	auto start = Clock::now();
+	func();
+	auto end = Clock::now();
+	auto dur = std::chrono::duration_cast<MilliSeconds>(end - start);
+
+	return dur.count();
+}
 
 int main()
 {
-	std::string stlStr = "1\0 234";
-	String str = { "12345" };
-	String str1 = { "3210", 3 };
-	String str2 = { '1', '\0', '2', '3' };
-	String str3 = stlStr;
+	const size_t ATTEMPTS = 10;
+	const size_t INNER_CYCLE_LEN = 1'000'000;
+	std::vector<long long> times;
+	times.reserve(ATTEMPTS);
 
-	String s1 = "one";
-	String s2 = "ONE";
-
-	String s3 = "two";
-	String s4 = "four";
-
-	String s5 = "three";
-	String s6 = "two";
-
-	String is;
-
-	std::cin >> is;
-	std::cout << is << std::endl;
-	std::cout << std::boolalpha << (s1 == s2) << std::endl;
-	std::cout << std::boolalpha << (s3 > s4) << std::endl;
-	std::cout << std::boolalpha << (s5 < s6) << std::endl;
-
-	size_t len = std::strlen(str.Data());
-	size_t len1 = std::strlen(str1.Data());
-	size_t len2 = std::strlen(str2.Data());
-
-	for (const char& ch : str)
+	for (size_t i = 0; i < ATTEMPTS; ++i)
 	{
-		std::cout << ch;
+		times.emplace_back(RunWithTimer("Appending to SLT String", []() {
+			for (size_t i = 0; i < INNER_CYCLE_LEN; ++i)
+			{
+				std::string str1 = "1234567890123456789012345678901234567890123456789012345678901234567890";
+				std::string str(str1);
+			}
+		}));
 	}
-	std::cout << std::endl;
+
+	double sum = std::accumulate(times.begin(), times.end(), 0);
+	double avg = sum / ATTEMPTS;
+
+	std::cout << "////////////////////////////" << std::endl;
+	std::cout << "Average Time: " << avg << "ms" << std::endl;
+	std::cout << "////////////////////////////" << std::endl;
+
+	times.clear();
+
+	for (size_t i = 0; i < ATTEMPTS; ++i)
+	{
+		times.emplace_back(RunWithTimer("Appending to My String", []() {
+			String str;
+			for (size_t i = 0; i < INNER_CYCLE_LEN; ++i)
+			{
+				String str1 = "1234567890123456789012345678901234567890123456789012345678901234567890";
+				String str(str1);
+			}
+		}));
+	}
+
+	sum = std::accumulate(times.begin(), times.end(), 0);
+	avg = sum / ATTEMPTS;
+
+	std::cout << "////////////////////////////" << std::endl;
+	std::cout << "Average Time: " << avg << "ms" << std::endl;
+	std::cout << "////////////////////////////" << std::endl;
+
+	// String str;
+	// std::string stl;
+	// stl = stl + "12345" + "12345" + "12345" + "12345";
+
+	// str = str + "12345" + "12345" + "12345" + "12345";
+
+	// std::cout << stl << std::endl;
+	// std::cout << str << std::endl;
 }

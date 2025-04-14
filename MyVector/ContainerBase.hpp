@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Allocator.hpp"
+#include <memory>
 
 namespace details
 {
@@ -35,6 +36,8 @@ public:
 
 	template <typename... Args>
 	TReference EmplaceBack(Args&&... args);
+
+	void EmplaceAllBack(TConstPointer begin, size_t size);
 
 	void Resize(size_t newSize);
 
@@ -80,46 +83,49 @@ inline ContainerBase<TValue>::ContainerBase(const ContainerBase& other)
 
 template <class TValue>
 inline ContainerBase<TValue>::ContainerBase(ContainerBase&& other) noexcept
-	: m_data(other.m_data)
-	, m_size(other.m_size)
-	, m_capacity(other.m_capacity)
+	: m_data(std::exchange(other.m_data, nullptr))
+	, m_size(std::exchange(other.m_size, 0))
+	, m_capacity(std::exchange(other.m_capacity, 0))
 {
-	other.m_data = nullptr;
-	other.m_size = other.m_capacity = 0;
 }
 
 template <class TValue>
 inline ContainerBase<TValue>& ContainerBase<TValue>::operator=(const ContainerBase& other)
 {
-	if (this != &other)
+	if (this == &other)
+	{
+		return *this;
+	}
+
+	if (m_capacity > other.m_size)
 	{
 		Clear();
-		m_allocator.Free(m_data, m_capacity);
-
+		std::uninitialized_copy_n(other.m_data, other.m_size, m_data);
 		m_size = other.m_size;
-		m_capacity = other.m_capacity;
-		m_data = m_allocator.Allocate(m_capacity);
-		for (size_t i = 0; i < m_size; ++i)
-			new (&m_data[i]) TValue(other.m_data[i]);
 	}
+	else
+	{
+		ContainerBase temp(other);
+		std::swap(m_data, other.m_data);
+		std::swap(m_size, other.m_size);
+		std::swap(m_capacity, other.m_capacity);
+	}
+
 	return *this;
 }
 
 template <class TValue>
 inline ContainerBase<TValue>& ContainerBase<TValue>::operator=(ContainerBase&& other) noexcept
 {
-	if (this != &other)
+	if (this == &other)
 	{
-		Clear();
-		m_allocator.Free(m_data, m_capacity);
-
-		m_data = other.m_data;
-		m_size = other.m_size;
-		m_capacity = other.m_capacity;
-
-		other.m_data = nullptr;
-		other.m_size = other.m_capacity = 0;
+		return *this;
 	}
+
+	std::swap(m_data, other.m_data);
+	std::swap(m_size, other.m_size);
+	std::swap(m_capacity, other.m_capacity);
+
 	return *this;
 }
 
@@ -128,6 +134,21 @@ inline ContainerBase<TValue>::~ContainerBase()
 {
 	Clear();
 	m_allocator.Free(m_data, m_capacity);
+}
+
+template <typename TValue>
+inline void ContainerBase<TValue>::EmplaceAllBack(TConstPointer first, size_t size)
+{
+	size_t totalSize = m_size + size;
+	if (totalSize >= m_capacity)
+	{
+		size_t growth = CalculateGrowth(totalSize);
+		m_data = m_allocator.Reallocate(m_data, m_size, growth);
+		m_capacity = growth;
+	}
+
+	std::uninitialized_copy_n(first, size, m_data + m_size);
+	m_size = totalSize;
 }
 
 template <class TValue>
@@ -231,7 +252,7 @@ inline size_t ContainerBase<TValue>::CalculateGrowth(size_t newSize)
 
 	if (oldCapacity == 0)
 	{
-		return 2;
+		return newSize == 0 ? 2 : newSize;
 	}
 
 	size_t growth = oldCapacity * 2;

@@ -1,7 +1,28 @@
 #include "String.h"
 
 #include <istream>
+#include <memory>
 #include <ostream>
+
+namespace
+{
+String AppendUnwrapped(
+	const char* const lhsData, size_t lhsSize, const char* const rhsData, size_t rhsSize)
+{
+	String result;
+
+	if (lhsData && lhsSize > 0)
+	{
+		result.Append(lhsData, lhsSize);
+	}
+	if (rhsData && rhsSize > 0)
+	{
+		result.Append(rhsData, rhsSize);
+	}
+
+	return result;
+}
+} // namespace
 
 constexpr const char* EMPTY_STRING = "";
 constexpr char TERMINATOR = '\0';
@@ -67,6 +88,55 @@ bool String::Empty() const
 	return Size() == 0;
 }
 
+char& String::EmplaceBack(char&& ch)
+{
+	PopBack();
+	char& temp = Base::EmplaceBack(ch);
+	Base::EmplaceBack(TERMINATOR);
+
+	return temp;
+}
+
+String& String::Append(const String& other)
+{
+	return EmplaceAllWithTerminator(other.Data(), other.Size());
+}
+
+String& String::Append(const char* const cString, size_t len)
+{
+	return EmplaceAllWithTerminator(cString, len);
+}
+
+String& String::Append(const char* const cString)
+{
+	return EmplaceAllWithTerminator(cString, std::strlen(cString));
+}
+
+String String::operator+(const String& other) const
+{
+	return AppendUnwrapped(Data(), Size(), other.Data(), other.Size());
+}
+
+String String::operator+(const std::string& stlString) const
+{
+	return AppendUnwrapped(Data(), Size(), stlString.data(), stlString.size());
+}
+
+String String::operator+(const char* const cString) const
+{
+	return AppendUnwrapped(Data(), Size(), cString, std::strlen(cString));
+}
+
+String& String::operator+=(const String& other)
+{
+	return Append(other);
+}
+
+String& String::operator+=(const char* const cString)
+{
+	return Append(cString);
+}
+
 bool String::operator==(const String& other) const
 {
 	if (Size() != other.Size())
@@ -95,22 +165,30 @@ std::strong_ordering String::operator<=>(const String& other) const
 	return std::lexicographical_compare_three_way(begin(), end(), other.begin(), other.end());
 }
 
-void String::EmplaceAllWithTerminator(const char* cString, size_t len)
+String& String::EmplaceAllWithTerminator(const char* cString, size_t len)
 {
-	Base::Reserve(len + 1);
+	Base::PopBack();
 
-	for (size_t i = 0; i < len; ++i)
-	{
-		Base::EmplaceBack(cString[i]);
-	}
+	Base::EmplaceAllBack(cString, len);
+
 	Base::EmplaceBack(TERMINATOR);
+
+	return *this;
+}
+
+String operator+(const std::string& stlString, const String& other)
+{
+	return AppendUnwrapped(stlString.data(), stlString.size(), other.Data(), other.Size());
+}
+
+String operator+(const char* const cString, const String& other)
+{
+	return AppendUnwrapped(cString, std::strlen(cString), other.Data(), other.Size());
 }
 
 std::ostream& operator<<(std::ostream& os, const String& str)
 {
-	os << str.Data();
-
-	return os;
+	return os.write(str.Data(), str.Size());
 }
 
 std::istream& operator>>(std::istream& is, String& str)
