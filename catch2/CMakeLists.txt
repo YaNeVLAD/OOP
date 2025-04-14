@@ -72,6 +72,10 @@ add_executable(test_all
     ${CMAKE_SOURCE_DIR}/Shapes/Rectangle.h
     ${CMAKE_SOURCE_DIR}/Shapes/Triangle.h
     ${CMAKE_SOURCE_DIR}/Shapes/Utility.h
+    
+    "test_date.cpp"
+    ${CMAKE_SOURCE_DIR}/Date/Date.cpp
+    ${CMAKE_SOURCE_DIR}/Date/Date.h
 )
 
 add_executable(test_vector
@@ -159,6 +163,14 @@ add_executable(test_shapes
     ${CMAKE_SOURCE_DIR}/Shapes/Utility.h
 )
 
+add_executable(test_date
+    ${CATCH_SOURCES}
+    
+    "test_date.cpp"
+    ${CMAKE_SOURCE_DIR}/Date/Date.cpp
+    ${CMAKE_SOURCE_DIR}/Date/Date.h
+)
+
 set_target_properties(
 test_all 
 test_vector 
@@ -169,6 +181,7 @@ test_parse_url
 test_car
 test_my_vector
 test_shapes
+test_date
 PROPERTIES CXX_STANDARD 20)
 target_link_libraries(test_all PRIVATE Catch2::Catch2)
 target_link_libraries(test_vector PRIVATE Catch2::Catch2)
@@ -179,3 +192,4 @@ target_link_libraries(test_parse_url PRIVATE Catch2::Catch2)
 target_link_libraries(test_car PRIVATE Catch2::Catch2)
 target_link_libraries(test_my_vector PRIVATE Catch2::Catch2)
 target_link_libraries(test_shapes PRIVATE Catch2::Catch2)
+target_link_libraries(test_date PRIVATE Catch2::Catch2)

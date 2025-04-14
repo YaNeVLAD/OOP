@@ -43,17 +43,17 @@ void AssertIsDateValid(unsigned day, unsigned month, unsigned year)
 	constexpr unsigned MAX_MONTH = 12;
 	constexpr unsigned MIN_MONTH = 1;
 
-	if (day > LastDayOfMonth(month, year))
+	if (year < MIN_YEAR || year > MAX_YEAR)
 	{
-		throw std::out_of_range("Day is out of range of given month");
+		throw std::out_of_range("Year must be in range from 1970 to 9999");
 	}
 	if (month < MIN_MONTH || month > MAX_MONTH)
 	{
 		throw std::out_of_range("Month must be in range from 1 to 12");
 	}
-	if (year < MIN_YEAR || year > MAX_YEAR)
+	if (day > LastDayOfMonth(month, year) || day == 0)
 	{
-		throw std::out_of_range("Year must be in range from 1970 to 9999");
+		throw std::out_of_range("Day is out of range of given month");
 	}
 }
 } // namespace
@@ -251,6 +251,7 @@ std::istream& operator>>(std::istream& is, Date& date)
 	try
 	{
 		date = Date(day, static_cast<Month>(month), year);
+		is.setstate(std::ios::goodbit);
 	}
 	catch (const std::exception&)
 	{
