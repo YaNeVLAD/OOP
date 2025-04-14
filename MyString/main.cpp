@@ -23,7 +23,7 @@ auto RunWithTimer(const std::string& name, Function&& func)
 
 int main()
 {
-	const size_t ATTEMPTS = 10;
+	const size_t ATTEMPTS = 1;
 	const size_t INNER_CYCLE_LEN = 1'000'000;
 	std::vector<long long> times;
 	times.reserve(ATTEMPTS);

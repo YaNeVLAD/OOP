@@ -106,9 +106,9 @@ inline ContainerBase<TValue>& ContainerBase<TValue>::operator=(const ContainerBa
 	else
 	{
 		ContainerBase temp(other);
-		std::swap(m_data, other.m_data);
-		std::swap(m_size, other.m_size);
-		std::swap(m_capacity, other.m_capacity);
+		std::swap(m_data, temp.m_data);
+		std::swap(m_size, temp.m_size);
+		std::swap(m_capacity, temp.m_capacity);
 	}
 
 	return *this;
@@ -122,9 +122,9 @@ inline ContainerBase<TValue>& ContainerBase<TValue>::operator=(ContainerBase&& o
 		return *this;
 	}
 
-	std::swap(m_data, other.m_data);
-	std::swap(m_size, other.m_size);
-	std::swap(m_capacity, other.m_capacity);
+	m_data = std::exchange(other.m_data, nullptr);
+	m_size = std::exchange(other.m_size, 0);
+	m_capacity = std::exchange(other.m_capacity, 0);
 
 	return *this;
 }
