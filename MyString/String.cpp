@@ -32,7 +32,7 @@ String::String()
 {
 }
 
-String::String(const char* cString)
+String::String(const char* const cString)
 	: String(cString, std::strlen(cString))
 {
 }
@@ -47,7 +47,7 @@ String::String(const std::initializer_list<char>& list)
 {
 }
 
-String::String(const char* cString, size_t len)
+String::String(const char* const cString, size_t len)
 	: Base()
 {
 	EmplaceAllWithTerminator(cString, len);

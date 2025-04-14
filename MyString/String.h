@@ -16,13 +16,13 @@ class String
 public:
 	String();
 
-	String(const char* cString);
+	String(const char* const cString);
 
 	String(const std::string& stlString);
 
 	String(const std::initializer_list<char>& list);
 
-	String(const char* cString, size_t len);
+	String(const char* const cString, size_t len);
 
 	char& operator[](size_t index);
 
