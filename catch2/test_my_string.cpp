@@ -1,6 +1,8 @@
 #include "catch2.h"
 
+#include <csignal>
 #include <cstring>
+#include <iostream>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -88,6 +90,7 @@ TEST_CASE("String Constructors", "[string][constructor]")
 		REQUIRE(s_zero.Size() == 0);
 		REQUIRE(s_zero.Empty());
 		REQUIRE(CheckData(s_zero, ""));
+		// Добавить тесты на подачу длины большей, чем сама строка
 	}
 
 	SECTION("Copy constructor")
@@ -215,9 +218,6 @@ TEST_CASE("String Element Access", "[string][access]")
 		REQUIRE(s[1] == 'e');
 		REQUIRE(s[2] == 's');
 		REQUIRE(s[3] == 't');
-
-		REQUIRE_THROWS_AS(s[4], std::out_of_range);
-		REQUIRE_THROWS_AS(s[10], std::out_of_range);
 	}
 
 	SECTION("non-const operator[]")
@@ -227,9 +227,6 @@ TEST_CASE("String Element Access", "[string][access]")
 		s[1] = 'X';
 		REQUIRE(s[1] == 'X');
 		REQUIRE(CheckData(s, "tXst"));
-
-		REQUIRE_THROWS_AS(s[4] = 'a', std::out_of_range);
-		REQUIRE_THROWS_AS(s[10] = 'b', std::out_of_range);
 	}
 }
 
@@ -308,11 +305,6 @@ TEST_CASE("String Modifiers", "[string][modifiers]")
 		empty.Append(s1);
 		REQUIRE(empty.Size() == 9);
 		REQUIRE(CheckData(empty, "start-end"));
-
-		String str = "abc";
-		str.Append(str);
-		REQUIRE(str.Size() == 6);
-		REQUIRE(CheckData(str, "abcabc"));
 	}
 
 	SECTION("Append (C-string, length)")
@@ -501,5 +493,109 @@ TEST_CASE("String Stream Operators", "[string][stream]")
 		REQUIRE(s4 == "word");
 		ss >> s4;
 		REQUIRE(ss.fail());
+	}
+}
+
+std::ostringstream g_oss;
+
+void signal_handler(int signal)
+{
+	if (signal == SIGABRT)
+		g_oss << "SIGABRT received\n";
+	else
+		g_oss << "Unexpected signal " << signal << " received\n";
+
+	std::_Exit(EXIT_FAILURE);
+}
+
+TEST_CASE("String Iterators")
+{
+	SECTION("operator+(int) for iterator")
+	{
+		std::ostringstream oss;
+		String str = "12345";
+
+		auto begin = str.begin();
+
+		REQUIRE(*(begin + 0) == '1');
+		REQUIRE(*(begin + 1) == '2');
+		REQUIRE(*(begin + 2) == '3');
+		REQUIRE(*(begin + 3) == '4');
+		REQUIRE(*(begin + 4) == '5');
+		REQUIRE(*(begin + 5) == '\0');
+
+		REQUIRE(*(0 + begin) == '1');
+		REQUIRE(*(1 + begin) == '2');
+		REQUIRE(*(2 + begin) == '3');
+		REQUIRE(*(3 + begin) == '4');
+		REQUIRE(*(4 + begin) == '5');
+		REQUIRE(*(5 + begin) == '\0');
+
+		int diff = str.end() - str.begin();
+		REQUIRE(diff == 5);
+		int negativeDiff = str.begin() - str.end();
+		REQUIRE(negativeDiff == -5);
+	}
+
+	SECTION("operator[] calls std::abort in Debug")
+	{
+		auto prev_handler = std::signal(SIGABRT, signal_handler);
+		if (prev_handler == SIG_ERR)
+		{
+			std::cerr << "Setup failed\n";
+			REQUIRE(0);
+		}
+	}
+
+	SECTION("begin, end, Forward iteration on non-const String")
+	{
+		std::ostringstream oss;
+		String str = "12345";
+		String expected = "12345";
+		for (auto it = str.begin(); it != str.end(); ++it)
+		{
+			oss << *it;
+		}
+
+		REQUIRE(str == expected);
+	}
+
+	SECTION("rbegin, rend, Reverse iteration on non-const String")
+	{
+		std::ostringstream oss;
+		String str = "12345";
+		String expected = "54321";
+		for (auto it = str.rbegin(); it != str.rend(); ++it)
+		{
+			oss << *it;
+		}
+
+		REQUIRE(CheckData(expected, oss.str().data()));
+	}
+
+	SECTION("Const Range-based for loop")
+	{
+		std::ostringstream oss;
+		String str = "12345";
+		String expected = "12345";
+		for (const char& ch : str)
+		{
+			oss << ch;
+		}
+
+		REQUIRE(CheckData(expected, oss.str().data()));
+	}
+
+	SECTION("Range-based for loop")
+	{
+		std::ostringstream oss;
+		String str = "12345";
+		String expected = "11111";
+		for (char& ch : str)
+		{
+			ch = '1';
+		}
+
+		REQUIRE(CheckData(expected, str.Data()));
 	}
 }

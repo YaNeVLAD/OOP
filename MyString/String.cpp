@@ -1,5 +1,6 @@
 #include "String.h"
 
+#include <cassert>
 #include <istream>
 #include <memory>
 #include <ostream>
@@ -55,10 +56,9 @@ String::String(const char* const cString, size_t len)
 
 char& String::operator[](size_t index)
 {
-	if (index >= Size())
-	{
-		throw std::out_of_range("String index is out of range");
-	}
+#ifdef _DEBUG
+	assert(index < Size());
+#endif // DEBUG
 
 	return *(Base::Begin() + index);
 }
@@ -81,6 +81,16 @@ size_t String::Length() const
 size_t String::Size() const
 {
 	return Base::Size() == 0 ? 0 : Base::Size() - 1;
+}
+
+char* String::End()
+{
+	return Base::End() - 1;
+}
+
+const char* String::End() const
+{
+	return Base::End() - 1;
 }
 
 bool String::Empty() const

@@ -34,6 +34,10 @@ public:
 
 	size_t Size() const;
 
+	char* End();
+
+	const char* End() const;
+
 	bool Empty() const;
 
 	char& EmplaceBack(char&& ch);

@@ -84,10 +84,9 @@ Date::Date(unsigned daysSinceEpoch)
 }
 
 Date::Date(unsigned day, unsigned month, unsigned year)
-	: m_epochDays(FromDate(day, month, year))
+	: Date(FromDate(day, month, year))
 {
 	AssertIsDateValid(day, month, year);
-	AssertIsEpochInRange(m_epochDays);
 }
 
 Date::Date(unsigned day, Month month, unsigned year)
@@ -172,18 +171,16 @@ int Date::operator-(const Date& other) const
 
 Date& Date::operator+=(int days)
 {
-	auto newEpoch = m_epochDays + days;
-	AssertIsEpochInRange(newEpoch);
-	m_epochDays = newEpoch;
+	Date temp = *this + days;
+	*this = temp;
 
 	return *this;
 }
 
 Date& Date::operator-=(int days)
 {
-	auto newEpoch = m_epochDays - days;
-	AssertIsEpochInRange(newEpoch);
-	m_epochDays = newEpoch;
+	Date temp = *this - days;
+	*this = temp;
 
 	return *this;
 }

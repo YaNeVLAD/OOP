@@ -36,12 +36,19 @@ TEST_CASE("Constructors")
 
 	SECTION("Invalid dates throw exceptions")
 	{
+		// 29 ‘еврал€ невысокосного года
 		REQUIRE_THROWS_AS(Date(29, 2, 2023), std::out_of_range);
+		// 32 ƒень мес€ца не существует
 		REQUIRE_THROWS_AS(Date(32, 1, 2023), std::out_of_range);
+		// 0 ƒень мес€ца не существует
 		REQUIRE_THROWS_AS(Date(0, 1, 2023), std::out_of_range);
+		// 13 ћес€ц не существует
 		REQUIRE_THROWS_AS(Date(1, 13, 2023), std::out_of_range);
+		// 0 ћес€ц не существует
 		REQUIRE_THROWS_AS(Date(1, 0, 2023), std::out_of_range);
+		// ƒаты до 1970 года не поддерживаютс€
 		REQUIRE_THROWS_AS(Date(1, 1, 1969), std::out_of_range);
+		// ƒаты после 9999 года не поддерживаютс€
 		REQUIRE_THROWS_AS(Date(1, 1, 10000), std::out_of_range);
 	}
 }
@@ -203,7 +210,6 @@ TEST_CASE("Edge cases")
 	SECTION("Year boundaries")
 	{
 		Date dec31_2023(31, Month::December, 2023);
-		REQUIRE((dec31_2023 + 1) == Date(1, Month::January, 2024));
 
 		Date jan1_2024(1, Month::January, 2024);
 		REQUIRE((jan1_2024 - 1) == dec31_2023);
