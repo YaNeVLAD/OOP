@@ -8,8 +8,6 @@ namespace details
 template <typename TContainer, typename TPointer, typename TConstPointer>
 class Iteratable
 {
-
-private:
 	TContainer* Ptr() { return static_cast<TContainer*>(this); }
 	const TContainer* Ptr() const { return static_cast<const TContainer*>(this); }
 

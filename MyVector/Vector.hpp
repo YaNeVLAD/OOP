@@ -7,7 +7,7 @@
 #include "Iteratable.hpp"
 
 template <typename TValue>
-class Vector
+class Vector final
 	: public details::ContainerBase<TValue>
 	, public details::Iteratable<Vector<TValue>, TValue*, const TValue*>
 {
@@ -27,7 +27,7 @@ public:
 		}
 	}
 
-	~Vector() = default;
+	~Vector() override = default;
 
 	void PushBack(TValue&& value)
 	{
@@ -62,7 +62,7 @@ public:
 			return *this;
 		}
 
-		Vector<TValue> temp;
+		Vector temp;
 
 		try
 		{

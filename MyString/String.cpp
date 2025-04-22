@@ -4,6 +4,7 @@
 #include <istream>
 #include <memory>
 #include <ostream>
+#include <cstring>
 
 namespace
 {
@@ -58,7 +59,7 @@ char& String::operator[](size_t index)
 {
 #ifdef _DEBUG
 	assert(index < Size());
-#endif // DEBUG
+#endif // _DEBUG
 
 	return *(Base::Begin() + index);
 }
@@ -198,7 +199,7 @@ String operator+(const char* const cString, const String& other)
 
 std::ostream& operator<<(std::ostream& os, const String& str)
 {
-	return os.write(str.Data(), str.Size());
+	return os.write(str.Data(), static_cast<std::streamsize>(str.Size()));
 }
 
 std::istream& operator>>(std::istream& is, String& str)

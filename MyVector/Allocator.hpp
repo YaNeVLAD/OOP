@@ -66,7 +66,7 @@ private:
 		}
 	}
 
-	void Copy(TPointer dest, TPointer source, size_t size)
+	static void Copy(TPointer dest, TPointer source, size_t size)
 	{
 		for (size_t i = 0; i < size; ++i)
 		{
@@ -75,7 +75,7 @@ private:
 		}
 	}
 
-	size_t CalculateBlockSize(size_t count)
+	static size_t CalculateBlockSize(size_t count)
 	{
 		return count * sizeof(TValue);
 	}

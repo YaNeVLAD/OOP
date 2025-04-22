@@ -1,5 +1,6 @@
 #include "Triangle.h"
 #include <format>
+#include <cmath>
 
 Triangle::Triangle(Point a, Point b, Point c, Color fillColor, Color outlineColor)
 	: m_p0(a)
@@ -15,7 +16,7 @@ double Triangle::GetArea() const
 
 	double p = (a + b + c) / 2;
 
-	return sqrt(p * (p - a) * (p - b) * (p - c));
+	return std::sqrt(p * (p - a) * (p - b) * (p - c));
 }
 
 double Triangle::GetPerimeter() const

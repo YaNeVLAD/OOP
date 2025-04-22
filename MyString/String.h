@@ -16,13 +16,13 @@ class String
 public:
 	String();
 
-	String(const char* const cString);
+	String(const char* cString);
 
 	String(const std::string& stlString);
 
 	String(const std::initializer_list<char>& list);
 
-	String(const char* const cString, size_t len);
+	String(const char* cString, size_t len);
 
 	char& operator[](size_t index);
 
@@ -43,18 +43,18 @@ public:
 	char& EmplaceBack(char&& ch);
 
 	String& Append(const String& other);
-	String& Append(const char* const cString, size_t len);
-	String& Append(const char* const cString);
+	String& Append(const char* cString, size_t len);
+	String& Append(const char* cString);
 
 	String operator+(const String& other) const;
 	String operator+(const std::string& stlString) const;
-	String operator+(const char* const cString) const;
+	String operator+(const char* cString) const;
 
 	friend String operator+(const std::string& stlString, const String& other);
-	friend String operator+(const char* const cString, const String& other);
+	friend String operator+(const char* cString, const String& other);
 
 	String& operator+=(const String& other);
-	String& operator+=(const char* const cString);
+	String& operator+=(const char* cString);
 
 	bool operator==(const String& other) const;
 	bool operator!=(const String& other) const;

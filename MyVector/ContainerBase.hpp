@@ -21,7 +21,6 @@ public:
 	using TReference = TValue&;
 	using TConstReference = const TValue&;
 
-public:
 	ContainerBase() = default;
 
 	ContainerBase(const ContainerBase& other);
@@ -37,7 +36,7 @@ public:
 	template <typename... Args>
 	TReference EmplaceBack(Args&&... args);
 
-	void EmplaceAllBack(TConstPointer begin, size_t size);
+	void EmplaceAllBack(TConstPointer first, size_t size);
 
 	void Resize(size_t newSize);
 
