@@ -29,11 +29,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решен
 	ProjectSection(SolutionItems) = preProject
 		BazaDan.txt = BazaDan.txt
 		BazaDan2.txt = BazaDan2.txt
+		BazaDan3.txt = BazaDan3.txt
 		TextFile1.txt = TextFile1.txt
 		TextFile2.txt = TextFile2.txt
 		TextFile3.txt = TextFile3.txt
 		TextFile4.txt = TextFile4.txt
 		TextFile5.txt = TextFile5.txt
+		TextFile6.txt = TextFile6.txt
+		TextFile7.txt = TextFile7.txt
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "my_vector", "MyVector\MyVector.vcxproj", "{5E6BE57F-3A05-4160-AD07-A27F242583FC}"
@@ -43,6 +46,11 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "my_string", "MyString\MyString.vcxproj", "{ADCAE518-B0B5-4196-995D-7B566AB701B4}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "date", "Date\Date.vcxproj", "{3CC188C2-82C7-4D97-A3FB-E7AF9E7E033D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "http_url", "HttpUrl\HttpUrl.vcxproj", "{06774B99-5051-4BDA-B267-F7B20B7ADF4D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3128340B-3353-45CE-94A9-3C78E1EEDF4C} = {3128340B-3353-45CE-94A9-3C78E1EEDF4C}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -172,6 +180,14 @@ Global
 		{3CC188C2-82C7-4D97-A3FB-E7AF9E7E033D}.Release|x64.Build.0 = Release|x64
 		{3CC188C2-82C7-4D97-A3FB-E7AF9E7E033D}.Release|x86.ActiveCfg = Release|Win32
 		{3CC188C2-82C7-4D97-A3FB-E7AF9E7E033D}.Release|x86.Build.0 = Release|Win32
+		{06774B99-5051-4BDA-B267-F7B20B7ADF4D}.Debug|x64.ActiveCfg = Debug|x64
+		{06774B99-5051-4BDA-B267-F7B20B7ADF4D}.Debug|x64.Build.0 = Debug|x64
+		{06774B99-5051-4BDA-B267-F7B20B7ADF4D}.Debug|x86.ActiveCfg = Debug|Win32
+		{06774B99-5051-4BDA-B267-F7B20B7ADF4D}.Debug|x86.Build.0 = Debug|Win32
+		{06774B99-5051-4BDA-B267-F7B20B7ADF4D}.Release|x64.ActiveCfg = Release|x64
+		{06774B99-5051-4BDA-B267-F7B20B7ADF4D}.Release|x64.Build.0 = Release|x64
+		{06774B99-5051-4BDA-B267-F7B20B7ADF4D}.Release|x86.ActiveCfg = Release|Win32
+		{06774B99-5051-4BDA-B267-F7B20B7ADF4D}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

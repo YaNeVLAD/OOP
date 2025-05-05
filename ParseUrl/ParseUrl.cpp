@@ -39,7 +39,7 @@ void AssertPortInRange(int port)
 std::string ToLower(const std::string& str)
 {
 	std::string result(str);
-	std::transform(str.begin(), str.end(), result.begin(), [](const char& ch) {
+	std::ranges::transform(str, result.begin(), [](const char& ch) {
 		return static_cast<char>(std::tolower(ch));
 	});
 
