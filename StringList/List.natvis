@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+  <Type Name="List&lt;*&gt;">
+    <DisplayString>[size = {m_size}]</DisplayString>
+    <Expand>
+      <LinkedListItems Condition="m_head != nullptr">
+        <Size>m_size</Size>
+        <HeadPointer>m_head</HeadPointer>
+        <NextPointer>next</NextPointer>
+        <ValueNode>data</ValueNode>
+      </LinkedListItems>
+    </Expand>
+  </Type>
+
+  <Type Name="List&lt;*&gt;::Node">
+    <DisplayString>{data}</DisplayString>
+    <Expand>
+      <Item Name="data">data</Item>
+      <Item Name="prev" Condition="prev != nullptr">prev</Item>
+      <Item Name="prev" Condition="prev == nullptr">nullptr</Item>
+      <Item Name="next" Condition="next != nullptr">next</Item>
+      <Item Name="next" Condition="next == nullptr">nullptr</Item>
+    </Expand>
+  </Type>
+</AutoVisualizer>

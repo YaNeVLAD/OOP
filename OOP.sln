@@ -37,6 +37,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решен
 		TextFile5.txt = TextFile5.txt
 		TextFile6.txt = TextFile6.txt
 		TextFile7.txt = TextFile7.txt
+		TextFile8.txt = TextFile8.txt
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "my_vector", "MyVector\MyVector.vcxproj", "{5E6BE57F-3A05-4160-AD07-A27F242583FC}"
@@ -51,6 +52,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "http_url", "HttpUrl\HttpUrl
 	ProjectSection(ProjectDependencies) = postProject
 		{3128340B-3353-45CE-94A9-3C78E1EEDF4C} = {3128340B-3353-45CE-94A9-3C78E1EEDF4C}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "string_list", "StringList\StringList.vcxproj", "{78FD01C5-7B99-45B7-AD66-7CA54E37CBCB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -188,6 +191,14 @@ Global
 		{06774B99-5051-4BDA-B267-F7B20B7ADF4D}.Release|x64.Build.0 = Release|x64
 		{06774B99-5051-4BDA-B267-F7B20B7ADF4D}.Release|x86.ActiveCfg = Release|Win32
 		{06774B99-5051-4BDA-B267-F7B20B7ADF4D}.Release|x86.Build.0 = Release|Win32
+		{78FD01C5-7B99-45B7-AD66-7CA54E37CBCB}.Debug|x64.ActiveCfg = Debug|x64
+		{78FD01C5-7B99-45B7-AD66-7CA54E37CBCB}.Debug|x64.Build.0 = Debug|x64
+		{78FD01C5-7B99-45B7-AD66-7CA54E37CBCB}.Debug|x86.ActiveCfg = Debug|Win32
+		{78FD01C5-7B99-45B7-AD66-7CA54E37CBCB}.Debug|x86.Build.0 = Debug|Win32
+		{78FD01C5-7B99-45B7-AD66-7CA54E37CBCB}.Release|x64.ActiveCfg = Release|x64
+		{78FD01C5-7B99-45B7-AD66-7CA54E37CBCB}.Release|x64.Build.0 = Release|x64
+		{78FD01C5-7B99-45B7-AD66-7CA54E37CBCB}.Release|x86.ActiveCfg = Release|Win32
+		{78FD01C5-7B99-45B7-AD66-7CA54E37CBCB}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
