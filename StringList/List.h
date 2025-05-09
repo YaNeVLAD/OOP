@@ -41,6 +41,10 @@ public:
 
 	~List();
 
+	List(const List& other);
+
+	List& operator=(const List& other);
+
 	List(List&& other) noexcept;
 
 	List& operator=(List&& other) noexcept;
@@ -131,6 +135,32 @@ template <typename T>
 List<T>::~List()
 {
 	Clear();
+}
+
+template <typename T>
+List<T>::List(const List& other)
+	: List()
+{
+	Node* current = other.m_head;
+	while (current != nullptr)
+	{
+		EmplaceBack(current->data);
+		current = current->next;
+	}
+}
+
+template <typename T>
+List<T>& List<T>::operator=(const List& other)
+{
+	if (this != &other)
+	{
+		List temp(other);
+		std::exchange(m_head, temp.m_head);
+		std::exchange(m_tail, temp.m_tail);
+		std::exchange(m_size, temp.m_size);
+	}
+
+	return *this;
 }
 
 template <typename T>
