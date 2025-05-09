@@ -113,7 +113,7 @@ List<T>::List()
 
 template <typename T>
 List<T>::List(std::size_t size)
-	: m_size(size)
+	: List()
 {
 	for (size_t i = 0; i < size; ++i)
 	{
@@ -154,10 +154,11 @@ List<T>& List<T>::operator=(const List& other)
 {
 	if (this != &other)
 	{
+		Clear();
 		List temp(other);
-		std::exchange(m_head, temp.m_head);
-		std::exchange(m_tail, temp.m_tail);
-		std::exchange(m_size, temp.m_size);
+		std::swap(m_head, temp.m_head);
+		std::swap(m_tail, temp.m_tail);
+		std::swap(m_size, temp.m_size);
 	}
 
 	return *this;
@@ -406,7 +407,7 @@ typename List<T>::Iterator List<T>::InsertAt(ConstIterator where, Node* node)
 	if (current == nullptr)
 	{
 		InsertBack(node);
-		return End();
+		return --End();
 	}
 
 	node->next = current;

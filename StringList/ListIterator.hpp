@@ -100,9 +100,9 @@ private:
 template <typename TList>
 class ListIterator : public ConstListIterator<TList>
 {
-public:
 	using Base = ConstListIterator<TList>;
 
+public:
 	using iterator_category = std::bidirectional_iterator_tag;
 	using value_type = typename TList::ValueType;
 	using difference_type = std::ptrdiff_t;

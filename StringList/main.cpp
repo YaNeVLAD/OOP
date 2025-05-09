@@ -31,6 +31,9 @@ void Print(StringList& list)
 
 int main()
 {
+	List<int> list(0);
+
+#if 0
 	std::list<std::string> stl = { "123", "456", "789" };
 	stl.emplace_back("abiba");
 	stl.emplace_front("aboba");
@@ -60,4 +63,5 @@ int main()
 	std::cout << std::endl;
 
 	std::cout << "Hello World!" << std::endl;
+#endif
 }

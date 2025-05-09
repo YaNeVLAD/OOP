@@ -193,16 +193,20 @@ add_executable(test_http_url
     ${CATCH_SOURCES}
     
     "test_http_url.cpp"
-    ${CMAKE_SOURCE_DIR}/HttpUrl/HttpUrl.h
+    ${CMAKE_SOURCE_DIR}/ParseUrl/ParseUrl.cpp
+    ${CMAKE_SOURCE_DIR}/ParseUrl/ParseUrl.h
+    ${CMAKE_SOURCE_DIR}/HttpUrl/Protocol.cpp
     ${CMAKE_SOURCE_DIR}/HttpUrl/Protocol.h
     ${CMAKE_SOURCE_DIR}/HttpUrl/UrlParsingError.hpp
+    ${CMAKE_SOURCE_DIR}/HttpUrl/HttpUrl.cpp
+    ${CMAKE_SOURCE_DIR}/HttpUrl/HttpUrl.h
 )
 
 add_executable(test_string_list
     ${CATCH_SOURCES}
     
     "test_string_list.cpp"
-    ${CMAKE_SOURCE_DIR}/StringList/Iteratable.hpp
+    ${CMAKE_SOURCE_DIR}/MyVector/Iteratable.hpp
     ${CMAKE_SOURCE_DIR}/StringList/List.hpp
     ${CMAKE_SOURCE_DIR}/StringList/ListIterator.hpp
     ${CMAKE_SOURCE_DIR}/StringList/StringList.h

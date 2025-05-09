@@ -24,8 +24,6 @@
 #include "../GeneratePrimeNumbers/GeneratePrimeNumbers.h"
 #include "../HtmlDecode/HtmlDecode.h"
 #include "../HttpUrl/HttpUrl.h"
-#include "../HttpUrl/Protocol.h"
-#include "../HttpUrl/UrlParsingError.hpp"
 #include "../MyString/String.h"
 #include "../MyVector/Vector.hpp"
 #include "../ParseUrl/ParseUrl.h"
