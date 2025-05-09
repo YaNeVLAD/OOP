@@ -135,9 +135,8 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Iteratable.hpp" />
-    <ClInclude Include="List.h" />
-    <ClInclude Include="ListItertator.h" />
+    <ClInclude Include="List.hpp" />
+    <ClInclude Include="ListIterator.hpp" />
     <ClInclude Include="StringList.h" />
   </ItemGroup>
   <ItemGroup>

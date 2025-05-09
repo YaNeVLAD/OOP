@@ -189,6 +189,25 @@ add_executable(test_my_string
     ${CMAKE_SOURCE_DIR}/MyString/String.h
 )
 
+add_executable(test_http_url
+    ${CATCH_SOURCES}
+    
+    "test_http_url.cpp"
+    ${CMAKE_SOURCE_DIR}/HttpUrl/HttpUrl.h
+    ${CMAKE_SOURCE_DIR}/HttpUrl/Protocol.h
+    ${CMAKE_SOURCE_DIR}/HttpUrl/UrlParsingError.hpp
+)
+
+add_executable(test_string_list
+    ${CATCH_SOURCES}
+    
+    "test_string_list.cpp"
+    ${CMAKE_SOURCE_DIR}/StringList/Iteratable.hpp
+    ${CMAKE_SOURCE_DIR}/StringList/List.hpp
+    ${CMAKE_SOURCE_DIR}/StringList/ListIterator.hpp
+    ${CMAKE_SOURCE_DIR}/StringList/StringList.h
+)
+
 set_target_properties(
 test_all 
 test_vector 
@@ -201,6 +220,8 @@ test_my_vector
 test_shapes
 test_date
 test_my_string
+test_http_url
+test_string_list
 PROPERTIES CXX_STANDARD 20)
 target_link_libraries(test_all PRIVATE Catch2::Catch2)
 target_link_libraries(test_vector PRIVATE Catch2::Catch2)
@@ -213,3 +234,5 @@ target_link_libraries(test_my_vector PRIVATE Catch2::Catch2)
 target_link_libraries(test_shapes PRIVATE Catch2::Catch2)
 target_link_libraries(test_date PRIVATE Catch2::Catch2)
 target_link_libraries(test_my_string PRIVATE Catch2::Catch2)
+target_link_libraries(test_http_url PRIVATE Catch2::Catch2)
+target_link_libraries(test_string_list PRIVATE Catch2::Catch2)

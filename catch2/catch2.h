@@ -23,8 +23,12 @@
 #include "../Dictionary/Dictionary.h"
 #include "../GeneratePrimeNumbers/GeneratePrimeNumbers.h"
 #include "../HtmlDecode/HtmlDecode.h"
+#include "../HttpUrl/HttpUrl.h"
+#include "../HttpUrl/Protocol.h"
+#include "../HttpUrl/UrlParsingError.hpp"
 #include "../MyString/String.h"
 #include "../MyVector/Vector.hpp"
 #include "../ParseUrl/ParseUrl.h"
+#include "../StringList/StringList.h"
 #include "../Vector/VectorProcessor.h"
 #include <catch2/catch_all.hpp>

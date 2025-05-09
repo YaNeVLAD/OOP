@@ -34,8 +34,7 @@ int main()
 	std::list<std::string> stl = { "123", "456", "789" };
 	stl.emplace_back("abiba");
 	stl.emplace_front("aboba");
-	StringList psl = { "1", "2", "3" };
-	StringList sl = psl;
+	StringList sl;
 
 	sl.PushBack("aboba");
 	sl.PushBack("abiba");

@@ -5,36 +5,36 @@
 namespace details
 {
 
-template <typename TContainer, typename TPointer, typename TConstPointer>
+template <typename TContainer, typename TIterator, typename TConstIterator>
 class Iteratable
 {
 	TContainer* Ptr() { return static_cast<TContainer*>(this); }
 	const TContainer* Ptr() const { return static_cast<const TContainer*>(this); }
 
 public:
-	using TIterator = TPointer;
-	using TConstIterator = TConstPointer;
+	using Iterator = TIterator;
+	using ConstIterator = TConstIterator;
 
-	using TReverseIterator = std::reverse_iterator<TIterator>;
-	using TConstReverseIterator = std::reverse_iterator<TConstIterator>;
+	using ReverseIterator = std::reverse_iterator<Iterator>;
+	using ConstReverseIterator = std::reverse_iterator<ConstIterator>;
 
-	TIterator begin() { return Ptr()->Begin(); }
-	TIterator end() { return Ptr()->End(); }
+	Iterator begin() { return Ptr()->Begin(); }
+	Iterator end() { return Ptr()->End(); }
 
-	TConstIterator begin() const { return Ptr()->Begin(); }
-	TConstIterator end() const { return Ptr()->End(); }
+	ConstIterator begin() const { return Ptr()->Begin(); }
+	ConstIterator end() const { return Ptr()->End(); }
 
-	TConstIterator cbegin() const { return begin(); }
-	TConstIterator cend() const { return end(); }
+	ConstIterator cbegin() const { return begin(); }
+	ConstIterator cend() const { return end(); }
 
-	TReverseIterator rbegin() { return TReverseIterator(end()); }
-	TReverseIterator rend() { return TReverseIterator(begin()); }
+	ReverseIterator rbegin() { return ReverseIterator(end()); }
+	ReverseIterator rend() { return ReverseIterator(begin()); }
 
-	TConstReverseIterator rbegin() const { return TConstReverseIterator(end()); }
-	TConstReverseIterator rend() const { return TConstReverseIterator(begin()); }
+	ConstReverseIterator rbegin() const { return ConstReverseIterator(end()); }
+	ConstReverseIterator rend() const { return ConstReverseIterator(begin()); }
 
-	TConstReverseIterator crbegin() const { return rbegin(); }
-	TConstReverseIterator crend() const { return rend(); }
+	ConstReverseIterator crbegin() const { return rbegin(); }
+	ConstReverseIterator crend() const { return rend(); }
 };
 
 } // namespace details

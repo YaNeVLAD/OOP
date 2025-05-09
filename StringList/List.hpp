@@ -3,8 +3,8 @@
 #include <cassert>
 #include <utility>
 
-#include "Iteratable.hpp"
-#include "ListItertator.h"
+#include "../MyVector/Iteratable.hpp"
+#include "ListIterator.hpp"
 
 template <typename T>
 class List : public details::Iteratable<List<T>, ListIterator<List<T>>, ConstListIterator<List<T>>>
