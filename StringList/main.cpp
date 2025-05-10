@@ -31,14 +31,12 @@ void Print(StringList& list)
 
 int main()
 {
-	List<int> list(0);
-
-#if 0
 	std::list<std::string> stl = { "123", "456", "789" };
 	stl.emplace_back("abiba");
 	stl.emplace_front("aboba");
 	StringList sl;
-
+	using string_list = std::list<std::string>;
+	string_list ssl;
 	sl.PushBack("aboba");
 	sl.PushBack("abiba");
 	sl.PushFront("aboba");
@@ -47,6 +45,7 @@ int main()
 	++it;
 	std::string s = "ssss";
 	sl.Insert(it, s);
+	sl.Insert(it, "asdg");
 	sl.PushBack(s);
 	sl.EmplaceFront("1234");
 	std::cout << "----------------\n";
@@ -63,5 +62,4 @@ int main()
 	std::cout << std::endl;
 
 	std::cout << "Hello World!" << std::endl;
-#endif
 }

@@ -17,31 +17,24 @@ public:
 	using pointer = typename TList::ConstPointer;
 	using reference = const value_type&;
 
-	ConstListIterator(NodePtr node, const TList* list)
+	explicit ConstListIterator(NodePtr node)
 		: m_current(node)
-		, m_list(list)
 	{
 	}
 
 	reference operator*() const
 	{
-		assert(m_current != nullptr && "Cannot dereference a null iterator (likely end() or rend().base())");
 		return m_current->data;
 	}
 
 	pointer operator->() const
 	{
-		assert(m_current != nullptr && "Cannot dereference a null iterator (likely end() or rend().base())");
 		return &(m_current->data);
 	}
 
 	ConstListIterator& operator++()
 	{
-		assert(m_current != nullptr && "Cannot increment a null iterator (likely end())");
-		if (m_current)
-		{
-			m_current = m_current->next;
-		}
+		m_current = m_current->next;
 		return *this;
 	}
 
@@ -54,16 +47,7 @@ public:
 
 	ConstListIterator& operator--()
 	{
-		assert(m_list != nullptr && "Iterator is not associated with a list.");
-		if (m_current == nullptr)
-		{
-			m_current = m_list->m_tail;
-		}
-		else
-		{
-			m_current = m_current->prev;
-		}
-
+		m_current = m_current->prev;
 		return *this;
 	}
 
@@ -92,7 +76,6 @@ public:
 
 private:
 	NodePtr m_current;
-	const TList* m_list;
 
 	friend class List<value_type>;
 };
@@ -101,6 +84,7 @@ template <typename TList>
 class ListIterator : public ConstListIterator<TList>
 {
 	using Base = ConstListIterator<TList>;
+	using NodePtr = typename TList::NodePtr;
 
 public:
 	using iterator_category = std::bidirectional_iterator_tag;
@@ -109,10 +93,8 @@ public:
 	using pointer = typename TList::Pointer;
 	using reference = value_type&;
 
-	using NodePtr = typename TList::NodePtr;
-
-	ListIterator(NodePtr node, const TList* list)
-		: Base(node, list)
+	explicit ListIterator(NodePtr node)
+		: Base(node)
 	{
 	}
 

@@ -12,6 +12,9 @@ class List : public details::Iteratable<List<T>, ListIterator<List<T>>, ConstLis
 	static_assert(std::is_object_v<T>, "The C++ Standard forbids containers of non-object types "
 									   "because of [container.requirements].");
 
+	friend class ListIterator<List>;
+	friend class ConstListIterator<List>;
+
 	struct Node
 	{
 		T data;
@@ -29,9 +32,6 @@ public:
 
 	using Iterator = typename IteratorBase::Iterator;
 	using ConstIterator = typename IteratorBase::ConstIterator;
-
-	friend class ListIterator<List>;
-	friend class ConstListIterator<List>;
 
 	List();
 
@@ -92,6 +92,7 @@ public:
 	ConstIterator End() const;
 
 private:
+	Node* m_sentinel;
 	Node* m_head;
 	Node* m_tail;
 	std::size_t m_size;
@@ -101,14 +102,16 @@ private:
 	void InsertBack(Node* node);
 
 	Iterator InsertAt(ConstIterator where, Node* node);
+
+	void InitSentinel();
+	void DeleteAllNodes();
+	void CopyFrom(const List& other);
 };
 
 template <typename T>
 List<T>::List()
-	: m_head(nullptr)
-	, m_tail(nullptr)
-	, m_size(0)
 {
+	InitSentinel();
 }
 
 template <typename T>
@@ -134,19 +137,15 @@ List<T>::List(std::initializer_list<ValueType> initializerList)
 template <typename T>
 List<T>::~List()
 {
-	Clear();
+	DeleteAllNodes();
+	delete m_sentinel;
 }
 
 template <typename T>
 List<T>::List(const List& other)
-	: List()
 {
-	Node* current = other.m_head;
-	while (current != nullptr)
-	{
-		EmplaceBack(current->data);
-		current = current->next;
-	}
+	InitSentinel();
+	CopyFrom(other);
 }
 
 template <typename T>
@@ -155,10 +154,7 @@ List<T>& List<T>::operator=(const List& other)
 	if (this != &other)
 	{
 		Clear();
-		List temp(other);
-		std::swap(m_head, temp.m_head);
-		std::swap(m_tail, temp.m_tail);
-		std::swap(m_size, temp.m_size);
+		CopyFrom(other);
 	}
 
 	return *this;
@@ -168,8 +164,10 @@ template <typename T>
 List<T>::List(List&& other) noexcept
 	: m_head(std::exchange(other.m_head, nullptr))
 	, m_tail(std::exchange(other.m_tail, nullptr))
+	, m_sentinel(std::exchange(other.m_sentinel, nullptr))
 	, m_size(std::exchange(other.m_size, 0))
 {
+	other.InitSentinel();
 }
 
 template <typename T>
@@ -178,9 +176,14 @@ List<T>& List<T>::operator=(List&& other) noexcept
 	if (this != &other)
 	{
 		Clear();
+		delete m_sentinel;
+
 		m_head = std::exchange(other.m_head, nullptr);
 		m_tail = std::exchange(other.m_tail, nullptr);
+		m_sentinel = std::exchange(other.m_sentinel, nullptr);
 		m_size = std::exchange(other.m_size, 0);
+
+		other.InitSentinel();
 	}
 
 	return *this;
@@ -208,17 +211,20 @@ void List<T>::PopFront()
 		return;
 	}
 
-	Node* temp = m_head;
-	if (m_head == m_tail)
+	Node* nodeToDelete = m_head;
+	Node* newHead = nodeToDelete->next;
+
+	m_sentinel->next = newHead;
+	newHead->prev = m_sentinel;
+
+	m_head = newHead;
+
+	if (m_size == 1)
 	{
-		m_head = m_tail = nullptr;
+		m_tail = m_sentinel;
 	}
-	else
-	{
-		m_head = m_head->next;
-		m_head->prev = nullptr;
-	}
-	delete temp;
+
+	delete nodeToDelete;
 	m_size--;
 }
 
@@ -230,17 +236,20 @@ void List<T>::PopBack()
 		return;
 	}
 
-	Node* temp = m_tail;
-	if (m_head == m_tail)
+	Node* nodeToDelete = m_tail;
+	Node* newTail = nodeToDelete->prev;
+
+	m_sentinel->prev = newTail;
+	newTail->next = m_sentinel;
+
+	m_tail = newTail;
+
+	if (m_size == 1)
 	{
-		m_head = m_tail = nullptr;
+		m_head = m_sentinel;
 	}
-	else
-	{
-		m_tail = m_tail->prev;
-		m_tail->next = nullptr;
-	}
-	delete temp;
+
+	delete nodeToDelete;
 	m_size--;
 }
 
@@ -266,27 +275,27 @@ typename List<T>::Iterator List<T>::Erase(ConstIterator where)
 		return End();
 	}
 
-	Node* current = where.m_current;
-	Iterator next(current->next, this);
+	Node* nodeToDelete = where.m_current;
+	Node* prevNode = nodeToDelete->prev;
+	Node* nextNode = nodeToDelete->next;
 
-	if (current == m_head)
-	{
-		PopFront();
-	}
-	else if (current == m_tail)
-	{
-		PopBack();
-	}
-	else
-	{
-		current->prev->next = current->next;
-		current->next->prev = current->prev;
+	prevNode->next = nextNode;
+	nextNode->prev = prevNode;
 
-		delete current;
-		m_size--;
+	if (nodeToDelete == m_head)
+	{
+		m_head = nextNode;
 	}
 
-	return next;
+	if (nodeToDelete == m_tail)
+	{
+		m_tail = prevNode;
+	}
+
+	delete nodeToDelete;
+	m_size--;
+
+	return Iterator(nextNode);
 }
 
 template <typename T>
@@ -304,10 +313,8 @@ std::size_t List<T>::Size() const
 template <typename T>
 void List<T>::Clear()
 {
-	while (!Empty())
-	{
-		PopBack();
-	}
+	DeleteAllNodes();
+	InitSentinel();
 }
 
 template <typename T>
@@ -339,58 +346,58 @@ const typename List<T>::ValueType& List<T>::Back() const
 template <typename T>
 typename List<T>::Iterator List<T>::Begin()
 {
-	return Iterator(m_head, this);
+	return Iterator(m_head);
 }
 
 template <typename T>
 typename List<T>::ConstIterator List<T>::Begin() const
 {
-	return ConstIterator(m_head, this);
+	return ConstIterator(m_head);
 }
 
 template <typename T>
 typename List<T>::Iterator List<T>::End()
 {
-	return Iterator(nullptr, this);
+	return Iterator(m_sentinel);
 }
 
 template <typename T>
 typename List<T>::ConstIterator List<T>::End() const
 {
-	return ConstIterator(nullptr, this);
+	return ConstIterator(m_sentinel);
 }
 
 template <typename T>
 void List<T>::InsertFront(Node* node)
 {
+	node->next = m_head;
+	node->prev = m_sentinel;
+	m_head->prev = node;
+	m_sentinel->next = node;
+
+	m_head = node;
+
 	if (Empty())
 	{
-		m_head = m_tail = node;
+		m_tail = node;
 	}
-	else
-	{
-		node->next = m_head;
-		m_head->prev = node;
-		m_head = node;
-	}
-	node->prev = nullptr;
 	m_size++;
 }
 
 template <typename T>
 void List<T>::InsertBack(Node* node)
 {
+	node->prev = m_tail;
+	node->next = m_sentinel;
+	m_tail->next = node;
+	m_sentinel->prev = node;
+
+	m_tail = node;
+
 	if (Empty())
 	{
-		m_head = m_tail = node;
+		m_head = node;
 	}
-	else
-	{
-		m_tail->next = node;
-		node->prev = m_tail;
-		m_tail = node;
-	}
-	node->next = nullptr;
 	m_size++;
 }
 
@@ -398,24 +405,60 @@ template <typename T>
 typename List<T>::Iterator List<T>::InsertAt(ConstIterator where, Node* node)
 {
 	Node* current = where.m_current;
+	Node* prev = current->prev;
+
+	node->prev = prev;
+	node->next = current;
+	prev->next = node;
+	current->prev = node;
 
 	if (current == m_head)
 	{
-		InsertFront(node);
-		return Begin();
-	}
-	if (current == nullptr)
-	{
-		InsertBack(node);
-		return --End();
+		m_head = node;
 	}
 
-	node->next = current;
-	node->prev = current->prev;
-	current->prev->next = node;
-	current->prev = node;
+	if (prev == m_tail)
+	{
+		m_tail = node;
+	}
+
 	m_size++;
-	return Iterator(node, this);
+
+	return Iterator(node);
+}
+
+template <typename T>
+void List<T>::InitSentinel()
+{
+	m_sentinel = new Node();
+	m_sentinel->prev = m_sentinel;
+	m_sentinel->next = m_sentinel;
+	m_head = m_sentinel;
+	m_tail = m_sentinel;
+	m_size = 0;
+}
+
+template <typename T>
+void List<T>::DeleteAllNodes()
+{
+	Node* current = m_head;
+	while (current != m_sentinel)
+	{
+		Node* next = current->next;
+		delete current;
+		current = next;
+	}
+}
+
+template <typename T>
+void List<T>::CopyFrom(const List& other)
+{
+	Node* current = other.m_head;
+	while (current != other.m_sentinel)
+	{
+		EmplaceBack(current->data);
+		current = current->next;
+	}
 }
 
 template <typename T>

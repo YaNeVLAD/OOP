@@ -26,7 +26,7 @@ TEMPLATE_TEST_CASE("List Basic Operations - ", "[List][Basic]", int, std::string
 
 		for (const auto& val : list)
 		{
-			REQUIRE(val == ValueType{}); // Check default construction
+			REQUIRE(val == ValueType{});
 		}
 	}
 
