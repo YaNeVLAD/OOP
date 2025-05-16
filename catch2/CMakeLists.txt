@@ -83,6 +83,9 @@ add_executable(test_all
     ${CMAKE_SOURCE_DIR}/MyVector/Allocator.hpp
     ${CMAKE_SOURCE_DIR}/MyString/String.cpp
     ${CMAKE_SOURCE_DIR}/MyString/String.h
+    
+    "test_find_max_ex.cpp"
+    ${CMAKE_SOURCE_DIR}/FindMaxEx/FindMaxEx.hpp
 )
 
 add_executable(test_vector
@@ -212,6 +215,13 @@ add_executable(test_string_list
     ${CMAKE_SOURCE_DIR}/StringList/StringList.h
 )
 
+add_executable(test_find_max_ex
+    ${CATCH_SOURCES}
+
+    "test_find_max_ex.cpp"
+    ${CMAKE_SOURCE_DIR}/FindMaxEx/FindMaxEx.hpp
+)
+
 set_target_properties(
 test_all 
 test_vector 
@@ -226,6 +236,7 @@ test_date
 test_my_string
 test_http_url
 test_string_list
+test_find_max_ex
 PROPERTIES CXX_STANDARD 20)
 target_link_libraries(test_all PRIVATE Catch2::Catch2)
 target_link_libraries(test_vector PRIVATE Catch2::Catch2)
@@ -240,3 +251,4 @@ target_link_libraries(test_date PRIVATE Catch2::Catch2)
 target_link_libraries(test_my_string PRIVATE Catch2::Catch2)
 target_link_libraries(test_http_url PRIVATE Catch2::Catch2)
 target_link_libraries(test_string_list PRIVATE Catch2::Catch2)
+target_link_libraries(test_find_max_ex PRIVATE Catch2::Catch2)

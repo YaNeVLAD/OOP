@@ -21,6 +21,7 @@
 #include "../Car/CarController.h"
 #include "../Date/Date.h"
 #include "../Dictionary/Dictionary.h"
+#include "../FindMaxEx/FindMaxEx.hpp"
 #include "../GeneratePrimeNumbers/GeneratePrimeNumbers.h"
 #include "../HtmlDecode/HtmlDecode.h"
 #include "../HttpUrl/HttpUrl.h"
