@@ -5,7 +5,6 @@
 #include <vector>
 
 template <typename T, typename Less = std::less<T>>
-// requires std::predicate<Less, const T&, const T&>
 bool FindMaxEx(const std::vector<T>& vec, T& maxValue, const Less& less = std::less<T>())
 {
 	static_assert(std::predicate<Less, const T&, const T&>,
@@ -20,9 +19,3 @@ bool FindMaxEx(const std::vector<T>& vec, T& maxValue, const Less& less = std::l
 
 	return false;
 }
-
-// template <typename T>
-// bool FindMaxEx(const std::vector<T>& vec, T& maxValue)
-//{
-//	return FindMaxEx(vec, maxValue, std::less<T>());
-// }

@@ -1,5 +1,7 @@
 #include "catch2.h"
 
+#include <stdexcept>
+
 TEST_CASE("FindMaxEx with custom less - Empty vector")
 {
 	std::vector<int> vec;
@@ -109,4 +111,30 @@ TEST_CASE("FindMaxEx default less - Different data types (string)")
 	std::string maxValue;
 	REQUIRE(FindMaxEx(vec, maxValue));
 	REQUIRE(maxValue == "zebra");
+}
+
+TEST_CASE("FindMaxEx dont modify maxValue when less throws an exception")
+{
+	unsigned n = 0;
+	int max = 42;
+	std::vector<int> vec = { 1, 2, 3, 5, 8, 13 };
+	auto throwingLess = [&n](const int&, const int&) {
+		if (n == 2)
+		{
+			throw std::runtime_error("Exception occurred");
+		}
+		n++;
+		return true;
+	};
+
+	try
+	{
+		FindMaxEx(vec, max, throwingLess);
+	}
+	catch (const std::exception& ex)
+	{
+		using namespace std::literals;
+		REQUIRE(ex.what() == "Exception occurred"s);
+		REQUIRE(max == 42);
+	}
 }
