@@ -1,7 +1,6 @@
 #pragma once
 
-#include "utility"
-
+#include <memory>
 #include <type_traits>
 
 namespace details
@@ -44,12 +43,14 @@ public:
 
 		if constexpr (std::is_move_constructible_v<TValue>)
 		{
-			Move(newBlock, block, copySize);
+			std::uninitialized_move_n(block, copySize, newBlock);
 		}
 		else
 		{
-			Copy(newBlock, block, copySize);
+			std::uninitialized_copy_n(block, copySize, newBlock);
 		}
+
+		std::destroy_n(block, oldSize);
 
 		Free(block, oldSize);
 
@@ -57,24 +58,6 @@ public:
 	}
 
 private:
-	void Move(TPointer dest, TPointer source, size_t size)
-	{
-		for (size_t i = 0; i < size; ++i)
-		{
-			new (&dest[i]) TValue(std::move(source[i]));
-			source[i].~TValue();
-		}
-	}
-
-	static void Copy(TPointer dest, TPointer source, size_t size)
-	{
-		for (size_t i = 0; i < size; ++i)
-		{
-			new (&dest[i]) TValue(source[i]);
-			source[i].~TValue();
-		}
-	}
-
 	static size_t CalculateBlockSize(size_t count)
 	{
 		return count * sizeof(TValue);
