@@ -1,6 +1,7 @@
 ﻿#include <algorithm>
 #include <iomanip>
 #include <iostream>
+#include <ranges>
 #include <sstream>
 
 #include "Vector.hpp"
@@ -35,7 +36,7 @@ int main()
 	std::cout << "Total count " << numbers.Size() + others.Size() << " elements" << std::endl;
 
 	std::cout << "Sorted numbers: " << std::endl;
-	std::sort(numbers.begin(), numbers.end());
+	std::ranges::sort(numbers);
 
 	for (const auto& num : numbers)
 	{

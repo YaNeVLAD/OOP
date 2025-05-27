@@ -30,7 +30,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решен
 		BazaDan.txt = BazaDan.txt
 		BazaDan2.txt = BazaDan2.txt
 		BazaDan3.txt = BazaDan3.txt
+		BazaDan4.txt = BazaDan4.txt
+		BazaDan5.txt = BazaDan5.txt
+		BazaDan6.txt = BazaDan6.txt
 		TextFile1.txt = TextFile1.txt
+		TextFile10.txt = TextFile10.txt
+		TextFile11.txt = TextFile11.txt
 		TextFile2.txt = TextFile2.txt
 		TextFile3.txt = TextFile3.txt
 		TextFile4.txt = TextFile4.txt
@@ -57,6 +62,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "string_list", "StringList\StringList.vcxproj", "{78FD01C5-7B99-45B7-AD66-7CA54E37CBCB}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "find_max_ex", "FindMaxEx\FindMaxEx.vcxproj", "{1D346DC7-334F-4528-88E8-4F14DC8C7268}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vehicle", "Vehicle\Vehicle.vcxproj", "{452DDCD9-2AB8-4401-A84D-443930D46763}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -210,6 +217,14 @@ Global
 		{1D346DC7-334F-4528-88E8-4F14DC8C7268}.Release|x64.Build.0 = Release|x64
 		{1D346DC7-334F-4528-88E8-4F14DC8C7268}.Release|x86.ActiveCfg = Release|Win32
 		{1D346DC7-334F-4528-88E8-4F14DC8C7268}.Release|x86.Build.0 = Release|Win32
+		{452DDCD9-2AB8-4401-A84D-443930D46763}.Debug|x64.ActiveCfg = Debug|x64
+		{452DDCD9-2AB8-4401-A84D-443930D46763}.Debug|x64.Build.0 = Debug|x64
+		{452DDCD9-2AB8-4401-A84D-443930D46763}.Debug|x86.ActiveCfg = Debug|Win32
+		{452DDCD9-2AB8-4401-A84D-443930D46763}.Debug|x86.Build.0 = Debug|Win32
+		{452DDCD9-2AB8-4401-A84D-443930D46763}.Release|x64.ActiveCfg = Release|x64
+		{452DDCD9-2AB8-4401-A84D-443930D46763}.Release|x64.Build.0 = Release|x64
+		{452DDCD9-2AB8-4401-A84D-443930D46763}.Release|x86.ActiveCfg = Release|Win32
+		{452DDCD9-2AB8-4401-A84D-443930D46763}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
