@@ -89,15 +89,12 @@ public:
 		{
 			return false;
 		}
-
+		bool equals = true;
 		for (size_t i = 0; i < Base::Size(); ++i)
 		{
-			if ((*this)[i] != other[i])
-			{
-				return false;
-			}
+			equals = (*this)[i] == other[i];
 		}
 
-		return true;
+		return equals;
 	}
 };
