@@ -23,15 +23,11 @@ class List : public details::Iteratable<List<T>, ListIterator<List<T>>, ConstLis
 	};
 
 	using NodePtr = Node*;
-	using IteratorBase = details::Iteratable<List<T>, ListIterator<List<T>>, ConstListIterator<List<T>>>;
 
 public:
 	using ValueType = T;
 	using Pointer = ValueType*;
 	using ConstPointer = const ValueType*;
-
-	using Iterator = typename IteratorBase::Iterator;
-	using ConstIterator = typename IteratorBase::ConstIterator;
 
 	List();
 
