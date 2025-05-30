@@ -12,8 +12,11 @@ class List : public details::Iteratable<List<T>, ListIterator<List<T>>, ConstLis
 	static_assert(std::is_object_v<T>, "The C++ Standard forbids containers of non-object types "
 									   "because of [container.requirements].");
 
-	friend class ListIterator<List>;
-	friend class ConstListIterator<List>;
+	using _Iterator = ListIterator<List>;
+	using _ConstIterator = ConstListIterator<List>;
+
+	friend class _Iterator;
+	friend class _ConstIterator;
 
 	struct Node
 	{
@@ -59,11 +62,11 @@ public:
 
 	void PopBack();
 
-	Iterator Insert(ConstIterator where, ValueType&& value);
+	_Iterator Insert(_Iterator where, ValueType&& value);
 
-	Iterator Insert(ConstIterator where, const ValueType& value);
+	_Iterator Insert(_Iterator where, const ValueType& value);
 
-	Iterator Erase(ConstIterator where);
+	_Iterator Erase(_Iterator where);
 
 	bool Empty() const;
 
@@ -79,13 +82,13 @@ public:
 
 	const ValueType& Back() const;
 
-	Iterator Begin();
+	_Iterator Begin();
 
-	ConstIterator Begin() const;
+	_ConstIterator Begin() const;
 
-	Iterator End();
+	_Iterator End();
 
-	ConstIterator End() const;
+	_ConstIterator End() const;
 
 private:
 	Node* m_sentinel;
@@ -97,7 +100,7 @@ private:
 
 	void InsertBack(Node* node);
 
-	Iterator InsertAt(ConstIterator where, Node* node);
+	_Iterator InsertAt(_Iterator where, Node* node);
 
 	void InitSentinel();
 	void DeleteAllNodes();
@@ -250,21 +253,21 @@ void List<T>::PopBack()
 }
 
 template <typename T>
-typename List<T>::Iterator List<T>::Insert(ConstIterator where, ValueType&& value)
+typename List<T>::_Iterator List<T>::Insert(_Iterator where, ValueType&& value)
 {
 	Node* newNode = new Node(std::forward<ValueType>(value));
 	return InsertAt(where, newNode);
 }
 
 template <typename T>
-typename List<T>::Iterator List<T>::Insert(ConstIterator where, const ValueType& value)
+typename List<T>::_Iterator List<T>::Insert(_Iterator where, const ValueType& value)
 {
 	Node* newNode = new Node(value);
 	return InsertAt(where, newNode);
 }
 
 template <typename T>
-typename List<T>::Iterator List<T>::Erase(ConstIterator where)
+typename List<T>::_Iterator List<T>::Erase(_Iterator where)
 {
 	if (Empty() || where == End())
 	{
@@ -291,7 +294,7 @@ typename List<T>::Iterator List<T>::Erase(ConstIterator where)
 	delete nodeToDelete;
 	m_size--;
 
-	return Iterator(nextNode);
+	return _Iterator(nextNode);
 }
 
 template <typename T>
@@ -340,27 +343,27 @@ const typename List<T>::ValueType& List<T>::Back() const
 }
 
 template <typename T>
-typename List<T>::Iterator List<T>::Begin()
+typename List<T>::_Iterator List<T>::Begin()
 {
-	return Iterator(m_head);
+	return _Iterator(m_head);
 }
 
 template <typename T>
-typename List<T>::ConstIterator List<T>::Begin() const
+typename List<T>::_ConstIterator List<T>::Begin() const
 {
-	return ConstIterator(m_head);
+	return _ConstIterator(m_head);
 }
 
 template <typename T>
-typename List<T>::Iterator List<T>::End()
+typename List<T>::_Iterator List<T>::End()
 {
-	return Iterator(m_sentinel);
+	return _Iterator(m_sentinel);
 }
 
 template <typename T>
-typename List<T>::ConstIterator List<T>::End() const
+typename List<T>::_ConstIterator List<T>::End() const
 {
-	return ConstIterator(m_sentinel);
+	return _ConstIterator(m_sentinel);
 }
 
 template <typename T>
@@ -398,7 +401,7 @@ void List<T>::InsertBack(Node* node)
 }
 
 template <typename T>
-typename List<T>::Iterator List<T>::InsertAt(ConstIterator where, Node* node)
+typename List<T>::_Iterator List<T>::InsertAt(_Iterator where, Node* node)
 {
 	Node* current = where.m_current;
 	Node* prev = current->prev;
@@ -420,7 +423,7 @@ typename List<T>::Iterator List<T>::InsertAt(ConstIterator where, Node* node)
 
 	m_size++;
 
-	return Iterator(node);
+	return _Iterator(node);
 }
 
 template <typename T>

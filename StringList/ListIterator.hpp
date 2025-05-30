@@ -5,19 +5,19 @@
 template <typename T>
 class List;
 
-template <typename TList>
-class ConstListIterator
+template <bool IsConst, typename TList>
+class BaseListIterator
 {
 	using NodePtr = typename TList::NodePtr;
 
 public:
 	using iterator_category = std::bidirectional_iterator_tag;
-	using value_type = typename TList::ValueType;
+	using value_type = std::conditional_t<IsConst, const typename TList::ValueType, typename TList::ValueType>;
 	using difference_type = std::ptrdiff_t;
-	using pointer = typename TList::ConstPointer;
-	using reference = const value_type&;
+	using pointer = std::add_pointer_t<value_type>;
+	using reference = std::add_lvalue_reference_t<value_type>;
 
-	explicit ConstListIterator(NodePtr node)
+	explicit BaseListIterator(NodePtr node)
 		: m_current(node)
 	{
 	}
@@ -32,42 +32,42 @@ public:
 		return &(m_current->data);
 	}
 
-	ConstListIterator& operator++()
+	BaseListIterator& operator++()
 	{
 		m_current = m_current->next;
 		return *this;
 	}
 
-	ConstListIterator operator++(int)
+	BaseListIterator operator++(int)
 	{
-		ConstListIterator temp = *this;
+		BaseListIterator temp = *this;
 		++(*this);
 		return temp;
 	}
 
-	ConstListIterator& operator--()
+	BaseListIterator& operator--()
 	{
 		m_current = m_current->prev;
 		return *this;
 	}
 
-	ConstListIterator operator--(int)
+	BaseListIterator operator--(int)
 	{
-		ConstListIterator temp = *this;
+		BaseListIterator temp = *this;
 		--(*this);
 		return temp;
 	}
 
 #if (__cplusplus >= 202002L)
-	bool operator==(const ConstListIterator& other) const = default;
-	bool operator!=(const ConstListIterator& other) const = default;
+	bool operator==(const BaseListIterator& other) const = default;
+	bool operator!=(const BaseListIterator& other) const = default;
 #else
-	bool operator==(const ConstListIterator& other) const
+	bool operator==(const BaseListIterator& other) const
 	{
 		return m_current == other.m_current;
 	}
 
-	bool operator!=(const ConstListIterator& other) const
+	bool operator!=(const BaseListIterator& other) const
 	{
 		return m_current != other.m_current;
 	}
@@ -80,57 +80,8 @@ private:
 	friend class List<value_type>;
 };
 
-template <typename TList>
-class ListIterator : public ConstListIterator<TList>
-{
-	using Base = ConstListIterator<TList>;
-	using NodePtr = typename TList::NodePtr;
+template <class TList>
+using ListIterator = BaseListIterator<false, TList>;
 
-public:
-	using iterator_category = std::bidirectional_iterator_tag;
-	using value_type = typename TList::ValueType;
-	using difference_type = std::ptrdiff_t;
-	using pointer = typename TList::Pointer;
-	using reference = value_type&;
-
-	explicit ListIterator(NodePtr node)
-		: Base(node)
-	{
-	}
-
-	reference operator*() const
-	{
-		return const_cast<reference>(Base::operator*());
-	}
-
-	pointer operator->() const
-	{
-		return const_cast<pointer>(Base::operator->());
-	}
-
-	ListIterator& operator++()
-	{
-		Base::operator++();
-		return *this;
-	}
-
-	ListIterator operator++(int)
-	{
-		ListIterator temp = *this;
-		Base::operator++();
-		return temp;
-	}
-
-	ListIterator& operator--()
-	{
-		Base::operator--();
-		return *this;
-	}
-
-	ListIterator operator--(int)
-	{
-		ListIterator temp = *this;
-		Base::operator--();
-		return temp;
-	}
-};
+template <class TList>
+using ConstListIterator = BaseListIterator<true, TList>;

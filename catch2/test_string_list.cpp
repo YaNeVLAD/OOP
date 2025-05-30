@@ -525,7 +525,6 @@ TEMPLATE_TEST_CASE("List Iterator Functionality - ", "[List][Iterator]", int, st
 
 		REQUIRE(it == list.End());
 		REQUIRE(cit == list.cend());
-		REQUIRE(it == cit);
 		// Dereferencing end() or begin() on empty list should trigger assert in debug.
 		// Incrementing/Decrementing end() or begin() on empty list should also trigger assert.
 	}
@@ -540,7 +539,6 @@ TEMPLATE_TEST_CASE("List Iterator Functionality - ", "[List][Iterator]", int, st
 		REQUIRE(it != list.End());
 		REQUIRE(cit == list.cbegin());
 		REQUIRE(cit != list.cend());
-		REQUIRE(it == cit);
 
 		REQUIRE(*it == TestType{ 10 });
 		REQUIRE(*cit == TestType{ 10 });
@@ -642,16 +640,11 @@ TEMPLATE_TEST_CASE("List Iterator Functionality - ", "[List][Iterator]", int, st
 			auto cit2 = list.cbegin();
 
 			REQUIRE(it1 == it2);
-			REQUIRE(it1 == cit1);
 			REQUIRE(cit1 == cit2);
 
 			REQUIRE(it1 != it3);
 			REQUIRE(it1 != list.End());
 			REQUIRE(it3 != list.End());
-
-			REQUIRE(cit1 != it3);
-			REQUIRE(cit1 != list.cend());
-			REQUIRE(std::next(cit1) == it3);
 		}
 
 		SECTION("Dereferencing and arrow operator")

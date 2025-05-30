@@ -1,0 +1,45 @@
+30.05.25
+-Специализация шаблона
+--Полная специализация - все шаблонные параметры определены
+--Частичная специализация - часть шаблонных параметров переопределена
+--Специализация обозначается как <> перед началом функции или класса
+template <>
+ReturnType Foo<ConcreteType>(...) {...}
+
+-Проверка шаблона. Substitution failure is not an error (SFINAE)
+template <typename T>
+struct IsIntegral
+{
+static inline const bool value = false;
+}
+
+template<typename T>
+inline constexpr bool IsIntegralV = IsIntegral<T>::value;
+
+struct IsIntegralTrue
+{
+static inline const bool value = true;
+}
+
+template<>
+struct IsIntegral<unsigned> : IsIntegralTrue {};
+struct IsIntegral<int> : IsIntegralTrue {};
+
+--Условный оператор if с constexpr (С++17)
+if constexpr (...) {...}
+--Такое условие будет проверено во время компиляции, если условие
+ложно, то блок условия не будет даже добавлен к компиляции
+
+-Шаблонные методы класса
+--Даже если класс не является шаблонным, у него могут быть шаблонные методы
+--Можно объявлять внутри и снаружи класса
+
+-Шаблоны и наследование
+--Шаблоны можно спокойно использовать в иерархии наследования
+
+-CRTP (Curiously Recurring Template Pattern)
+--Класс наследник передаёт в класс родитель себя в качестве шаблонного параметра
+--Это позволяет реализовать наследование без виртуальных функций
+--Это позволяет реализовать полиморфизм времени компиляции
+--static_cast<const Derived*>(this)->Method(...)
+---Позволяет скастить себя к шаблонному наследнику
