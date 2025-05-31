@@ -2,17 +2,20 @@
 
 #include <iterator>
 
+#include <variant>
+
 template <typename T>
 class List;
 
-template <bool IsConst, typename TList>
+template <bool IsConst, class TList>
 class BaseListIterator
 {
-	using NodePtr = typename TList::NodePtr;
+	using NodePtr = typename TList::Node*;
+	using ValueType = typename TList::ValueType;
 
 public:
 	using iterator_category = std::bidirectional_iterator_tag;
-	using value_type = std::conditional_t<IsConst, const typename TList::ValueType, typename TList::ValueType>;
+	using value_type = std::conditional_t<IsConst, const ValueType, ValueType>;
 	using difference_type = std::ptrdiff_t;
 	using pointer = std::add_pointer_t<value_type>;
 	using reference = std::add_lvalue_reference_t<value_type>;
@@ -77,7 +80,7 @@ public:
 private:
 	NodePtr m_current;
 
-	friend class List<value_type>;
+	friend class List<ValueType>;
 };
 
 template <class TList>

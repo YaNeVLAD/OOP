@@ -1,10 +1,10 @@
 #include "String.h"
 
 #include <cassert>
+#include <cstring>
 #include <istream>
 #include <memory>
 #include <ostream>
-#include <cstring>
 
 namespace
 {
@@ -57,9 +57,7 @@ String::String(const char* const cString, size_t len)
 
 char& String::operator[](size_t index)
 {
-#ifdef _DEBUG
 	assert(index < Size());
-#endif // _DEBUG
 
 	return *(Base::Begin() + index);
 }

@@ -15,13 +15,15 @@ class ContainerBase
 	using Allocator = Allocator<TValue>;
 
 public:
-	using TPointer = TValue*;
-	using TConstPointer = const TValue*;
+	using Pointer = TValue*;
+	using ConstPointer = const TValue*;
 
-	using TReference = TValue&;
-	using TConstReference = const TValue&;
+	using Reference = TValue&;
+	using ConstReference = const TValue&;
 
 	ContainerBase() = default;
+
+	ContainerBase(size_t size, TValue value);
 
 	ContainerBase(const ContainerBase& other);
 
@@ -34,9 +36,7 @@ public:
 	virtual ~ContainerBase();
 
 	template <typename... Args>
-	TReference EmplaceBack(Args&&... args);
-
-	void EmplaceAllBack(TConstPointer first, size_t size);
+	Reference EmplaceBack(Args&&... args);
 
 	void Resize(size_t newSize);
 
@@ -50,23 +50,38 @@ public:
 
 	size_t Capacity() const;
 
-	TPointer Begin();
+	Pointer Begin();
 
-	TPointer End();
+	Pointer End();
 
-	TConstPointer Begin() const;
+	ConstPointer Begin() const;
 
-	TConstPointer End() const;
+	ConstPointer End() const;
+
+protected:
+	void EmplaceAllBack(ConstPointer first, size_t size);
 
 private:
 	virtual size_t CalculateGrowth(size_t newSize);
 
-	TPointer m_data = nullptr;
+	Pointer m_data = nullptr;
 	size_t m_size = 0;
 	size_t m_capacity = 0;
 
 	Allocator m_allocator;
 };
+
+template <typename TValue>
+inline ContainerBase<TValue>::ContainerBase(size_t size, TValue value)
+	: m_data(m_allocator.Allocate(size))
+	, m_size(size)
+	, m_capacity(size)
+{
+	for (size_t i = 0; i < m_size; ++i)
+	{
+		new (&m_data[i]) TValue(value);
+	}
+}
 
 template <class TValue>
 inline ContainerBase<TValue>::ContainerBase(const ContainerBase& other)
@@ -136,8 +151,13 @@ inline ContainerBase<TValue>::~ContainerBase()
 }
 
 template <typename TValue>
-inline void ContainerBase<TValue>::EmplaceAllBack(TConstPointer first, size_t size)
+inline void ContainerBase<TValue>::EmplaceAllBack(ConstPointer first, size_t size)
 {
+	if (!first)
+	{
+		return;
+	}
+
 	size_t totalSize = m_size + size;
 	if (totalSize >= m_capacity)
 	{
@@ -201,10 +221,7 @@ inline void ContainerBase<TValue>::PopBack()
 template <class TValue>
 inline void ContainerBase<TValue>::Clear()
 {
-	for (size_t i = 0; i < m_size; ++i)
-	{
-		m_data[i].~TValue();
-	}
+	std::destroy_n(m_data, m_size);
 	m_size = 0;
 }
 
@@ -221,25 +238,25 @@ inline size_t ContainerBase<TValue>::Capacity() const
 }
 
 template <class TValue>
-inline ContainerBase<TValue>::TPointer ContainerBase<TValue>::Begin()
+inline ContainerBase<TValue>::Pointer ContainerBase<TValue>::Begin()
 {
 	return m_data;
 }
 
 template <class TValue>
-inline ContainerBase<TValue>::TPointer ContainerBase<TValue>::End()
+inline ContainerBase<TValue>::Pointer ContainerBase<TValue>::End()
 {
 	return m_data + m_size;
 }
 
 template <class TValue>
-inline ContainerBase<TValue>::TConstPointer ContainerBase<TValue>::Begin() const
+inline ContainerBase<TValue>::ConstPointer ContainerBase<TValue>::Begin() const
 {
 	return m_data;
 }
 
 template <class TValue>
-inline ContainerBase<TValue>::TConstPointer ContainerBase<TValue>::End() const
+inline ContainerBase<TValue>::ConstPointer ContainerBase<TValue>::End() const
 {
 	return m_data + m_size;
 }
@@ -266,7 +283,7 @@ inline size_t ContainerBase<TValue>::CalculateGrowth(size_t newSize)
 
 template <class TValue>
 template <typename... Args>
-inline ContainerBase<TValue>::TReference ContainerBase<TValue>::EmplaceBack(Args&&... args)
+inline ContainerBase<TValue>::Reference ContainerBase<TValue>::EmplaceBack(Args&&... args)
 {
 	if (m_size >= m_capacity)
 	{

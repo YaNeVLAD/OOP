@@ -25,14 +25,16 @@ class List : public details::Iteratable<List<T>, ListIterator<List<T>>, ConstLis
 		Node* next = nullptr;
 	};
 
-	using NodePtr = Node*;
-
 public:
 	using ValueType = T;
 	using Pointer = ValueType*;
 	using ConstPointer = const ValueType*;
+	using Reference = ValueType&;
+	using ConstReference = const ValueType&;
 
 	List();
+
+	List(T value, std::size_t size);
 
 	explicit List(std::size_t size);
 
@@ -114,13 +116,19 @@ List<T>::List()
 }
 
 template <typename T>
-List<T>::List(std::size_t size)
+inline List<T>::List(T value, std::size_t size)
 	: List()
 {
 	for (size_t i = 0; i < size; ++i)
 	{
-		EmplaceBack();
+		EmplaceBack(value);
 	}
+}
+
+template <typename T>
+List<T>::List(std::size_t size)
+	: List(T(), size)
+{
 }
 
 template <typename T>

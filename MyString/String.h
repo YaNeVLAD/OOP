@@ -7,7 +7,7 @@
 #include "../MyVector/ContainerBase.hpp"
 #include "../MyVector/Iteratable.hpp"
 
-class String
+class String final
 	: public details::ContainerBase<char>
 	, public details::Iteratable<String, char*, const char*>
 {

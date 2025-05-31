@@ -5,7 +5,7 @@
 #include <sstream>
 
 #include "Vector.hpp"
-
+#include <vector>
 int main()
 {
 	Vector<double> numbers;
@@ -38,8 +38,9 @@ int main()
 	std::cout << "Sorted numbers: " << std::endl;
 	std::ranges::sort(numbers);
 
+	std::cout << std::fixed << std::setprecision(2);
 	for (const auto& num : numbers)
 	{
-		std::cout << std::fixed << std::setprecision(2) << num << " ";
+		std::cout << num << " ";
 	}
 }

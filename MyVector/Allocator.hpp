@@ -9,7 +9,7 @@ namespace details
 template <typename TValue>
 class Allocator
 {
-	using TPointer = TValue*;
+	using Pointer = TValue*;
 
 	static_assert(!std::is_const_v<TValue>, "The C++ Standard forbids containers of const elements "
 											"because allocator<const T> is ill-formed.");
@@ -19,15 +19,12 @@ class Allocator
 												"because of [allocator.requirements].");
 
 public:
-	Allocator() = default;
-	~Allocator() = default;
-
-	[[nodiscard]] TPointer Allocate(size_t size)
+	[[nodiscard]] Pointer Allocate(size_t size)
 	{
-		return static_cast<TPointer>(::operator new(CalculateBlockSize(size)));
+		return static_cast<Pointer>(::operator new(CalculateBlockSize(size)));
 	}
 
-	void Free(TPointer block, size_t size)
+	void Free(Pointer block, size_t size)
 	{
 		if (block)
 		{
@@ -35,9 +32,9 @@ public:
 		}
 	}
 
-	[[nodiscard]] TPointer Reallocate(TPointer block, size_t oldSize, size_t newSize)
+	[[nodiscard]] Pointer Reallocate(Pointer block, size_t oldSize, size_t newSize)
 	{
-		TPointer newBlock = Allocate(newSize);
+		Pointer newBlock = Allocate(newSize);
 
 		size_t copySize = oldSize < newSize ? oldSize : newSize;
 

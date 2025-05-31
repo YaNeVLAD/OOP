@@ -12,26 +12,27 @@ class Vector final
 	, public details::Iteratable<Vector<TValue>, TValue*, const TValue*>
 {
 	using Base = details::ContainerBase<TValue>;
+	using IteratorBase = details::Iteratable<Vector<TValue>, TValue*, const TValue*>;
+
+	using _Iter = IteratorBase::Iterator;
 
 public:
 	Vector() = default;
 
+	Vector(size_t size)
+		: Base(size, TValue())
+	{
+	}
+
+	Vector(size_t size, TValue value)
+		: Base(size, value)
+	{
+	}
+
 	Vector(std::initializer_list<TValue> list)
 		: Base()
 	{
-		Base::Reserve(list.size());
-
-		for (auto& value : list)
-		{
-			Base::EmplaceBack(value);
-		}
-	}
-
-	~Vector() override = default;
-
-	void PushBack(TValue&& value)
-	{
-		Base::EmplaceBack(std::forward<TValue>(value));
+		Base::EmplaceAllBack(list.begin(), list.size());
 	}
 
 	void PushBack(const TValue& value)
@@ -39,7 +40,15 @@ public:
 		Base::EmplaceBack(value);
 	}
 
-	typename Base::TReference operator[](size_t index)
+	void EmplaceRange(_Iter first, _Iter last)
+	{
+		for (auto it = first; it < last; ++it)
+		{
+			Base::EmplaceBack(*it);
+		}
+	}
+
+	typename Base::Reference operator[](size_t index)
 	{
 		if (index >= Base::Size())
 		{
@@ -49,7 +58,7 @@ public:
 		return *(Base::Begin() + index);
 	}
 
-	typename Base::TConstReference operator[](size_t index) const
+	typename Base::ConstReference operator[](size_t index) const
 	{
 		return const_cast<Vector&>(*this)[index];
 	}
